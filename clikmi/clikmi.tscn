@@ -106,7 +106,7 @@ resource_name = "idle_north"
 [sub_resource type="Animation" id="Animation_3gwon"]
 resource_name = "spin"
 length = 0.8
-loop_mode = 1
+loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -523,3 +523,7 @@ script = ExtResource("4_sbpbl")
 libraries = {
 "": SubResource("AnimationLibrary_sqb7d")
 }
+
+[node name="SuckInTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true

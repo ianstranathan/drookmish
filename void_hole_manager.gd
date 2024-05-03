@@ -1,6 +1,5 @@
 extends Node2D
 
-@export var camera: Camera2D
 @export var void_hole_scene: PackedScene
 
 var number_of_void_holes = 1.0
@@ -8,18 +7,19 @@ var number_of_void_holes = 1.0
 
 signal void_hole_made( a_void_hole, half_percentage_of_map, y_sign, x_sign)
 
-
 func make_void_hole() -> void:
 	var void_hole = void_hole_scene.instantiate()
-	void_hole.void_hole_finished.connect( func(): pass )
 	add_child( void_hole )
-	void_hole.camera = camera # give reference to the game's camera to do post processing shader for visual cue
-	emit_signal("void_hole_made", place_void_hole(void_hole))
+	void_hole.global_position = Vector2(100, 200)
+	
+	#emit_signal("void_hole_made", place_void_hole(void_hole))
 
-#func _physics_process(delta):
-	#if Input.is_action_just_pressed("select"):
-		#make_void_hole()
+func _physics_process(delta):
+	if Input.is_action_just_pressed("debug_space"):
+		make_void_hole()
 
+# callback to set the void hold s.t it's not on maker
+# & void hole is on map dimensions
 func place_void_hole(void_hole: Area2D) -> Callable:
 	return func( dimensions: Vector2 ):
 		var y_is_neg_or_positive = 1.0 if rng.randf() < 0.5 else -1.0

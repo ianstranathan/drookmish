@@ -16,7 +16,7 @@ noise = SubResource("FastNoiseLite_3mcs6")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hup3u"]
 shader = ExtResource("1_i2epx")
-shader_parameter/swirl_dist_normal = 1.0
+shader_parameter/swirl_dist_normal = 0.0
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_u6vnu")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vul81"]
@@ -27,15 +27,15 @@ noise = SubResource("FastNoiseLite_vul81")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mvlxa"]
 shader = ExtResource("4_voib2")
-shader_parameter/cam_offset = null
+shader_parameter/t = null
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_qyf6o")
 
 [node name="VoidHole" type="Area2D"]
-position = Vector2(362, 252)
 script = ExtResource("1_aa4ja")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_blyxv")
+disabled = true
 
 [node name="VoidSprite" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_hup3u")
@@ -43,13 +43,14 @@ scale = Vector2(2, 2)
 texture = ExtResource("2_kxjkr")
 
 [node name="DurationTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
 
 [node name="VisualCueSprite" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_mvlxa")
-position = Vector2(214, 137)
-scale = Vector2(9, 6.08)
+scale = Vector2(2, 2)
 texture = ExtResource("2_kxjkr")
 
-[node name="StartTimer" type="Timer" parent="."]
-
 [node name="VisualCueTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true

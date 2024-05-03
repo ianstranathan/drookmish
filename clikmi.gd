@@ -9,6 +9,12 @@ var target_loc = null
 
 var cam_rect: TextureRect
 
+#----------------------------
+signal sucked_in
+signal clikmi_freed
+@onready var suck_in_timer: Timer = $SuckInTimer
+@onready var timer_fn = Utils.timers_remaining_time_normalized
+#----------------------------
 enum MoveDirs{
 	IDLE,
 	NORTH,
@@ -53,11 +59,20 @@ func eight_dir(vec : Vector2) -> void:
 	else:
 		move_state = MoveDirs.IDLE
 
+func _ready():
+	suck_in_timer.timeout.connect(func(): 
+		emit_signal("sucked_in")
+		emit_signal("clikmi_freed", self)
+		queue_free())
+
 
 func _physics_process(delta):
 	# move the clikmi to it's target location
 	if target_loc:
 		euler_update(delta)
+	
+	if !suck_in_timer.is_stopped():
+		anim_player.speed_scale = lerp(1.0, 4.0, timer_fn.call(suck_in_timer))
 
 func stop():
 	dir = Vector2.ZERO
@@ -103,6 +118,10 @@ func set_target( pos: Vector2):
 			anim_player.play("walk_west")
 		MoveDirs.NORTH_WEST:
 			anim_player.play("walk_north_west")
+
+func start_sucking_in():
+	$SuckInTimer.start()
+	anim_player.play("spin")
 
 func set_dir():
 	var rel_pos = target_loc - global_position

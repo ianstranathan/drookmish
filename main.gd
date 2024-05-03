@@ -15,13 +15,18 @@ func _ready():
 	mouse_area.clikmi_selected.connect(func(a_clikmi: Area2D): selected_clikmi = a_clikmi)
 	mouse_area.clikmi_moved.connect( func(): selected_clikmi = null)
 	mouse_area.selection_disabled.connect( func(): selected_clikmi = null)
-	
+	# ---------------------------------
 	$bg.scale = stage_dimensions / Vector2($bg.texture.get_size())
-
+	# ---------------------------------
+	$clikmi_container.connect("clikmi_freed", func(a_clikmi): 
+		if a_clikmi == selected_clikmi:
+			mouse_area.disable_selection())
+	# ---------------------------------
 	$Camera2D.set_stage_limits( stage_dimensions )
-	
+	# ---------------------------------
 	$void_hole_manager.void_hole_made.connect( func( call_back_fn ): call_back_fn.call(stage_dimensions))
 
+	# ---------------------------------
 	$HUD.navigation_arrow_was_clicked.connect(func(dir_str: String): $Camera2D.move( dir_str ) )
 	$HUD.cam_icon_selected.connect(func( fn: Callable ): fn.call( selected_clikmi ) )
 	$HUD.camera_hotkey_pressed.connect(func(loc: Vector2):$Camera2D.jump_to_hotkey_loc(loc))

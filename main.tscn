@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://mhm8h3bhj6mv"]
+[gd_scene load_steps=13 format=3 uid="uid://mhm8h3bhj6mv"]
 
 [ext_resource type="Shader" path="res://bg.gdshader" id="1_5b8ae"]
 [ext_resource type="Script" path="res://main.gd" id="1_h6jpv"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://7t8eyopxkiff" path="res://void_hole_manager/void_hole_manager.tscn" id="4_vy07f"]
 [ext_resource type="Script" path="res://mouse_area2d.gd" id="5_g62i5"]
 [ext_resource type="PackedScene" uid="uid://by2nolvl3kja2" path="res://HUD/game_ui.tscn" id="8_1di1c"]
+[ext_resource type="Script" path="res://clikmi_container.gd" id="8_vsmvu"]
 [ext_resource type="PackedScene" uid="uid://b0ll233yvhnqu" path="res://clikmi_maker/mining_resource.tscn" id="9_wl4va"]
 [ext_resource type="PackedScene" uid="uid://c36tkrjiatwve" path="res://selection_bg.tscn" id="10_4hpho"]
 
@@ -40,10 +41,10 @@ debug_color = Color(0.615686, 0.380392, 0.952941, 0.419608)
 [node name="SelectionBg" parent="mouse_container" instance=ExtResource("10_4hpho")]
 scale = Vector2(0.66, 0.66)
 
-[node name="clikmi_container" type="Node2D" parent="."]
+[node name="void_hole_manager" parent="." instance=ExtResource("4_vy07f")]
 
-[node name="void_hole_manager" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("4_vy07f")]
-camera = NodePath("../Camera2D")
+[node name="clikmi_container" type="Node2D" parent="."]
+script = ExtResource("8_vsmvu")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_74s40")

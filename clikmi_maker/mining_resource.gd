@@ -98,7 +98,7 @@ func on_play_interval_timer_timeout():
 
 func on_open_timer_timeout() -> void:
 	var a_clikmi = clikmi_scene.instantiate()
-	clikmi_container.add_child( a_clikmi)
+	clikmi_container.add_clikmi( a_clikmi)
 	anim_player.pause()
 	$ResourceCollectionTimer.start()
 

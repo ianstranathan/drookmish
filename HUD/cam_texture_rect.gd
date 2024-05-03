@@ -65,7 +65,7 @@ func cam_hotkey_click_callback_fn(a_selected_clikmi):
 	if a_selected_clikmi:
 		if camera_hot_key_fn:
 			var assoc_clikmi = camera_hot_key_fn.call(true)
-			if assoc_clikmi != a_selected_clikmi:
+			if assoc_clikmi != a_selected_clikmi and assoc_clikmi:
 				assoc_clikmi.remove_hotkey_color()
 		
 		turn_off_button_cues() # stop vertex shader stuff
