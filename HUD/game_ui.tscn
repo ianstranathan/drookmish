@@ -1,0 +1,386 @@
+[gd_scene load_steps=17 format=3 uid="uid://by2nolvl3kja2"]
+
+[ext_resource type="Script" path="res://HUD/game_ui.gd" id="1_nuj4q"]
+[ext_resource type="PackedScene" uid="uid://dl0g7keusp60j" path="res://HUD/cam_texture_rect.tscn" id="2_40hs4"]
+[ext_resource type="Shader" path="res://HUD/camera_icon.gdshader" id="3_qro3a"]
+[ext_resource type="PackedScene" uid="uid://b234434wnkfll" path="res://HUD/navigation_arrow/navigation_arrow.tscn" id="4_y2pu8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_efi8y"]
+resource_local_to_scene = true
+shader = ExtResource("3_qro3a")
+shader_parameter/hovered_over_hotkey_jump = 0.0
+shader_parameter/hovered_over_bind_hotkey = 0.0
+shader_parameter/default_col = Color(1, 0.4, 0.2, 1)
+shader_parameter/set_col = null
+shader_parameter/hover_set_bind_col = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fvlfk"]
+resource_local_to_scene = true
+shader = ExtResource("3_qro3a")
+shader_parameter/hovered_over_hotkey_jump = 0.0
+shader_parameter/hovered_over_bind_hotkey = 0.0
+shader_parameter/default_col = Color(1, 0.4, 0.2, 1)
+shader_parameter/set_col = null
+shader_parameter/hover_set_bind_col = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_raggb"]
+resource_local_to_scene = true
+shader = ExtResource("3_qro3a")
+shader_parameter/hovered_over_hotkey_jump = 0.0
+shader_parameter/hovered_over_bind_hotkey = 0.0
+shader_parameter/default_col = Color(1, 0.4, 0.2, 1)
+shader_parameter/set_col = null
+shader_parameter/hover_set_bind_col = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mgjl8"]
+resource_local_to_scene = true
+shader = ExtResource("3_qro3a")
+shader_parameter/hovered_over_hotkey_jump = 0.0
+shader_parameter/hovered_over_bind_hotkey = 0.0
+shader_parameter/default_col = Color(1, 0.4, 0.2, 1)
+shader_parameter/set_col = null
+shader_parameter/hover_set_bind_col = null
+
+[sub_resource type="Shader" id="Shader_2ewcf"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform float hovered_over;
+
+varying vec2 v;
+void vertex() {
+	//VERTEX.xy += hovered_over * 10.0 * vec2(sign(VERTEX.x), sign(VERTEX.y)) * sin(8. * TIME);
+	//v = VERTEX.xy;
+	// the svg texture is 128 x 128, I don't know why texture rect doesn't use NDC coords
+	float x_gt_64_px = step(64, VERTEX.x);
+	float y_gt_64_px = step(64, VERTEX.y);
+	float sign_x = x_gt_64_px * 1.0 + (1. - x_gt_64_px) * -1.;
+	float sign_y = y_gt_64_px * 1.0 + (1. - y_gt_64_px) * -1.;
+	VERTEX.xy += hovered_over * 10.0 * vec2(sign_x, sign_y) * sin(8. * TIME);
+}
+
+float sdEquilateralTriangle( in vec2 p, in float r )
+{
+    const float k = sqrt(3.0);
+    p.x = abs(p.x) - r;
+    p.y = p.y + r/k;
+    if( p.x+k*p.y>0.0 ) p = vec2(p.x-k*p.y,-k*p.x-p.y)/2.0;
+    p.x -= clamp( p.x, -2.0*r, 0.0 );
+    return -length(p)*sign(p.y);
+}
+
+mat2 rot( float angle){
+	return mat2(vec2( cos(angle), -sin(angle)),
+			    vec2(sin(angle), cos(angle)));
+}
+
+uniform float rot_offset;
+
+void fragment() {
+	vec2 uv = 2. * UV - 1.;
+	uv.y *= -1.;
+	uv = rot(rot_offset) * uv;
+	float sdf = sdEquilateralTriangle(uv, 0.5);
+	float val = smoothstep(0., 0.2, abs(sdf));
+	float dist = 1.0 / val;
+	dist *= 0.3 + hovered_over * 0.1 * sin(8. * TIME);
+	dist = pow(dist, 0.8);
+	vec3 col = dist * vec3(1.0, 0.5, 0.25);
+	col = 1.0 - exp( -col );
+	COLOR = vec4(col, (1. - val) - 0.5 * (1. - hovered_over));
+	//COLOR = vec4(vec3(v/128., 0.), 1.);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qtr7x"]
+resource_local_to_scene = true
+shader = SubResource("Shader_2ewcf")
+shader_parameter/hovered_over = 0.0
+shader_parameter/rot_offset = null
+
+[sub_resource type="Shader" id="Shader_b34gr"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform float hovered_over;
+
+varying vec2 v;
+void vertex() {
+	//VERTEX.xy += hovered_over * 10.0 * vec2(sign(VERTEX.x), sign(VERTEX.y)) * sin(8. * TIME);
+	//v = VERTEX.xy;
+	// the svg texture is 128 x 128, I don't know why texture rect doesn't use NDC coords
+	float x_gt_64_px = step(64, VERTEX.x);
+	float y_gt_64_px = step(64, VERTEX.y);
+	float sign_x = x_gt_64_px * 1.0 + (1. - x_gt_64_px) * -1.;
+	float sign_y = y_gt_64_px * 1.0 + (1. - y_gt_64_px) * -1.;
+	VERTEX.xy += hovered_over * 10.0 * vec2(sign_x, sign_y) * sin(8. * TIME);
+}
+
+float sdEquilateralTriangle( in vec2 p, in float r )
+{
+    const float k = sqrt(3.0);
+    p.x = abs(p.x) - r;
+    p.y = p.y + r/k;
+    if( p.x+k*p.y>0.0 ) p = vec2(p.x-k*p.y,-k*p.x-p.y)/2.0;
+    p.x -= clamp( p.x, -2.0*r, 0.0 );
+    return -length(p)*sign(p.y);
+}
+
+mat2 rot( float angle){
+	return mat2(vec2( cos(angle), -sin(angle)),
+			    vec2(sin(angle), cos(angle)));
+}
+
+uniform float rot_offset;
+
+void fragment() {
+	vec2 uv = 2. * UV - 1.;
+	uv.y *= -1.;
+	uv = rot(rot_offset) * uv;
+	float sdf = sdEquilateralTriangle(uv, 0.5);
+	float val = smoothstep(0., 0.2, abs(sdf));
+	float dist = 1.0 / val;
+	dist *= 0.3 + hovered_over * 0.1 * sin(8. * TIME);
+	dist = pow(dist, 0.8);
+	vec3 col = dist * vec3(1.0, 0.5, 0.25);
+	col = 1.0 - exp( -col );
+	COLOR = vec4(col, (1. - val) - 0.5 * (1. - hovered_over));
+	//COLOR = vec4(vec3(v/128., 0.), 1.);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7kges"]
+resource_local_to_scene = true
+shader = SubResource("Shader_b34gr")
+shader_parameter/hovered_over = 0.0
+shader_parameter/rot_offset = -1.571
+
+[sub_resource type="Shader" id="Shader_tve5x"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform float hovered_over;
+
+varying vec2 v;
+void vertex() {
+	//VERTEX.xy += hovered_over * 10.0 * vec2(sign(VERTEX.x), sign(VERTEX.y)) * sin(8. * TIME);
+	//v = VERTEX.xy;
+	// the svg texture is 128 x 128, I don't know why texture rect doesn't use NDC coords
+	float x_gt_64_px = step(64, VERTEX.x);
+	float y_gt_64_px = step(64, VERTEX.y);
+	float sign_x = x_gt_64_px * 1.0 + (1. - x_gt_64_px) * -1.;
+	float sign_y = y_gt_64_px * 1.0 + (1. - y_gt_64_px) * -1.;
+	VERTEX.xy += hovered_over * 10.0 * vec2(sign_x, sign_y) * sin(8. * TIME);
+}
+
+float sdEquilateralTriangle( in vec2 p, in float r )
+{
+    const float k = sqrt(3.0);
+    p.x = abs(p.x) - r;
+    p.y = p.y + r/k;
+    if( p.x+k*p.y>0.0 ) p = vec2(p.x-k*p.y,-k*p.x-p.y)/2.0;
+    p.x -= clamp( p.x, -2.0*r, 0.0 );
+    return -length(p)*sign(p.y);
+}
+
+mat2 rot( float angle){
+	return mat2(vec2( cos(angle), -sin(angle)),
+			    vec2(sin(angle), cos(angle)));
+}
+
+uniform float rot_offset;
+
+void fragment() {
+	vec2 uv = 2. * UV - 1.;
+	uv.y *= -1.;
+	uv = rot(rot_offset) * uv;
+	float sdf = sdEquilateralTriangle(uv, 0.5);
+	float val = smoothstep(0., 0.2, abs(sdf));
+	float dist = 1.0 / val;
+	dist *= 0.3 + hovered_over * 0.1 * sin(8. * TIME);
+	dist = pow(dist, 0.8);
+	vec3 col = dist * vec3(1.0, 0.5, 0.25);
+	col = 1.0 - exp( -col );
+	COLOR = vec4(col, (1. - val) - 0.5 * (1. - hovered_over));
+	//COLOR = vec4(vec3(v/128., 0.), 1.);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ipeqr"]
+resource_local_to_scene = true
+shader = SubResource("Shader_tve5x")
+shader_parameter/hovered_over = 0.0
+shader_parameter/rot_offset = 3.142
+
+[sub_resource type="Shader" id="Shader_5oicb"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform float hovered_over;
+
+varying vec2 v;
+void vertex() {
+	//VERTEX.xy += hovered_over * 10.0 * vec2(sign(VERTEX.x), sign(VERTEX.y)) * sin(8. * TIME);
+	//v = VERTEX.xy;
+	// the svg texture is 128 x 128, I don't know why texture rect doesn't use NDC coords
+	float x_gt_64_px = step(64, VERTEX.x);
+	float y_gt_64_px = step(64, VERTEX.y);
+	float sign_x = x_gt_64_px * 1.0 + (1. - x_gt_64_px) * -1.;
+	float sign_y = y_gt_64_px * 1.0 + (1. - y_gt_64_px) * -1.;
+	VERTEX.xy += hovered_over * 10.0 * vec2(sign_x, sign_y) * sin(8. * TIME);
+}
+
+float sdEquilateralTriangle( in vec2 p, in float r )
+{
+    const float k = sqrt(3.0);
+    p.x = abs(p.x) - r;
+    p.y = p.y + r/k;
+    if( p.x+k*p.y>0.0 ) p = vec2(p.x-k*p.y,-k*p.x-p.y)/2.0;
+    p.x -= clamp( p.x, -2.0*r, 0.0 );
+    return -length(p)*sign(p.y);
+}
+
+mat2 rot( float angle){
+	return mat2(vec2( cos(angle), -sin(angle)),
+			    vec2(sin(angle), cos(angle)));
+}
+
+uniform float rot_offset;
+
+void fragment() {
+	vec2 uv = 2. * UV - 1.;
+	uv.y *= -1.;
+	uv = rot(rot_offset) * uv;
+	float sdf = sdEquilateralTriangle(uv, 0.5);
+	float val = smoothstep(0., 0.2, abs(sdf));
+	float dist = 1.0 / val;
+	dist *= 0.3 + hovered_over * 0.1 * sin(8. * TIME);
+	dist = pow(dist, 0.8);
+	vec3 col = dist * vec3(1.0, 0.5, 0.25);
+	col = 1.0 - exp( -col );
+	COLOR = vec4(col, (1. - val) - 0.5 * (1. - hovered_over));
+	//COLOR = vec4(vec3(v/128., 0.), 1.);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_osiw6"]
+resource_local_to_scene = true
+shader = SubResource("Shader_5oicb")
+shader_parameter/hovered_over = 0.0
+shader_parameter/rot_offset = 1.571
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_nuj4q")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -65.0
+offset_top = 8.0
+offset_right = -7.0
+offset_bottom = 52.0
+grow_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_right = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+material = SubResource("ShaderMaterial_efi8y")
+layout_mode = 2
+
+[node name="TextureRect2" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+material = SubResource("ShaderMaterial_fvlfk")
+layout_mode = 2
+set_color = Vector4(0.8, 0.1, 0.13, 1)
+
+[node name="TextureRect3" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+material = SubResource("ShaderMaterial_raggb")
+layout_mode = 2
+set_color = Vector4(0.13, 0.8, 0.1, 1)
+
+[node name="TextureRect4" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+material = SubResource("ShaderMaterial_mgjl8")
+layout_mode = 2
+set_color = Vector4(0.1, 0.13, 0.8, 1)
+
+[node name="ArrowContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1112.0
+offset_bottom = -738.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ArrowContainer"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 492.0
+offset_right = 620.0
+offset_bottom = 128.0
+grow_horizontal = 2
+
+[node name="NavigationArrow" parent="ArrowContainer/MarginContainer" instance=ExtResource("4_y2pu8")]
+material = SubResource("ShaderMaterial_qtr7x")
+layout_mode = 2
+direction = "Up"
+
+[node name="MarginContainer2" type="MarginContainer" parent="ArrowContainer"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 984.0
+offset_top = 305.0
+offset_right = 1112.0
+offset_bottom = 433.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="NavigationArrow" parent="ArrowContainer/MarginContainer2" instance=ExtResource("4_y2pu8")]
+material = SubResource("ShaderMaterial_7kges")
+layout_mode = 2
+direction = "Right"
+
+[node name="MarginContainer3" type="MarginContainer" parent="ArrowContainer"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 492.0
+offset_top = 610.0
+offset_right = 620.0
+offset_bottom = 738.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="NavigationArrow" parent="ArrowContainer/MarginContainer3" instance=ExtResource("4_y2pu8")]
+material = SubResource("ShaderMaterial_ipeqr")
+layout_mode = 2
+direction = "Down"
+
+[node name="MarginContainer4" type="MarginContainer" parent="ArrowContainer"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = 305.0
+offset_right = 128.0
+offset_bottom = 433.0
+grow_vertical = 2
+
+[node name="NavigationArrow" parent="ArrowContainer/MarginContainer4" instance=ExtResource("4_y2pu8")]
+material = SubResource("ShaderMaterial_osiw6")
+layout_mode = 2
+direction = "Left"

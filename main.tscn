@@ -1,0 +1,51 @@
+[gd_scene load_steps=12 format=3 uid="uid://mhm8h3bhj6mv"]
+
+[ext_resource type="Shader" path="res://bg.gdshader" id="1_5b8ae"]
+[ext_resource type="Script" path="res://main.gd" id="1_h6jpv"]
+[ext_resource type="Script" path="res://cam.gd" id="2_74s40"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://icon.svg" id="2_u1ell"]
+[ext_resource type="PackedScene" uid="uid://7t8eyopxkiff" path="res://void_hole_manager/void_hole_manager.tscn" id="4_vy07f"]
+[ext_resource type="Script" path="res://mouse_area2d.gd" id="5_g62i5"]
+[ext_resource type="PackedScene" uid="uid://by2nolvl3kja2" path="res://HUD/game_ui.tscn" id="8_1di1c"]
+[ext_resource type="PackedScene" uid="uid://b0ll233yvhnqu" path="res://clikmi_maker/mining_resource.tscn" id="9_wl4va"]
+[ext_resource type="PackedScene" uid="uid://c36tkrjiatwve" path="res://selection_bg.tscn" id="10_4hpho"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5b1u5"]
+shader = ExtResource("1_5b8ae")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t6m7k"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_h6jpv")
+
+[node name="bg" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_5b1u5")
+texture = ExtResource("2_u1ell")
+
+[node name="mining_resource" parent="." node_paths=PackedStringArray("clikmi_container") instance=ExtResource("9_wl4va")]
+position = Vector2(0, 0)
+clikmi_container = NodePath("../clikmi_container")
+
+[node name="mouse_container" type="Node2D" parent="."]
+
+[node name="mouse_area2d" type="Area2D" parent="mouse_container" node_paths=PackedStringArray("selection_bg")]
+script = ExtResource("5_g62i5")
+selection_bg = NodePath("../SelectionBg")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="mouse_container/mouse_area2d"]
+shape = SubResource("CircleShape2D_t6m7k")
+debug_color = Color(0.615686, 0.380392, 0.952941, 0.419608)
+
+[node name="SelectionBg" parent="mouse_container" instance=ExtResource("10_4hpho")]
+scale = Vector2(0.66, 0.66)
+
+[node name="clikmi_container" type="Node2D" parent="."]
+
+[node name="void_hole_manager" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("4_vy07f")]
+camera = NodePath("../Camera2D")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("2_74s40")
+
+[node name="HUD" parent="." instance=ExtResource("8_1di1c")]

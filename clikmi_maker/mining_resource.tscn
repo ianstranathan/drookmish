@@ -1,0 +1,95 @@
+[gd_scene load_steps=11 format=3 uid="uid://b0ll233yvhnqu"]
+
+[ext_resource type="Script" path="res://clikmi_maker/mining_resource.gd" id="1_hi2uk"]
+[ext_resource type="Shader" path="res://clikmi_maker/mining_resource.gdshader" id="3_pak88"]
+[ext_resource type="PackedScene" uid="uid://dnn6mr6exoxdg" path="res://clikmi/clikmi.tscn" id="4_gyhfh"]
+[ext_resource type="Texture2D" uid="uid://c4enj8ha7fett" path="res://assets/clikmi_maker/mining_animation_sprite_sheet.png" id="4_y323f"]
+[ext_resource type="Script" path="res://clikmi_maker/maker_area2d.gd" id="5_es2qr"]
+
+[sub_resource type="Animation" id="Animation_cnr1s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_mptd7"]
+resource_name = "open"
+length = 2.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_asghi"]
+_data = {
+"RESET": SubResource("Animation_cnr1s"),
+"open": SubResource("Animation_mptd7")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_61klq"]
+shader = ExtResource("3_pak88")
+shader_parameter/_t = null
+shader_parameter/decay_time = 0.0
+shader_parameter/row_number = 5.0
+shader_parameter/index_vec = null
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wyqow"]
+radius = 59.0339
+
+[node name="mining_resource" type="Node2D"]
+position = Vector2(555, 273)
+script = ExtResource("1_hi2uk")
+clikmi_scene = ExtResource("4_gyhfh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+callback_mode_process = 0
+libraries = {
+"": SubResource("AnimationLibrary_asghi")
+}
+
+[node name="PlayIntervalTimer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.1
+one_shot = true
+
+[node name="ResourceCollectionTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="OpenTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_61klq")
+position = Vector2(5, -5)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_y323f")
+hframes = 5
+vframes = 5
+
+[node name="ShakeDecayTimer" type="Timer" parent="Sprite2D"]
+wait_time = 2.0
+one_shot = true
+
+[node name="maker_area2d" type="Area2D" parent="."]
+script = ExtResource("5_es2qr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="maker_area2d"]
+shape = SubResource("CircleShape2D_wyqow")

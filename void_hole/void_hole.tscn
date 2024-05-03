@@ -1,0 +1,55 @@
+[gd_scene load_steps=12 format=3 uid="uid://dcry3kkxtie4s"]
+
+[ext_resource type="Script" path="res://void_hole/void_hole.gd" id="1_aa4ja"]
+[ext_resource type="Shader" path="res://void_hole/void_hole.gdshader" id="1_i2epx"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://icon.svg" id="2_kxjkr"]
+[ext_resource type="Shader" path="res://void_hole/void_hole_visual_cue.gdshader" id="4_voib2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_blyxv"]
+radius = 72.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3mcs6"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u6vnu"]
+seamless = true
+noise = SubResource("FastNoiseLite_3mcs6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hup3u"]
+shader = ExtResource("1_i2epx")
+shader_parameter/swirl_dist_normal = 1.0
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_u6vnu")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vul81"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qyf6o"]
+seamless = true
+noise = SubResource("FastNoiseLite_vul81")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mvlxa"]
+shader = ExtResource("4_voib2")
+shader_parameter/cam_offset = null
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_qyf6o")
+
+[node name="VoidHole" type="Area2D"]
+position = Vector2(362, 252)
+script = ExtResource("1_aa4ja")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_blyxv")
+
+[node name="VoidSprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_hup3u")
+scale = Vector2(2, 2)
+texture = ExtResource("2_kxjkr")
+
+[node name="DurationTimer" type="Timer" parent="."]
+
+[node name="VisualCueSprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_mvlxa")
+position = Vector2(214, 137)
+scale = Vector2(9, 6.08)
+texture = ExtResource("2_kxjkr")
+
+[node name="StartTimer" type="Timer" parent="."]
+
+[node name="VisualCueTimer" type="Timer" parent="."]
