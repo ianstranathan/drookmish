@@ -2,6 +2,8 @@ extends Camera2D
 
 @export var cam_tween_dist = 300
 
+var can_move_again = true
+
 func move( arrow_name ):
 	match arrow_name:
 		"Up":
@@ -23,11 +25,15 @@ func check_limits_and_tween_movement(dir: Vector2, side_limit: int):
 		limit_remainder = side_limit - (global_position.y + + half_vp_size.y)
 	
 	# if limit remainder is greater than full movement, do full movement, otherwise, dir to limit
-	var tween = get_tree().create_tween().set_parallel(true)
-	if sign(side_limit) * limit_remainder > cam_tween_dist:
-		tween.tween_property(self, "global_position", global_position + (cam_tween_dist * dir), 1).set_trans(Tween.TRANS_SINE)
-	else:
-		tween.tween_property(self, "global_position", global_position + (limit_remainder * dir), 1.4).set_trans(Tween.TRANS_SINE)
+	if can_move_again:
+		can_move_again = false
+		var tween = get_tree().create_tween().set_parallel(true)
+		if sign(side_limit) * limit_remainder > cam_tween_dist:
+			tween.tween_property(self, "global_position", global_position + (cam_tween_dist * dir), 1).set_trans(Tween.TRANS_SINE)
+		else:
+			tween.tween_property(self, "global_position", global_position + (limit_remainder * dir), 1.4).set_trans(Tween.TRANS_SINE)
+		tween.chain().tween_callback( func(): 
+			can_move_again = true)
 
 func set_stage_limits( stage_dims: Vector2):
 	limit_left = -stage_dims.x / 2.0

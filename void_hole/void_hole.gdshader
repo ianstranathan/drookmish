@@ -1,7 +1,11 @@
 shader_type canvas_item;
 
+uniform float swirl_dist_normal;
+
 void vertex() {
-	// Called for every vertex the material is visible on.
+	float sign_x = sign(VERTEX.x) * 1.0 + (1. - sign(VERTEX.x)) * -1.;
+	float sign_y = sign(VERTEX.y) * 1.0 + (1. - sign(VERTEX.y)) * -1.;
+	VERTEX.xy += vec2(sign_x, sign_y) * sin(30.0 * swirl_dist_normal);
 }
 
 uniform sampler2D noise_tex: repeat_enable;
@@ -11,7 +15,6 @@ mat2 rot(float angle){
 	             vec2(sin(angle), cos(angle)));
 }
 
-uniform float swirl_dist_normal;
 void fragment()
 {
     vec2 uv = 2. * UV - 1.;
