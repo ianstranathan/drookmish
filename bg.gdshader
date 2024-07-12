@@ -33,9 +33,9 @@ void fragment() {
     vec3 col = 1. -  0.5*cos(TIME+uv.xyx+vec3(0,2,4));
 	
 	float grid = mix(0.5, gridTexture(10. * vec2(length(uv), atan(uv.y, uv.x))), 0.5 * length(uv));
-	vec3 inner_col = 0.5 * col * (1. - border) * grid;
+	vec3 inner_col = col * (1. - border) * grid;
 	vec3 border_col = vec3(0.)* border;
-	COLOR = vec4(border_col + inner_col, 1.);
+	COLOR = 1.2 * vec4(border_col + inner_col, 0.5);
 }
 
 //void light() {

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhrw86mmxwy4e"]
+
+[ext_resource type="AudioStream" uid="uid://crx7l1w4edxft" path="res://assets/Music/Happy-Piano-Upbeat-Royalty-Free-Piano-Stock-Music.mp3" id="1_h73gl"]
+
+[node name="SoundManager" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_h73gl")

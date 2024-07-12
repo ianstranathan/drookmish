@@ -24,12 +24,7 @@ uniform vec2 index_vec;
 const float shake_angle_range = PI / 6.0;
 
 
-const vec4 line_color = vec4(1.);
-const float line_thickness = 5.0;
-
 void fragment() {
-	vec2 size = TEXTURE_PIXEL_SIZE * line_thickness;
-	
 	float decay = exp(-3. * decay_time);
 	float angle = sin(10. * TIME) * shake_angle_range * decay;
 	vec2 offset = (1. / row_number) * ( index_vec + 0.5 ); // the center of each UV index cell
@@ -41,11 +36,11 @@ void fragment() {
 	vec4 tex_sample           = texture(TEXTURE, _UV);
 	vec4 tex_sample_zoomed_in = texture(TEXTURE, _UV_zoomed);
 	vec3 grey_scale = vec3( (tex_sample.r + tex_sample.g + tex_sample.b) / 3.);
-	vec3 col = mix(tex_sample.xyz, grey_scale, _t);
+	vec3 col = mix(grey_scale, tex_sample.xyz, _t);
 	col = mix(col, col + vec3(0.3), decay);
 	//vec2 k = offset - vec2(0.005, -0.0025); // f drawings...
 	//float outline_a = smoothstep(0.002, 0.065, length(_UV - k)) * tex_sample_zoomed_in.a * (1. - tex_sample.a);
-	vec3 outline_col = mix(vec3(1., 1., 0.), vec3(1.), decay);
+	vec3 outline_col = mix(vec3(1.), vec3(1., 1., 0.), decay);
 	float _t_switch = step(0.99, _t);
 	outline_col = (_t_switch) * vec3(1.) + (1. - _t_switch) * outline_col;
 	COLOR = vec4( outline_col * (1. - tex_sample.a) + col, tex_sample_zoomed_in.a);

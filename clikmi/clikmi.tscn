@@ -1,6 +1,7 @@
-[gd_scene load_steps=28 format=3 uid="uid://dnn6mr6exoxdg"]
+[gd_scene load_steps=32 format=3 uid="uid://dnn6mr6exoxdg"]
 
 [ext_resource type="Script" path="res://clikmi.gd" id="1_6wiuj"]
+[ext_resource type="PackedScene" uid="uid://b5g4skxgdvyxa" path="res://clikmi/clikmi_spirit.tscn" id="2_bs8rv"]
 [ext_resource type="Texture2D" uid="uid://bxc8llu2mcbwn" path="res://assets/pink_guy_8_dir/pink_8direction_standing-Sheet.png" id="2_jjx4q"]
 [ext_resource type="Shader" path="res://clikmi/clikmi_sprite.gdshader" id="2_ovqai"]
 [ext_resource type="Texture2D" uid="uid://dhgjpuo0rjtyy" path="res://assets/pink_guy_8_dir/pink_walk_NORTH-Sheet.png" id="3_ja02g"]
@@ -11,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://cxh4acnbo4ht5" path="res://assets/pink_guy_8_dir/pink_walk_SOUTH-EAST-Sheet.png" id="7_godcn"]
 [ext_resource type="Texture2D" uid="uid://cvw5y7jpp7dtf" path="res://assets/pink_guy_8_dir/pink_walk_SOUTH-WEST-Sheet.png" id="8_ye5oa"]
 [ext_resource type="Texture2D" uid="uid://dydfvd0ivoio5" path="res://assets/pink_guy_8_dir/pink_walk_NORTH-WEST-Sheet.png" id="9_qo53y"]
+[ext_resource type="PackedScene" uid="uid://dcry3kkxtie4s" path="res://void_hole/void_hole.tscn" id="13_nr0yn"]
+[ext_resource type="Shader" path="res://clikmi/label_modulate.gdshader" id="14_l6pb6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6hq65"]
 radius = 11.0
@@ -19,58 +22,11 @@ height = 50.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wkxkh"]
 resource_local_to_scene = true
 shader = ExtResource("2_ovqai")
+shader_parameter/col_switch = 1.0
 shader_parameter/color = Color(1, 0.4, 0.9, 0)
 
 [sub_resource type="Animation" id="Animation_02h3p"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:texture")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("2_jjx4q")]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:frame_coords")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2i(0, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_sivax"]
 resource_name = "idle"
@@ -506,8 +462,16 @@ _data = {
 "walk_west": SubResource("Animation_fnr45")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mcv14"]
+resource_local_to_scene = true
+shader = ExtResource("14_l6pb6")
+shader_parameter/t = null
+
 [node name="clikmi" type="Area2D"]
 script = ExtResource("1_6wiuj")
+void_hole_scene = ExtResource("13_nr0yn")
+spirit_sprite = ExtResource("2_bs8rv")
+void_hole_wait_time = 5.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_6hq65")
@@ -515,11 +479,31 @@ shape = SubResource("CapsuleShape2D_6hq65")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_wkxkh")
 texture = ExtResource("2_jjx4q")
-flip_h = true
 hframes = 8
+frame = 1
+region_rect = Rect2(0, 0, 32, 0)
 script = ExtResource("4_sbpbl")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_sqb7d")
 }
+
+[node name="VoidHoleTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+material = SubResource("ShaderMaterial_mcv14")
+offset_left = -9.0
+offset_top = 23.0
+offset_right = 9.0
+offset_bottom = 45.0
+
+[node name="Label" type="Label" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1

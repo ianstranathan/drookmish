@@ -1,30 +1,25 @@
-extends Panel
+extends PanelContainer
 
-var time: float = 0.0
-var minutes: int = 0
-var seconds: int = 0
-var msec: int = 0
+@onready var time_since_engine_started: Callable = Time.get_ticks_msec
+@onready var start_time = time_since_engine_started.call()
+@onready var time_label: Label = $MarginContainer/Label
 
-signal void_hole_spawning
 
-var void_hole
+func time_string(t_msecs)-> String:
+	var msecs = fmod(t_msecs, 1000.0)
+	var seconds = fmod( floor(t_msecs / 1000.0), 60.0)
+	var minutes = fmod( floor(t_msecs / 60000.0), 60.0)
+	
+	# leading number coeff in string interpolation is the padding
+	# 3 -> minimum of 3 chars long
+	return "%02d:%02d:%03d" % [minutes, seconds, msecs] 
 
-func _ready():
-	pass
 
-func _physics_process(delta) -> void:
-	time += delta
-	msec = fmod(time, 1) * 100
-	seconds = fmod(time, 60)
-	minutes = fmod(time, 3600) / 60
-	$HBoxContainer/minutes.text = "%02d:" % minutes
-	$HBoxContainer/seconds.text = "%02d." % seconds
-	$HBoxContainer/mseconds.text = "%02d" % msec
+func _physics_process(delta):
+	var delta_time_msec = time_since_engine_started.call() - start_time
+	time_label.text = time_string( delta_time_msec )
 
 
 func stop() -> void:
 	set_process(false)
 
-
-func get_time_formatted() -> String:
-	return "%02d:%02d.%03d" % [minutes, seconds, msec]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://by2nolvl3kja2"]
+[gd_scene load_steps=18 format=3 uid="uid://by2nolvl3kja2"]
 
 [ext_resource type="Script" path="res://HUD/game_ui.gd" id="1_nuj4q"]
 [ext_resource type="PackedScene" uid="uid://dl0g7keusp60j" path="res://HUD/cam_texture_rect.tscn" id="2_40hs4"]
 [ext_resource type="Shader" path="res://HUD/camera_icon.gdshader" id="3_qro3a"]
 [ext_resource type="PackedScene" uid="uid://b234434wnkfll" path="res://HUD/navigation_arrow/navigation_arrow.tscn" id="4_y2pu8"]
+[ext_resource type="Script" path="res://HUD/game_timer.gd" id="5_q7nbc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_efi8y"]
 resource_local_to_scene = true
@@ -41,7 +42,7 @@ shader_parameter/default_col = Color(1, 0.4, 0.2, 1)
 shader_parameter/set_col = null
 shader_parameter/hover_set_bind_col = null
 
-[sub_resource type="Shader" id="Shader_2ewcf"]
+[sub_resource type="Shader" id="Shader_ckh40"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -93,11 +94,11 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qtr7x"]
 resource_local_to_scene = true
-shader = SubResource("Shader_2ewcf")
+shader = SubResource("Shader_ckh40")
 shader_parameter/hovered_over = 0.0
 shader_parameter/rot_offset = null
 
-[sub_resource type="Shader" id="Shader_b34gr"]
+[sub_resource type="Shader" id="Shader_gjeyg"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -149,11 +150,11 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7kges"]
 resource_local_to_scene = true
-shader = SubResource("Shader_b34gr")
+shader = SubResource("Shader_gjeyg")
 shader_parameter/hovered_over = 0.0
 shader_parameter/rot_offset = -1.571
 
-[sub_resource type="Shader" id="Shader_tve5x"]
+[sub_resource type="Shader" id="Shader_nlmc8"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -205,11 +206,11 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ipeqr"]
 resource_local_to_scene = true
-shader = SubResource("Shader_tve5x")
+shader = SubResource("Shader_nlmc8")
 shader_parameter/hovered_over = 0.0
 shader_parameter/rot_offset = 3.142
 
-[sub_resource type="Shader" id="Shader_5oicb"]
+[sub_resource type="Shader" id="Shader_gdusy"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -261,51 +262,55 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osiw6"]
 resource_local_to_scene = true
-shader = SubResource("Shader_5oicb")
+shader = SubResource("Shader_gdusy")
 shader_parameter/hovered_over = 0.0
 shader_parameter/rot_offset = 1.571
 
 [node name="CanvasLayer" type="CanvasLayer"]
 script = ExtResource("1_nuj4q")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="MarginContainer2" type="MarginContainer" parent="."]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -65.0
-offset_top = 8.0
-offset_right = -7.0
-offset_bottom = 52.0
+offset_left = -204.0
+offset_bottom = 40.0
 grow_horizontal = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
 theme_override_constants/margin_right = 7
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer2"]
 layout_mode = 2
-theme_override_constants/separation = 10
+size_flags_horizontal = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
 alignment = 2
 
-[node name="TextureRect" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+[node name="TextureRect" parent="MarginContainer2/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
 material = SubResource("ShaderMaterial_efi8y")
 layout_mode = 2
 
-[node name="TextureRect2" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+[node name="TextureRect2" parent="MarginContainer2/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
 material = SubResource("ShaderMaterial_fvlfk")
 layout_mode = 2
-set_color = Vector4(0.8, 0.1, 0.13, 1)
+set_color = Color(0.815686, 0.0784314, 0.243137, 1)
 
-[node name="TextureRect3" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+[node name="TextureRect3" parent="MarginContainer2/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
 material = SubResource("ShaderMaterial_raggb")
 layout_mode = 2
-set_color = Vector4(0.13, 0.8, 0.1, 1)
+set_color = Color(0.121569, 0.764706, 0.27451, 1)
 
-[node name="TextureRect4" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+[node name="TextureRect4" parent="MarginContainer2/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
 material = SubResource("ShaderMaterial_mgjl8")
 layout_mode = 2
-set_color = Vector4(0.1, 0.13, 0.8, 1)
+set_color = Color(0, 0.447059, 0.972549, 1)
 
 [node name="ArrowContainer" type="Control" parent="."]
 layout_mode = 3
@@ -384,3 +389,23 @@ grow_vertical = 2
 material = SubResource("ShaderMaterial_osiw6")
 layout_mode = 2
 direction = "Left"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+script = ExtResource("5_q7nbc")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer2/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+horizontal_alignment = 1
+vertical_alignment = 1

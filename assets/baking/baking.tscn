@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://injmsuqhfh8q"]
+
+[ext_resource type="Texture2D" uid="uid://bxc8llu2mcbwn" path="res://assets/pink_guy_8_dir/pink_8direction_standing-Sheet.png" id="1_6lfyw"]
+[ext_resource type="Script" path="res://assets/baking/baking_sprite.gd" id="1_b2v61"]
+[ext_resource type="Script" path="res://assets/baking/sprite_to_bake.gd" id="3_3vmt0"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_t1goh"]
+viewport_path = NodePath("Sprite2D/SubViewport")
+
+[node name="Baking" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("ViewportTexture_t1goh")
+region_enabled = true
+region_rect = Rect2(32, 0, 32, 48)
+script = ExtResource("1_b2v61")
+
+[node name="SubViewport" type="SubViewport" parent="Sprite2D"]
+size = Vector2i(32, 48)
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/SubViewport"]
+position = Vector2(16, 24)
+texture = ExtResource("1_6lfyw")
+region_enabled = true
+region_rect = Rect2(32, 0, 32, 48)
+script = ExtResource("3_3vmt0")
+
+[node name="Timer" type="Timer" parent="Sprite2D"]
+wait_time = 0.2
+one_shot = true

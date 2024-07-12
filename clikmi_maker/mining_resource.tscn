@@ -1,10 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://b0ll233yvhnqu"]
+[gd_scene load_steps=14 format=3 uid="uid://b0ll233yvhnqu"]
 
 [ext_resource type="Script" path="res://clikmi_maker/mining_resource.gd" id="1_hi2uk"]
 [ext_resource type="Shader" path="res://clikmi_maker/mining_resource.gdshader" id="3_pak88"]
 [ext_resource type="PackedScene" uid="uid://dnn6mr6exoxdg" path="res://clikmi/clikmi.tscn" id="4_gyhfh"]
 [ext_resource type="Texture2D" uid="uid://c4enj8ha7fett" path="res://assets/clikmi_maker/mining_animation_sprite_sheet.png" id="4_y323f"]
 [ext_resource type="Script" path="res://clikmi_maker/maker_area2d.gd" id="5_es2qr"]
+[ext_resource type="Script" path="res://clikmi_maker/DamageArea.gd" id="6_lnk5g"]
+[ext_resource type="PackedScene" uid="uid://bn3hjrkhcph8g" path="res://misc/vfx/spawn_safe_zone.tscn" id="7_4r8ly"]
 
 [sub_resource type="Animation" id="Animation_cnr1s"]
 length = 0.001
@@ -20,6 +22,246 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageArea/CollisionPolygon2D:polygon")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [PackedVector2Array(45, -35, 54, -29, 43, -28)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DamageArea/CollisionPolygon2D6:polygon")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [PackedVector2Array(43, -35, 52, -30, 48, -25)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DamageArea/CollisionPolygon2D7:polygon")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [PackedVector2Array(37, -18, 52, -30, 47, -36)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DamageArea/CollisionPolygon2D8:polygon")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [PackedVector2Array(43, -10, 54, -32, 43, -36)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("DamageArea/CollisionPolygon2D9:polygon")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [PackedVector2Array(60, -14, 48, -39, 40, -29)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("DamageArea/CollisionPolygon2D2:polygon")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [PackedVector2Array(-42, -75, -36, -55, -30, -61)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("DamageArea/CollisionPolygon2D3:polygon")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [PackedVector2Array(-35, -78, -38, -56, -30, -61)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("DamageArea/CollisionPolygon2D4:polygon")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [PackedVector2Array(-35, -78, -43, -55, -31, -53)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("DamageArea/CollisionPolygon2D5:polygon")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [PackedVector2Array(-25, -64, -41, -59, -36, -51)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("DamageArea/CollisionPolygon2D:disabled")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("DamageArea/CollisionPolygon2D6:disabled")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("DamageArea/CollisionPolygon2D7:disabled")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("DamageArea/CollisionPolygon2D8:disabled")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("DamageArea/CollisionPolygon2D9:disabled")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("DamageArea/CollisionPolygon2D2:disabled")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("DamageArea/CollisionPolygon2D3:disabled")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("DamageArea/CollisionPolygon2D4:disabled")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("DamageArea/CollisionPolygon2D5:disabled")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("DamageArea/CollisionShape2D:rotation")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.55269]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("DamageArea/CollisionShape2D:disabled")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_mptd7"]
 resource_name = "open"
@@ -31,10 +273,250 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.1, 2.2, 2.3, 2.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 24]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageArea/CollisionPolygon2D:polygon")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.6, 2, 2.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(45, -35, 51, -31, 43, -31), PackedVector2Array(46, -34, 53, -29, 46, -28), PackedVector2Array(45, -26, 55, -20, 43, -20), PackedVector2Array(45, -19, 54, -13, 42, -10)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("DamageArea/CollisionPolygon2D6:polygon")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.6, 2, 2.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(45, -31, 50, -29, 46, -26), PackedVector2Array(46, -33, 52, -31, 46, -26), PackedVector2Array(43, -43, 52, -38, 48, -32), PackedVector2Array(43, -51, 52, -47, 48, -41)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DamageArea/CollisionPolygon2D7:polygon")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(1.6, 2, 2.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(37, -18, 52, -30, 47, -36), PackedVector2Array(35, -21, 52, -30, 47, -36), PackedVector2Array(36, -26, 52, -37, 48, -44), PackedVector2Array(37, -36, 52, -46, 48, -53)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DamageArea/CollisionPolygon2D8:polygon")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(1.6, 2, 2.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(43, -10, 54, -32, 43, -36), PackedVector2Array(43, -10, 54, -32, 43, -36), PackedVector2Array(43, -17, 54, -40, 43, -44), PackedVector2Array(42, -24, 53, -48, 42, -52)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("DamageArea/CollisionPolygon2D9:polygon")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(1.6, 2, 2.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(60, -14, 48, -39, 40, -29), PackedVector2Array(62, -16, 48, -39, 40, -29), PackedVector2Array(61, -22, 49, -47, 41, -37), PackedVector2Array(61, -31, 50, -52, 42, -45)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("DamageArea/CollisionPolygon2D2:polygon")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(1.6, 2, 2.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(-42, -75, -36, -55, -30, -61), PackedVector2Array(-43, -74, -36, -55, -33, -59), PackedVector2Array(-42, -65, -37, -45, -31, -52), PackedVector2Array(-43, -58, -36, -40, -30, -44)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("DamageArea/CollisionPolygon2D3:polygon")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(1.6, 2, 2.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(-35, -78, -38, -56, -30, -61), PackedVector2Array(-35, -78, -38, -56, -33, -60), PackedVector2Array(-35, -69, -37, -49, -32, -49), PackedVector2Array(-35, -61, -37, -41, -32, -42)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("DamageArea/CollisionPolygon2D4:polygon")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(1.6, 2, 2.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(-35, -78, -43, -55, -31, -53), PackedVector2Array(-35, -78, -43, -55, -31, -53), PackedVector2Array(-35, -70, -43, -47, -32, -46), PackedVector2Array(-35, -62, -42, -40, -31, -37)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("DamageArea/CollisionPolygon2D5:polygon")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(1.6, 2, 2.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [PackedVector2Array(-25, -64, -41, -59, -36, -51), PackedVector2Array(-23, -63, -36, -59, -32, -52), PackedVector2Array(-25, -55, -38, -52, -35, -44), PackedVector2Array(-22, -47, -35, -44, -33, -37)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("DamageArea/CollisionPolygon2D:disabled")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(1.6, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("DamageArea/CollisionPolygon2D6:disabled")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(1.6, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("DamageArea/CollisionPolygon2D7:disabled")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(1.6, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("DamageArea/CollisionPolygon2D8:disabled")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(1.6, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("DamageArea/CollisionPolygon2D9:disabled")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(1.6, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("DamageArea/CollisionPolygon2D2:disabled")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(1.6, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("DamageArea/CollisionPolygon2D3:disabled")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(1.6, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("DamageArea/CollisionPolygon2D4:disabled")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(1.6, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("DamageArea/CollisionPolygon2D5:disabled")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(1.6, 2.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("DamageArea/CollisionShape2D:rotation")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(2.2),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("DamageArea/CollisionShape2D:disabled")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0, 2.2, 2.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_asghi"]
@@ -52,6 +534,10 @@ shader_parameter/index_vec = null
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wyqow"]
 radius = 59.0339
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p2cws"]
+radius = 23.0
+height = 73.9879
 
 [node name="mining_resource" type="Node2D"]
 position = Vector2(555, 273)
@@ -89,7 +575,60 @@ wait_time = 2.0
 one_shot = true
 
 [node name="maker_area2d" type="Area2D" parent="."]
+visible = false
 script = ExtResource("5_es2qr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="maker_area2d"]
 shape = SubResource("CircleShape2D_wyqow")
+
+[node name="DamageArea" type="Area2D" parent="."]
+script = ExtResource("6_lnk5g")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DamageArea"]
+polygon = PackedVector2Array(45, -35, 54, -29, 43, -28)
+disabled = true
+
+[node name="CollisionPolygon2D6" type="CollisionPolygon2D" parent="DamageArea"]
+position = Vector2(-93, 61)
+polygon = PackedVector2Array(43, -35, 52, -30, 48, -25)
+disabled = true
+
+[node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="DamageArea"]
+position = Vector2(-83, 80)
+polygon = PackedVector2Array(37, -18, 52, -30, 47, -36)
+disabled = true
+
+[node name="CollisionPolygon2D8" type="CollisionPolygon2D" parent="DamageArea"]
+position = Vector2(-63, 94)
+polygon = PackedVector2Array(43, -10, 54, -32, 43, -36)
+disabled = true
+
+[node name="CollisionPolygon2D9" type="CollisionPolygon2D" parent="DamageArea"]
+position = Vector2(-12, 87)
+polygon = PackedVector2Array(60, -14, 48, -39, 40, -29)
+disabled = true
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="DamageArea"]
+polygon = PackedVector2Array(-42, -75, -36, -55, -30, -61)
+disabled = true
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="DamageArea"]
+position = Vector2(26, -13)
+polygon = PackedVector2Array(-35, -78, -38, -56, -30, -61)
+disabled = true
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="DamageArea"]
+position = Vector2(51, -11)
+polygon = PackedVector2Array(-35, -78, -43, -55, -31, -53)
+disabled = true
+
+[node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="DamageArea"]
+position = Vector2(75, 4)
+polygon = PackedVector2Array(-25, -64, -41, -59, -36, -51)
+disabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+rotation = 1.55269
+shape = SubResource("CapsuleShape2D_p2cws")
+
+[node name="SpawnSafeZone" parent="." instance=ExtResource("7_4r8ly")]

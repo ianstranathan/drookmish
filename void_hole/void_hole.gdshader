@@ -15,15 +15,25 @@ mat2 rot(float angle){
 	             vec2(sin(angle), cos(angle)));
 }
 
+//float expStep( float x, float k, float n ){
+    //return exp( -k*pow(x,n) );
+//}
+
 void fragment()
 {
     vec2 uv = 2. * UV - 1.;
 	uv  = rot(-2. * TIME - swirl_dist_normal * 15. * length(uv)) * uv;
+	
+	//
+	//vec4 center_offset_noise = texture(noise_tex, UV - vec2(0.2 * TIME));
+	//vec2 center_offset = uv - 0.1 * center_offset_noise.r * normalize(vec2(center_offset_noise.r));
+	
     vec2 polar = vec2( length(uv), atan(uv.y, uv.x));
 	
 	float spiral_d = cos( 2. * (polar.y - 3. * polar.x - 2. * TIME));
     vec4 noise_sample = texture(noise_tex, 0.2 * vec2(polar.x + TIME, abs(polar.y)) - 0.2 * spiral_d);
     
+	// shadertoy col
     vec3 stc = 0.5 + 0.5*cos(TIME+uv.xyx+vec3(0,2,4));
 	
     float mask = 1. - smoothstep(0.5 + 0.1 * noise_sample.r, 0.52 + 0.1 * noise_sample.r, polar.x);

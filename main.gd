@@ -21,10 +21,13 @@ func _ready():
 	$clikmi_container.connect("clikmi_freed", func(a_clikmi): 
 		if a_clikmi == selected_clikmi:
 			mouse_area.disable_selection())
+	
+	$clikmi_container.connect("void_hole_made", func(a_pos): 
+		$vfx_container/VoidHoleShockwaves.void_hole_made(a_pos))
 	# ---------------------------------
 	$Camera2D.set_stage_limits( stage_dimensions )
 	# ---------------------------------
-	$void_hole_manager.void_hole_made.connect( func( call_back_fn ): call_back_fn.call(stage_dimensions))
+	#$void_hole_manager.void_hole_made.connect( func( call_back_fn ): call_back_fn.call(stage_dimensions))
 
 	# ---------------------------------
 	$HUD.navigation_arrow_was_clicked.connect(func(dir_str: String): $Camera2D.move( dir_str ) )

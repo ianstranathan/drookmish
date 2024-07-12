@@ -9,10 +9,10 @@ var camera_hot_key_fn = null
 var managed_clikmi = null
 var _can_select = false
 
-@export var set_color: Vector4 = Vector4(1., 1., 1., 1.)
+@export var set_color: Color
 
 func _ready():
-	material.set_shader_parameter("set_col", set_color)
+	material.set_shader_parameter("set_col", Vector4(set_color.r, set_color.g, set_color.b, set_color.a))
 	mouse_entered.connect(on_mouse_entered)
 	mouse_exited.connect( on_mouse_exited)
 	
@@ -63,19 +63,18 @@ func cam_loc_fn(a_clickmi) -> Callable:
 
 func cam_hotkey_click_callback_fn(a_selected_clikmi):
 	if a_selected_clikmi:
+		# if there is a hotkeyed clikmi to this rect
+		# remove the color
 		if camera_hot_key_fn:
-			var assoc_clikmi = camera_hot_key_fn.call(true)
-			if assoc_clikmi != a_selected_clikmi and assoc_clikmi:
-				assoc_clikmi.remove_hotkey_color()
+			camera_hot_key_fn.call(true).set_color()
 		
 		turn_off_button_cues() # stop vertex shader stuff
-		a_selected_clikmi.hotkey_color(set_color, self) # change the clikmi to match 
+		a_selected_clikmi.set_hotkey(unbind_from_a_clikmi, set_color) 
 		camera_hot_key_fn = cam_loc_fn(a_selected_clikmi)
 		emit_signal("camera_hotkey_made")
 	# otherwise call the func and let the camera jump to the hotkey loc
 	elif camera_hot_key_fn:
 		camera_hot_key_fn.call()
 
-
-func unbind_from_a_clikmi(a_clikmi):
+func unbind_from_a_clikmi():
 	camera_hot_key_fn = null

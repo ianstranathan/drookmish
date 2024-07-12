@@ -18,3 +18,4 @@ material = SubResource("ShaderMaterial_lbwh1")
 texture = ExtResource("1_033lk")
 expand_mode = 2
 script = ExtResource("3_d3mws")
+set_color = Color(0.972549, 0.972549, 0.972549, 1)

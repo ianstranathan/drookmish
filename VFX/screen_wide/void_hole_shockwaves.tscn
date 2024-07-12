@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://cw1yw6g34n65a"]
+
+[ext_resource type="Shader" path="res://VFX/screen_wide/void_hole_shockwaves.gdshader" id="1_87vgc"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://icon.svg" id="1_a6t4v"]
+[ext_resource type="Script" path="res://VFX/screen_wide/void_hole_shockwaves.gd" id="2_icnc7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j6414"]
+shader = ExtResource("1_87vgc")
+shader_parameter/resolution = null
+shader_parameter/positions = null
+shader_parameter/times = null
+shader_parameter/actual_index = null
+
+[node name="VoidHoleShockwaves" type="Sprite2D"]
+material = SubResource("ShaderMaterial_j6414")
+texture = ExtResource("1_a6t4v")
+script = ExtResource("2_icnc7")
