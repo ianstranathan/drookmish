@@ -72,7 +72,7 @@ func eight_dir(vec : Vector2) -> void:
 
 func make_void_hole():
 	var void_hole = void_hole_scene.instantiate();
-	emit_signal("void_hole_made", global_position)
+	emit_signal("void_hole_made", self)
 	get_tree().root.call_deferred("add_child", void_hole);
 	void_hole.global_position = global_position;
 	void_hole.z_index = z_index - 1

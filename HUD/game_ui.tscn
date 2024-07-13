@@ -42,7 +42,7 @@ shader_parameter/default_col = Color(1, 0.4, 0.2, 1)
 shader_parameter/set_col = null
 shader_parameter/hover_set_bind_col = null
 
-[sub_resource type="Shader" id="Shader_ckh40"]
+[sub_resource type="Shader" id="Shader_2vyvm"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -94,11 +94,11 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qtr7x"]
 resource_local_to_scene = true
-shader = SubResource("Shader_ckh40")
+shader = SubResource("Shader_2vyvm")
 shader_parameter/hovered_over = 0.0
 shader_parameter/rot_offset = null
 
-[sub_resource type="Shader" id="Shader_gjeyg"]
+[sub_resource type="Shader" id="Shader_hycce"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -150,11 +150,11 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7kges"]
 resource_local_to_scene = true
-shader = SubResource("Shader_gjeyg")
+shader = SubResource("Shader_hycce")
 shader_parameter/hovered_over = 0.0
 shader_parameter/rot_offset = -1.571
 
-[sub_resource type="Shader" id="Shader_nlmc8"]
+[sub_resource type="Shader" id="Shader_422kq"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -206,11 +206,11 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ipeqr"]
 resource_local_to_scene = true
-shader = SubResource("Shader_nlmc8")
+shader = SubResource("Shader_422kq")
 shader_parameter/hovered_over = 0.0
 shader_parameter/rot_offset = 3.142
 
-[sub_resource type="Shader" id="Shader_gdusy"]
+[sub_resource type="Shader" id="Shader_i6rb3"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -262,7 +262,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osiw6"]
 resource_local_to_scene = true
-shader = SubResource("Shader_gdusy")
+shader = SubResource("Shader_i6rb3")
 shader_parameter/hovered_over = 0.0
 shader_parameter/rot_offset = 1.571
 

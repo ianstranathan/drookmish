@@ -21,9 +21,8 @@ func _ready():
 	$clikmi_container.connect("clikmi_freed", func(a_clikmi): 
 		if a_clikmi == selected_clikmi:
 			mouse_area.disable_selection())
-	
-	$clikmi_container.connect("void_hole_made", func(a_pos): 
-		$vfx_container/VoidHoleShockwaves.void_hole_made(a_pos))
+	$clikmi_container.connect("void_hole_made", func(a_clikmi): 
+		$vfx_container/VoidHoleShockwaves.void_hole_made(a_clikmi))
 	# ---------------------------------
 	$Camera2D.set_stage_limits( stage_dimensions )
 	# ---------------------------------
