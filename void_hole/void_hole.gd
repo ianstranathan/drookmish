@@ -22,39 +22,22 @@ TODO:
 
 func _ready():
 	area_entered.connect( func(area): suck_in_clikmis() )
-	
-	# -- black hole is not visible
-	# -- both black hole and visual cue are zero scale (should tween in)
-	void_sprite.visible = false
-	void_sprite.scale = Vector2.ZERO
-	
+	$CollisionShape2D.disabled = true
+
 	# -- coyote timer should allow some buffer space to get out of black hole
 	coyote_timer.timeout.connect( on_coyote_timer_timeout )
 	black_hole_duration_timer.timeout.connect( evaporate )
 	void_sprite.material.set_shader_parameter("swirl_dist_normal", 0.0) # in case I forget to clear it
 	
-	
-	
-	# -- shockwave juice
-	#$Shockwave.visible = true
-	#var tween = get_tree().create_tween()
-	#shader_uniform_fn.call(tween, $Shockwave, "t", 1.0)
-	#tween.tween_callback(func():
-		#$Shockwave.visible = false
-		#)
-
-
-func start_void():
-	# -- there should be a quick sin(x)/x type sample dist
-	void_sprite.visible = true
-	
 	var tween = get_tree().create_tween()
+	void_sprite.visible = true
+	void_sprite.scale = Vector2.ZERO
 	tween.tween_property(void_sprite, "scale", starting_sprite_scale, 1.).set_trans(Tween.TRANS_ELASTIC)
-	
 	tween.tween_callback( func(): 
 		coyote_timer.start() # -- start the black hole check after coyote timer is done
 		black_hole_duration_timer.start() # -- when black hole is done growing, start timer
-		)
+	)
+
 
 func on_coyote_timer_timeout():
 	$CollisionShape2D.set_deferred("disabled", false) # -- the inspector value is already disabled

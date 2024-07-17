@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://void_hole/void_hole.gd" id="1_aa4ja"]
 [ext_resource type="Shader" path="res://void_hole/void_hole.gdshader" id="1_i2epx"]
-[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://icon.svg" id="2_kxjkr"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="3_s3s46"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_blyxv"]
 radius = 72.0
@@ -28,12 +28,12 @@ disabled = true
 [node name="VoidSprite" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_hup3u")
 scale = Vector2(2, 2)
-texture = ExtResource("2_kxjkr")
+texture = ExtResource("3_s3s46")
 
 [node name="DurationTimer" type="Timer" parent="."]
 wait_time = 10.0
 one_shot = true
 
 [node name="CoyoteTimer" type="Timer" parent="."]
-wait_time = 0.3
+wait_time = 0.5
 one_shot = true

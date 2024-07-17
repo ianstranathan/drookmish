@@ -1,0 +1,88 @@
+[gd_scene load_steps=16 format=3 uid="uid://dr5p6ho4awm34"]
+
+[ext_resource type="Script" path="res://clikmi_maker/v2/clikmi_maker.gd" id="1_hl3rf"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="2_4krsg"]
+[ext_resource type="Shader" path="res://clikmi_maker/v2/clikmi_maker_pillar.gdshader" id="2_pjeli"]
+[ext_resource type="Texture2D" uid="uid://vusboudxfl0h" path="res://assets/arabesque_textures/fabric_96_basecolor-1K.png" id="3_1x8lv"]
+[ext_resource type="PackedScene" uid="uid://bn3hjrkhcph8g" path="res://misc/vfx/spawn_safe_zone.tscn" id="5_wsef5"]
+[ext_resource type="Shader" path="res://clikmi_maker/v2/bg_energy.gdshader" id="7_qm3wk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vumo0"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4sitb"]
+seamless = true
+noise = SubResource("FastNoiseLite_vumo0")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_b4pni"]
+seed = 10
+frequency = 0.02
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8s1og"]
+seamless = true
+noise = SubResource("FastNoiseLite_b4pni")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pofqn"]
+shader = ExtResource("7_qm3wk")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_4sitb")
+shader_parameter/noise_tex_2 = SubResource("NoiseTexture2D_8s1og")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bkolm"]
+resource_local_to_scene = true
+shader = ExtResource("2_pjeli")
+shader_parameter/spin_speed = 1.0
+shader_parameter/spin_dir = 1.0
+shader_parameter/pillar_mat = ExtResource("3_1x8lv")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_afbff"]
+size = Vector2(120, 125)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_olc2b"]
+resource_local_to_scene = true
+shader = ExtResource("2_pjeli")
+shader_parameter/spin_speed = 0.0
+shader_parameter/spin_dir = -1.0
+shader_parameter/pillar_mat = ExtResource("3_1x8lv")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ei8mq"]
+size = Vector2(120, 125)
+
+[node name="ClikmiMaker" type="Node2D"]
+script = ExtResource("1_hl3rf")
+
+[node name="bg_energy" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_pofqn")
+texture = ExtResource("2_4krsg")
+
+[node name="sprites_container" type="Node2D" parent="."]
+position = Vector2(0, -19)
+rotation = 1.5708
+scale = Vector2(0.25, 0.5)
+
+[node name="top_pillar" type="Sprite2D" parent="sprites_container"]
+material = SubResource("ShaderMaterial_bkolm")
+position = Vector2(8, -1.74846e-07)
+texture = ExtResource("2_4krsg")
+
+[node name="Area2D" type="Area2D" parent="sprites_container/top_pillar"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="sprites_container/top_pillar/Area2D"]
+shape = SubResource("RectangleShape2D_afbff")
+
+[node name="bottom_pillar" type="Sprite2D" parent="sprites_container"]
+material = SubResource("ShaderMaterial_olc2b")
+position = Vector2(144, -3.14722e-06)
+texture = ExtResource("2_4krsg")
+
+[node name="Area2D" type="Area2D" parent="sprites_container/bottom_pillar"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="sprites_container/bottom_pillar/Area2D"]
+shape = SubResource("RectangleShape2D_ei8mq")
+
+[node name="SpawnSafeZone" parent="." instance=ExtResource("5_wsef5")]
+
+[node name="OpenTimer" type="Timer" parent="."]
+wait_time = 1.8
+one_shot = true
+
+[node name="CloseTimer" type="Timer" parent="."]
+one_shot = true

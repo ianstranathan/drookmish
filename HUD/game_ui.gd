@@ -12,6 +12,7 @@ signal camera_hotkey_pressed(fn)
 signal camera_icon_hovered( fn)
 signal navigation_arrow_was_clicked( dir_str )
 signal camera_hotkey_made
+signal hud_initialized(arr_of_tex_rects)
 
 func _ready():
 	for child in $ArrowContainer.get_children():
@@ -24,3 +25,7 @@ func _ready():
 		child.camera_hotkey_pressed.connect( func(fn): emit_signal("camera_hotkey_pressed", fn) )
 		child.camera_icon_hovered.connect( func(fn): emit_signal("camera_icon_hovered", fn) )
 		child.camera_hotkey_made.connect(func(): emit_signal("camera_hotkey_made"))
+
+
+func get_cam_tex_rects() -> Array:
+	return $MarginContainer2/PanelContainer/MarginContainer/HBoxContainer.get_children()

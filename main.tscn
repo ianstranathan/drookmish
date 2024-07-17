@@ -1,21 +1,34 @@
-[gd_scene load_steps=14 format=3 uid="uid://mhm8h3bhj6mv"]
+[gd_scene load_steps=17 format=3 uid="uid://mhm8h3bhj6mv"]
 
 [ext_resource type="Shader" path="res://bg.gdshader" id="1_5b8ae"]
 [ext_resource type="Script" path="res://main.gd" id="1_h6jpv"]
 [ext_resource type="Script" path="res://cam.gd" id="2_74s40"]
-[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://icon.svg" id="2_u1ell"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="2_u1ell"]
 [ext_resource type="Script" path="res://mouse_area2d.gd" id="5_g62i5"]
 [ext_resource type="PackedScene" uid="uid://by2nolvl3kja2" path="res://HUD/game_ui.tscn" id="8_1di1c"]
 [ext_resource type="Script" path="res://clikmi_container.gd" id="8_vsmvu"]
-[ext_resource type="PackedScene" uid="uid://b0ll233yvhnqu" path="res://clikmi_maker/mining_resource.tscn" id="9_wl4va"]
 [ext_resource type="PackedScene" uid="uid://c36tkrjiatwve" path="res://selection_bg.tscn" id="10_4hpho"]
-[ext_resource type="PackedScene" uid="uid://bsjvtcdlpq4ao" path="res://timer_collectable/timer_collectable.tscn" id="10_8064r"]
 [ext_resource type="PackedScene" uid="uid://cw1yw6g34n65a" path="res://VFX/screen_wide/void_hole_shockwaves.tscn" id="11_n030l"]
+[ext_resource type="Script" path="res://camera_lights_container.gd" id="11_yhtd7"]
+[ext_resource type="Script" path="res://cam_point_light.gd" id="12_lx7qh"]
+[ext_resource type="PackedScene" uid="uid://dr5p6ho4awm34" path="res://clikmi_maker/v2/clikmi_maker.tscn" id="12_o1ry1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5b1u5"]
 shader = ExtResource("1_5b8ae")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t6m7k"]
+
+[sub_resource type="Gradient" id="Gradient_saop5"]
+offsets = PackedFloat32Array(0, 0.64557)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_u7iix"]
+gradient = SubResource("Gradient_saop5")
+width = 500
+height = 500
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 1)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_h6jpv")
@@ -24,10 +37,6 @@ script = ExtResource("1_h6jpv")
 z_index = -10
 material = SubResource("ShaderMaterial_5b1u5")
 texture = ExtResource("2_u1ell")
-
-[node name="mining_resource" parent="." node_paths=PackedStringArray("clikmi_container") instance=ExtResource("9_wl4va")]
-position = Vector2(0, 0)
-clikmi_container = NodePath("../clikmi_container")
 
 [node name="mouse_container" type="Node2D" parent="."]
 
@@ -51,10 +60,35 @@ script = ExtResource("2_74s40")
 
 [node name="HUD" parent="." instance=ExtResource("8_1di1c")]
 
-[node name="TimerCollectable" parent="." instance=ExtResource("10_8064r")]
-position = Vector2(470, -164)
-
 [node name="vfx_container" type="Node2D" parent="."]
 
 [node name="VoidHoleShockwaves" parent="vfx_container" node_paths=PackedStringArray("curr_cam") instance=ExtResource("11_n030l")]
 curr_cam = NodePath("../../Camera2D")
+
+[node name="timer_collectable_container" type="Node2D" parent="."]
+
+[node name="camera_lights_container" type="Node2D" parent="."]
+script = ExtResource("11_yhtd7")
+
+[node name="point_light" type="PointLight2D" parent="camera_lights_container"]
+position = Vector2(-342, 0)
+texture = SubResource("GradientTexture2D_u7iix")
+script = ExtResource("12_lx7qh")
+
+[node name="point_light2" type="PointLight2D" parent="camera_lights_container"]
+position = Vector2(278, 0)
+texture = SubResource("GradientTexture2D_u7iix")
+script = ExtResource("12_lx7qh")
+
+[node name="point_light3" type="PointLight2D" parent="camera_lights_container"]
+position = Vector2(-11, -196)
+texture = SubResource("GradientTexture2D_u7iix")
+script = ExtResource("12_lx7qh")
+
+[node name="point_light4" type="PointLight2D" parent="camera_lights_container"]
+position = Vector2(-7, 232)
+texture = SubResource("GradientTexture2D_u7iix")
+script = ExtResource("12_lx7qh")
+
+[node name="ClikmiMaker" parent="." node_paths=PackedStringArray("clikmi_container") instance=ExtResource("12_o1ry1")]
+clikmi_container = NodePath("../clikmi_container")

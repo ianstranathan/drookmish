@@ -20,9 +20,12 @@ func _ready():
 	# ---------------------------------
 	$clikmi_container.connect("clikmi_freed", func(a_clikmi): 
 		if a_clikmi == selected_clikmi:
-			mouse_area.disable_selection())
+			mouse_area.disable_selection()
+		$vfx_container/VoidHoleShockwaves.clikmi_freed(a_clikmi))
+	
 	$clikmi_container.connect("void_hole_made", func(a_clikmi): 
 		$vfx_container/VoidHoleShockwaves.void_hole_made(a_clikmi))
+	
 	# ---------------------------------
 	$Camera2D.set_stage_limits( stage_dimensions )
 	# ---------------------------------
@@ -34,3 +37,6 @@ func _ready():
 	$HUD.camera_hotkey_pressed.connect(func(loc: Vector2):$Camera2D.jump_to_hotkey_loc(loc))
 	$HUD.camera_icon_hovered.connect(func(fn): fn.call( selected_clikmi ) )
 	$HUD.camera_hotkey_made.connect(func(): mouse_area.disable_selection())
+	
+	$camera_lights_container.set_up_light_cols($HUD.get_cam_tex_rects())
+	# $HUD.hud_initialized.connect(func(arr_of_cam_tex_rects):  print(arr_of_cam_tex_rects ))

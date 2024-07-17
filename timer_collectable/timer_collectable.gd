@@ -3,7 +3,16 @@ extends Area2D
 var target = null
 var speed = 200.0
 
+@export var time_value: int
+
+"""
+TODO:
+	more interesting paths to clikmi
+"""
+
 func _ready():
+	assert(time_value)
+	$Sprite2D/Label.text = str(time_value)
 	area_entered.connect( on_area_entered )
 
 
@@ -22,9 +31,11 @@ func on_area_entered(area: Area2D):
 			tween.tween_callback( func():
 				target = area)
 
+
 func _physics_process(delta):
 	if target:
 		speed += 5.0 * delta
 		global_position += delta * rel_pos() * speed
 		if (target.global_position - global_position).length() < 4.0:
+			target.recieved_timer_collectable(time_value)
 			queue_free()

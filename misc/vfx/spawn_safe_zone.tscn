@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" path="res://misc/vfx/spawn_safe_zone.gdshader" id="1_0cub6"]
 [ext_resource type="Script" path="res://misc/vfx/spawn_safe_zone.gd" id="1_1ofsx"]
-[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://icon.svg" id="3_p8vfa"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="3_p8vfa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tf3js"]
 shader = ExtResource("1_0cub6")

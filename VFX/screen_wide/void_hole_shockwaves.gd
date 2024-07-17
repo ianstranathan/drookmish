@@ -1,18 +1,11 @@
 extends Sprite2D
 
 @export var curr_cam: Camera2D
-var list_of_black_holes
 
-# ---------------------------
-var unit_timer_fn = Utils.timers_remaining_time_normalized
-# ---------------------------
 var shockwave_duration := 2.5
 var last_index: int = 0
-var arr_of_void_hole_positions: Array[Vector2];
-var arr_of_void_hole_timers: Array[Timer];
-
 var managed_clikmis: Dictionary = {}
-var arr_of_clikmis : Array[Clikmi]
+
 
 func _ready():
 	# -- set size to
@@ -51,10 +44,16 @@ func void_hole_made(a_clikmi: Clikmi):
 	# -- for loop index in shader
 	material.set_shader_parameter("actual_index", managed_clikmis.size())
 
-func clikmi_freed(a_clikmi):
-	# -- timer won't start til in scene tree? => forced to manage resource here
-	managed_clikmis[a_clikmi.name]["Timer"].queue_free()
-	managed_clikmis.erase(a_clikmi.name)
+
+func clikmi_freed(a_clikmi) -> void:
+	var key = a_clikmi.name
+	if managed_clikmis.has(key):
+		managed_clikmis.get(key).get("Timer").queue_free()
+		call_deferred("safe_erase", key)
+
+
+func safe_erase(key: String) -> void:
+	# -- Queue_free is thread safe, so there is some background locking
+	# -- deferred call to change managed clikmis
+	managed_clikmis.erase(key)
 	material.set_shader_parameter("actual_index", managed_clikmis.size())
-	
-	

@@ -466,6 +466,7 @@ _data = {
 resource_local_to_scene = true
 shader = ExtResource("14_l6pb6")
 shader_parameter/t = null
+shader_parameter/is_paused = null
 
 [node name="clikmi" type="Area2D"]
 script = ExtResource("1_6wiuj")
@@ -490,7 +491,6 @@ libraries = {
 }
 
 [node name="VoidHoleTimer" type="Timer" parent="."]
-wait_time = 3.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 material = SubResource("ShaderMaterial_mcv14")

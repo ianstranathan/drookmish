@@ -5,8 +5,10 @@ signal camera_hotkey_pressed
 signal camera_icon_hovered
 signal camera_hotkey_made
 
+# -- to change the colored light when clikmi hotkey is set
+signal light_pos_change( a_selected_clikmi)
+
 var camera_hot_key_fn = null
-var managed_clikmi = null
 var _can_select = false
 
 @export var set_color: Color
@@ -72,6 +74,7 @@ func cam_hotkey_click_callback_fn(a_selected_clikmi):
 		a_selected_clikmi.set_hotkey(unbind_from_a_clikmi, set_color) 
 		camera_hot_key_fn = cam_loc_fn(a_selected_clikmi)
 		emit_signal("camera_hotkey_made")
+		emit_signal("light_pos_change", a_selected_clikmi )
 	# otherwise call the func and let the camera jump to the hotkey loc
 	elif camera_hot_key_fn:
 		camera_hot_key_fn.call()

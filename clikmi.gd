@@ -23,7 +23,7 @@ var cam_rect: TextureRect
 signal sucked_in
 signal clikmi_freed
 signal void_hole_made
-
+signal released_light_pos
 #----------------------------
 enum MoveDirs{
 	IDLE,
@@ -156,9 +156,9 @@ func start_sucking_in( void_hole_pos, void_hole_anim_duration ):
 	tween.tween_property(self, "global_position", void_hole_pos, 0.8 * void_hole_anim_duration).set_trans(Tween.TRANS_BOUNCE)
 	
 	# tell that this clikmi is unselectable
-	emit_signal("clikmi_freed", self)
+	#emit_signal("clikmi_freed", self)
 	$CollisionShape2D.set_deferred("disabled", true)
-	
+	$PanelContainer.visible = false
 	tween.chain().tween_callback( func(): 
 		emit_signal("sucked_in")
 		#queue_free()
@@ -184,9 +184,12 @@ var unbind: Callable
 
 func set_hotkey( cam_rect_unbind_fn, col: Color):
 	if unbind:
+		emit_signal("released_light_pos", self)
 		unbind.call()
 	unbind = func(): cam_rect_unbind_fn.call()
 	set_color( col )
+	
+	# -- grab the respective colored light
 
 
 func set_color(col: Color = Color(0., 0., 0., 0.)):
@@ -228,16 +231,27 @@ func crush():
 		spirit.queue_free())
 	my_queue_free()
 
-
+func set_label_material_params( ):
+	pass
+	
+	
 func set_void_hole_label():
 	label_panel.material.set_shader_parameter("t", void_hole_timer_time_left_fn.call(void_hole_timer))
 	label_panel_label.text = str(int(void_hole_timer.time_left))
 
 
 func left_safe_zone():
-	$PanelContainer.visible = true
-	void_hole_timer.start()
+	label_panel.material.set_shader_parameter("is_paused", 0.0)
+	if void_hole_timer.is_paused():
+		void_hole_timer.set_paused(false)
+	else:
+		void_hole_timer.start()
 	set_void_hole_label()
 
 func entered_safe_zone():
-	void_hole_timer.stop()
+	label_panel.material.set_shader_parameter("is_paused", 1.0)
+	if !void_hole_timer.is_stopped():
+		void_hole_timer.set_paused(true)
+
+func recieved_timer_collectable( time_num: int) -> void:
+	void_hole_timer.wait_time += time_num

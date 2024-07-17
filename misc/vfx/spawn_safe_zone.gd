@@ -1,10 +1,6 @@
 extends Area2D
 
 
-"""
-This just lets the area leaving it (if clikmi)
-that it can start spawning void holes
-"""
 func _ready():
 	area_entered.connect( func(area):
 		if area is Clikmi:

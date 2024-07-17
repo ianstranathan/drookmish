@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://timer_collectable/timer_collectable.gd" id="1_pec77"]
 [ext_resource type="Shader" path="res://timer_collectable/timer_collectable.gdshader" id="2_dxeev"]
-[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://icon.svg" id="3_585yv"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="3_585yv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_opyib"]
 radius = 73.0069
@@ -13,6 +13,7 @@ shader_parameter/is_not_good = null
 
 [node name="TimerCollectable" type="Area2D"]
 script = ExtResource("1_pec77")
+time_value = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1)
@@ -29,7 +30,7 @@ offset_top = -30.0
 offset_right = 20.0
 offset_bottom = 25.0
 theme_override_font_sizes/font_size = 40
-text = "4
+text = "N
 "
 horizontal_alignment = 1
 vertical_alignment = 1
