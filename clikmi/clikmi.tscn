@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dnn6mr6exoxdg"]
+[gd_scene load_steps=46 format=3 uid="uid://dnn6mr6exoxdg"]
 
 [ext_resource type="Script" path="res://clikmi.gd" id="1_6wiuj"]
 [ext_resource type="PackedScene" uid="uid://b5g4skxgdvyxa" path="res://clikmi/clikmi_spirit.tscn" id="2_bs8rv"]
@@ -14,10 +14,23 @@
 [ext_resource type="Texture2D" uid="uid://dydfvd0ivoio5" path="res://assets/pink_guy_8_dir/pink_walk_NORTH-WEST-Sheet.png" id="9_qo53y"]
 [ext_resource type="PackedScene" uid="uid://dcry3kkxtie4s" path="res://void_hole/void_hole.tscn" id="13_nr0yn"]
 [ext_resource type="Shader" path="res://clikmi/label_modulate.gdshader" id="14_l6pb6"]
+[ext_resource type="AudioStream" uid="uid://cxjr8rrhpacio" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_0180.wav" id="15_eesj1"]
+[ext_resource type="AudioStream" uid="uid://cxnmjielg4xlo" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_0183.wav" id="16_6vhtr"]
+[ext_resource type="AudioStream" uid="uid://blfu22572xc37" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_0183w.wav" id="17_jd5i5"]
+[ext_resource type="AudioStream" uid="uid://colrkw02ixmg2" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_0184.wav" id="18_yv4no"]
+[ext_resource type="AudioStream" uid="uid://do0bkqfht5iwa" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_0185.wav" id="19_tx8th"]
+[ext_resource type="AudioStream" uid="uid://clvuqegd2hkf0" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_0186.wav" id="20_1tog0"]
+[ext_resource type="AudioStream" uid="uid://1nb2788pxn76" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_0188.wav" id="21_ss1ip"]
+[ext_resource type="AudioStream" uid="uid://bc0qpx812mu5s" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_01832.wav" id="22_xxm8d"]
+[ext_resource type="AudioStream" uid="uid://dym6a3y271udn" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_01842.wav" id="23_w4iko"]
+[ext_resource type="AudioStream" uid="uid://ds77cjhpcerh6" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_01862.wav" id="24_vf36j"]
+[ext_resource type="AudioStream" uid="uid://csrgbfivk554r" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_01863.wav" id="25_k2k7h"]
+[ext_resource type="AudioStream" uid="uid://8iqiaxo2ah67" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_01864.wav" id="26_tx7fu"]
+[ext_resource type="AudioStream" uid="uid://x26gcop6vcth" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_01891.wav" id="27_h5pnk"]
+[ext_resource type="AudioStream" uid="uid://bu1m3qmybdl8t" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_018323.wav" id="28_nuhk4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6hq65"]
-radius = 11.0
-height = 50.0
+radius = 7.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wkxkh"]
 resource_local_to_scene = true
@@ -469,6 +482,7 @@ shader_parameter/t = null
 shader_parameter/is_paused = null
 
 [node name="clikmi" type="Area2D"]
+collision_mask = 13
 script = ExtResource("1_6wiuj")
 void_hole_scene = ExtResource("13_nr0yn")
 spirit_sprite = ExtResource("2_bs8rv")
@@ -491,6 +505,8 @@ libraries = {
 }
 
 [node name="VoidHoleTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 material = SubResource("ShaderMaterial_mcv14")
@@ -507,3 +523,48 @@ theme_override_font_sizes/font_size = 15
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="clikmi_sounds_container" type="Node2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("15_eesj1")
+bus = &"SFX"
+
+[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("16_6vhtr")
+
+[node name="AudioStreamPlayer2D3" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("17_jd5i5")
+
+[node name="AudioStreamPlayer2D4" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("18_yv4no")
+
+[node name="AudioStreamPlayer2D5" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("19_tx8th")
+
+[node name="AudioStreamPlayer2D6" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("20_1tog0")
+
+[node name="AudioStreamPlayer2D7" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("21_ss1ip")
+
+[node name="AudioStreamPlayer2D8" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("22_xxm8d")
+
+[node name="AudioStreamPlayer2D9" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("23_w4iko")
+
+[node name="AudioStreamPlayer2D10" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("24_vf36j")
+
+[node name="AudioStreamPlayer2D11" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("25_k2k7h")
+
+[node name="AudioStreamPlayer2D12" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("26_tx7fu")
+
+[node name="AudioStreamPlayer2D13" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("27_h5pnk")
+
+[node name="AudioStreamPlayer2D14" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
+stream = ExtResource("28_nuhk4")

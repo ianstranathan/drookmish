@@ -17,6 +17,8 @@ config/icon="res://assets/icon.svg"
 [autoload]
 
 Utils="*res://singletons/utils.gd"
+Ordering="*res://singletons/ordering.gd"
+BgMusic="*res://singletons/bg_music.tscn"
 
 [display]
 

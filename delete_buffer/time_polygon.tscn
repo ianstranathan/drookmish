@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://bm0ii6fgajiak"]
+
+[ext_resource type="Script" path="res://delete_buffer/time_polygon.gd" id="1_6olkl"]
+
+[sub_resource type="Gradient" id="Gradient_e7bj6"]
+offsets = PackedFloat32Array(0, 0.367089)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_i3cf6"]
+gradient = SubResource("Gradient_e7bj6")
+width = 200
+height = 200
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.6)
+
+[node name="time_polygon" type="Area2D"]
+position = Vector2(290, 131)
+script = ExtResource("1_6olkl")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+disabled = true
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 0.0
+texture = SubResource("GradientTexture2D_i3cf6")

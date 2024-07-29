@@ -12,6 +12,7 @@ shader_parameter/times = null
 shader_parameter/actual_index = null
 
 [node name="VoidHoleShockwaves" type="Sprite2D"]
+light_mask = 0
 material = SubResource("ShaderMaterial_j6414")
 texture = ExtResource("1_a6t4v")
 script = ExtResource("2_icnc7")

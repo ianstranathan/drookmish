@@ -8,16 +8,27 @@ var managed_clikmis: Dictionary = {}
 
 
 func _ready():
-	# -- set size to
+	assert( curr_cam )
+	init_sprite_and_shader_params
+	get_tree().get_root().size_changed.connect(func():
+		init_sprite_and_shader_params())
+	## -- set size to
+	#Utils.set_sprite_to_resolution(self)
+	## -- for the screen wide shader to normalize the uv space
+	#material.set_shader_parameter("resolution", texture.get_size() * scale)
+	
+
+func init_sprite_and_shader_params():
+	# -- set the sprite to be the size of the window / viewport
 	Utils.set_sprite_to_resolution(self)
 	# -- for the screen wide shader to normalize the uv space
 	material.set_shader_parameter("resolution", texture.get_size() * scale)
-	assert( curr_cam )
-	
+
+func _process(delta):
+	global_position = curr_cam.global_position
+
+
 func _physics_process(delta):
-	if global_position != curr_cam.global_position:
-		global_position = curr_cam.global_position
-	
 	if !managed_clikmis.is_empty():
 		material.set_shader_parameter("times", managed_clikmis.keys().map(func(x):
 				var a_timer =  managed_clikmis[x]["Timer"]

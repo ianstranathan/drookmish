@@ -2,6 +2,7 @@ extends Area2D
 
 class_name Clikmi
 
+@onready var utils_rng = Utils.rng
 @onready var void_hole_timer: Timer = $VoidHoleTimer
 @onready var void_hole_timer_time_left_fn = Utils.timers_remaining_time_normalized
 
@@ -12,7 +13,7 @@ class_name Clikmi
 @export var void_hole_scene: PackedScene
 @export var spirit_sprite: PackedScene
 #------------------------
-@export var tolerance = 50 # in pixels squared
+
 var dir := Vector2.ZERO
 var target_loc = null
 @export var speed := 200.0
@@ -67,7 +68,11 @@ func eight_dir(vec : Vector2) -> void:
 		else:
 			move_state = MoveDirs.WEST
 	else:
-		move_state = MoveDirs.IDLE
+		# -- case where angle is essentially zeo (vector2.right)
+		if target_loc:
+			move_state = MoveDirs.EAST
+		else:
+			move_state = MoveDirs.IDLE
 
 
 func make_void_hole():
@@ -75,11 +80,12 @@ func make_void_hole():
 	emit_signal("void_hole_made", self)
 	get_tree().root.call_deferred("add_child", void_hole);
 	void_hole.global_position = global_position;
-	void_hole.z_index = z_index - 1
+	void_hole.z_index = Ordering.black_hole
 
 
-@export var void_hole_wait_time = 10.0
+@export var void_hole_wait_time: float
 func _ready():
+	z_index = Ordering.clikmi_index
 	$PanelContainer.visible = false
 	void_hole_timer.wait_time = void_hole_wait_time
 	# simplify this, it needs to be a minimum of the union of the void hole's timers
@@ -94,7 +100,7 @@ func _physics_process(delta):
 	if target_loc:
 		euler_update(delta)
 		
-	if !void_hole_timer.is_stopped():
+	if !void_hole_timer.is_stopped() and !void_hole_timer.is_paused():
 		set_void_hole_label()
 
 
@@ -102,19 +108,43 @@ func stop():
 	dir = Vector2.ZERO
 	anim_player.play("idle")
 
-
+#static _ALWAYS_INLINE_ double move_toward(double p_from, double p_to, double p_delta) {
+	#return abs(p_to - p_from) <= p_delta ? p_to : p_from + SIGN(p_to - p_from) * p_delta;
+#}
+@onready var vel := Vector2.ZERO
+@export var max_speed : float = 300
+@onready var delta_accl : = max_speed / 6.0
 func euler_update( delta: float ):
-	global_position +=  speed * delta * dir
+	vel_resolution()
+	global_position += delta * vel
+	#global_position +=  speed * delta * dir
 	# remove target if sufficiently close to destination
-	if is_on_target():
-		arrived_anim_callback()
+	#if is_on_target():
+		#arrived_anim_callback()
+		#target_loc = null
+		
+@export var tolerance = 50 # in pixels squared
+func vel_resolution():
+	var dist_sqr = (target_loc - global_position).length_squared()
+	if dist_sqr > tolerance:
+		vel = vel.move_toward(max_speed * dir, max_speed / 20.0)
+	elif dist_sqr <= tolerance * 3.0:
+		vel = vel.move_toward(Vector2.ZERO, max_speed / 3.0)
+	
+	if vel.is_equal_approx(Vector2.ZERO):
+		anim_player.play("idle")
 		target_loc = null
-
-
-func is_on_target() -> bool:
-	return (target_loc - global_position).length_squared() < tolerance
-
-
+	
+#func is_on_target() -> bool:
+	#return (target_loc - global_position).length_squared() < tolerance
+#@export var tolerance = 150 # in pixels squared
+#func is_near_target() -> bool:
+	#return (target_loc - global_position).length_squared() < tolerance
+	#if dir != Vector2.ZERO:
+			#velocity = velocity.move_toward(max_speed * dir, delta_accl)
+		#else:
+			#velocity = velocity.move_toward(Vector2.ZERO, delta_decl)
+	
 func arrived_anim_callback():
 	anim_player.play("idle")
 
@@ -209,27 +239,30 @@ func my_queue_free():
 	emit_signal("clikmi_freed", self)
 	queue_free()
 
-
+var released_spirit = false
 func crush():
+	# -- case: area is detected by both pillar pieces and the clikmi hasn't queued free yet
+	# ==> can't release spirit if have already released spirit
 	# -- spirit resource is added to tree -> it's independent of the resource
 	# -- lifetime of the clikmi
-	
-	var tree = get_tree()
-	var spirit = spirit_sprite.instantiate()
-	tree.root.add_child(spirit)
-	spirit.global_position = global_position
-	
-	# -- give it a random direction
-	var sprit_loc_xy = Vector2(Utils.rng.randf_range(-500.0, 500.0), Utils.rng.randf_range(-500.0, 500.0))
-	# -- give it a random lifetime
-	var spirit_lifetime = Utils.rng.randf_range(4.0, 8.0)
-	spirit.global_rotation = Vector2.UP.angle_to(sprit_loc_xy)
-	
-	var tween = tree.create_tween()
-	tween.tween_property(spirit, "global_position", sprit_loc_xy, spirit_lifetime)
-	tween.tween_callback(func(): 
-		spirit.queue_free())
-	my_queue_free()
+	if !released_spirit:
+		var tree = get_tree()
+		var spirit = spirit_sprite.instantiate()
+		tree.root.add_child(spirit)
+		spirit.global_position = global_position
+		
+		# -- give it a random direction
+		var sprit_loc_xy = Vector2(Utils.rng.randf_range(-500.0, 500.0), Utils.rng.randf_range(-500.0, 500.0))
+		# -- give it a random lifetime
+		var spirit_lifetime = Utils.rng.randf_range(4.0, 8.0)
+		spirit.global_rotation = Vector2.UP.angle_to(sprit_loc_xy)
+		
+		var tween = tree.create_tween()
+		tween.tween_property(spirit, "global_position", sprit_loc_xy, spirit_lifetime)
+		tween.tween_callback(func(): 
+			spirit.queue_free())
+		my_queue_free()
+		released_spirit = true
 
 func set_label_material_params( ):
 	pass
@@ -242,16 +275,41 @@ func set_void_hole_label():
 
 func left_safe_zone():
 	label_panel.material.set_shader_parameter("is_paused", 0.0)
+	# -- for initial case of leaving a safe zone
+	if !label_panel.visible:
+		label_panel.visible = true
 	if void_hole_timer.is_paused():
-		void_hole_timer.set_paused(false)
-	else:
-		void_hole_timer.start()
-	set_void_hole_label()
+		void_hole_timer.set_paused( false )
+
 
 func entered_safe_zone():
 	label_panel.material.set_shader_parameter("is_paused", 1.0)
-	if !void_hole_timer.is_stopped():
-		void_hole_timer.set_paused(true)
+	# -- timer is set to auto start in inspector
+	# -- also, weird bug if not set to autostart
+	void_hole_timer.set_paused( true )
 
-func recieved_timer_collectable( time_num: int) -> void:
+
+func time_increase( time_num: int) -> void:
 	void_hole_timer.wait_time += time_num
+
+@onready var audio_stream_players = $clikmi_sounds_container.get_children()
+func play_clikmi_sound() -> void:
+	var clikmi_sound_index = utils_rng.randi_range(0., audio_stream_players.size() - 1)
+	audio_stream_players[clikmi_sound_index].playing = true
+
+#@onready var clikmi_wav_sounds
+#func init_clikmi_sounds():
+	#var sounds_path = "res://assets/SFX/Effects/clikmi_vocalizations/"
+	#var dir_contents = []
+	#Utils.dir_contents(sounds_path, func(file_name):
+		#if ".import" not in file_name:
+			#var path = sounds_path + file_name
+			#var wav_audio_stream = AudioStreamWAV.new()
+			#Utils.load_wav_audio_stream_from_path(path, wav_audio_stream)
+			#clikmi_wav_sounds.append(wav_audio_stream)
+			#)
+#
+#func play_clikmi_sound():
+	#var clikmi_sound_index = utils_rng.randi_range(0., clikmi_wav_sounds.size() - 1)
+	#audio_stream_player.stream = clikmi_wav_sounds[clikmi_sound_index]
+	#audio_stream_player.playing = true

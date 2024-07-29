@@ -5,7 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="3_p8vfa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tf3js"]
+resource_local_to_scene = true
 shader = ExtResource("1_0cub6")
+shader_parameter/clikmi_is_inside = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5gcq6"]
 radius = 100.0

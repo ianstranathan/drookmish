@@ -15,10 +15,10 @@ signal camera_hotkey_made
 signal hud_initialized(arr_of_tex_rects)
 
 func _ready():
-	for child in $ArrowContainer.get_children():
-		# connect the navigation to their mouse callbacks
-		child.get_child(0).nav_arrow_clicked.connect( 
-			func( dir_str): emit_signal("navigation_arrow_was_clicked", dir_str))
+	#for child in $ArrowContainer.get_children():
+		## connect the navigation to their mouse callbacks
+		#child.get_child(0).nav_arrow_clicked.connect( 
+			#func( dir_str): emit_signal("navigation_arrow_was_clicked", dir_str))
 
 	for child in $MarginContainer2/PanelContainer/MarginContainer/HBoxContainer.get_children():
 		child.cam_icon_selected.connect( func(fn): emit_signal("cam_icon_selected", fn))

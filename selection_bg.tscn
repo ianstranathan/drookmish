@@ -7,5 +7,6 @@
 shader = ExtResource("1_dol0d")
 
 [node name="SelectionBg" type="Sprite2D"]
+light_mask = 0
 material = SubResource("ShaderMaterial_pnwy5")
 texture = ExtResource("2_ooplo")

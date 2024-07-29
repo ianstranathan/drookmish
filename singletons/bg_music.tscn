@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqso47imvqj61"]
+
+[ext_resource type="AudioStream" uid="uid://bthj0ybx5msew" path="res://assets/SFX/Music/RAVIOLI.wav" id="1_1teu0"]
+
+[node name="BgMusic" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_1teu0")
+autoplay = true
+bus = &"Music"

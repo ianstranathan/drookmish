@@ -1,21 +1,24 @@
 shader_type canvas_item;
 
-float DrawCircle(vec2 uv, vec2 center, float radius, float width)
-{
-    float sdf = distance(uv, center) - radius;
-    float pixelSize = fwidth(sdf);
-    return smoothstep((width * 0.5 + 1.0)*pixelSize, width * 0.5 * pixelSize, abs(sdf));
-}
+//float DrawCircle(vec2 uv, vec2 center, float radius, float width)
+//{
+    //float sdf = distance(uv, center) - radius;
+    //float pixelSize = fwidth(sdf);
+    //return smoothstep((width * 0.5 + 1.0)*pixelSize, width * 0.5 * pixelSize, abs(sdf));
+//}
 float sdCircle( vec2 p, float r )
 {
     return length(p) - r;
 }
+
+uniform float clikmi_is_inside = 0.0;
 void fragment() {
 	vec2 uv = 2. * UV - 1.;
 	
 	float dist = 1.0/abs(sdCircle(uv, 0.5)) - 0.5;
 	// Dampen the glow to control the radius
-    dist *= 0.1 + 0.05 * sin(2.5 * TIME);
+	float dampen_coeff = 0.1  * clikmi_is_inside + 0.05 * (1. - clikmi_is_inside);
+    dist *= dampen_coeff + 0.05 * dampen_coeff * sin(2.5 * TIME);
     
     //**********       Intensity     **********
     
@@ -32,7 +35,8 @@ void fragment() {
     // The returned value can then be multiplied with a colour to get the final result
        
     // Add colour
-    vec3 col = dist * vec3(1.0, 0.5, 0.25);
+	vec3 is_active_col = vec3(1.0, 0.5, 0.25) * (clikmi_is_inside) + vec3(0.5) * (1. - clikmi_is_inside);
+    vec3 col = dist * is_active_col;
 	
     // Tonemapping. See comment by P_Malin
     col = 1.0 - exp( -col );

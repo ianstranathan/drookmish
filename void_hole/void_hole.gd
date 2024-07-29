@@ -21,6 +21,7 @@ TODO:
 """
 
 func _ready():
+	z_index = Ordering.black_hole
 	area_entered.connect( func(area): suck_in_clikmis() )
 	$CollisionShape2D.disabled = true
 
@@ -44,7 +45,7 @@ func on_coyote_timer_timeout():
 	suck_in_clikmis()
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if !black_hole_duration_timer.is_stopped():
 		#var t = timer_fn.call(black_hole_duration_timer)
 		void_sprite.material.set_shader_parameter("swirl_dist_normal",  timer_fn.call(black_hole_duration_timer))

@@ -28,27 +28,46 @@ After enough clicks, tween to final disp.
 var pillar_disp: float
 @onready var top_pillar_orig_pos: Vector2 = $sprites_container/top_pillar.global_position
 @onready var bottom_pillar_orig_pos: Vector2 = $sprites_container/bottom_pillar.global_position
-@onready var seperation_time: float = $CloseTimer.wait_time
+@onready var seperation_time: float = 1.0
 var can_click = true
 
-@export var max_spin_speed := 10.0
+@onready var area_2ds = [$sprites_container/top_pillar/Area2D, $sprites_container/bottom_pillar/Area2D]
+# ---------------------------------------
+@onready var shader_normalized_float_tween = Utils.shader_float_tween
 
 
-func set_speed_uniforms() -> void:
-	sprites.map( func(x): x.material.set_shader_parameter("spin_speed",
-	float(_num_clicks) / float(num_clicks_to_open)))
+
+func set_speed_uniforms(b: bool=true) -> void:
+	sprites.map( func(x): 
+		x.material.set_shader_parameter("spin_speed", 
+		float(_num_clicks) / float(num_clicks_to_open) if b else 1.0)
+
+		var tween = create_tween().set_parallel(true)
+		shader_normalized_float_tween.call(tween, x, "decay_interpolant", 1.0)
+	)
 
 
 func _ready():
+	# -----------------------------------------
+	area_2ds.map(func(x):
+		x.connect("clikmi_crushed", func(a_clickmi):
+			if !can_click:
+				a_clickmi.crush())
+		x.connect("was_clicked", func():
+			click())
+		)
+	# -----------------------------------------	
+	sprites.map( func(x): x.z_index = Ordering.portal_pillar)
 	set_speed_uniforms()
 	# -----------------------
 	$bg_energy.visible = false
+	$bg_energy.z_index = Ordering.bg_portal
+	$bg_energy.scale = Vector2.ZERO
+	# -----------------------
 	$OpenTimer.timeout.connect(func():
-		$bg_energy.visible = false
+		tween_in_bg_portal( true )
 		screw(true))
-	$CloseTimer.timeout.connect(func():
-		can_click= true
-		)
+
 	# ------------------
 	var ring_rad = $SpawnSafeZone/CollisionShape2D.shape.radius
 	var pillar_half_len = $sprites_container/top_pillar/Area2D/CollisionShape2D.shape.size.x / 2.0
@@ -68,26 +87,44 @@ func screw(_in:bool=false):
 						 seperation_time)
 	
 	if _in: # tween: Tween, s: Sprite2D, uniform_str: String, duration: float, reverse: bool = false):
-		Utils.shader_float_tween(tween, $sprites_container/bottom_pillar, "spin_speed", seperation_time, true)
-		Utils.shader_float_tween(tween, $sprites_container/top_pillar, "spin_speed", seperation_time, true)
+		# -- this gives a normalized coeff -> in shader it's hit with an easing func and multiplied by some const
+		shader_normalized_float_tween.call(tween, $sprites_container/bottom_pillar, "spin_speed", seperation_time, true)
+		shader_normalized_float_tween.call(tween, $sprites_container/top_pillar, "spin_speed", seperation_time, true)
 		
 	tween.chain().tween_callback( func():
 		if _in:
-			$CloseTimer.start()
+			area_2ds.map(func(x): x.set_deferred("disabled", false))
+			can_click = true
 		else:
-			$bg_energy.visible = true
-			var a_clikmi = clikmi_scene.instantiate()
-			clikmi_container.add_clikmi( a_clikmi)
-			$OpenTimer.start())
+			area_2ds.map(func(x): x.set_deferred("disabled", true))
+			tween_in_bg_portal()
+	)
 
+func add_a_clikmi():
+	var a_clikmi = clikmi_scene.instantiate()
+	clikmi_container.add_clikmi( a_clikmi)
+	$OpenTimer.start()
+	
 
-func _unhandled_input(event):
+func tween_in_bg_portal(_in: bool = false):
+	var tween = create_tween()
+	var target_scale: Vector2 = Vector2(0.0, 0.0) if _in else Vector2(1.0, 1.0)
+	tween.tween_property($bg_energy, "scale", target_scale, 0.7).set_trans(Tween.TRANS_ELASTIC)
+	if _in:
+		tween.tween_callback( func(): 
+			$bg_energy.visible = false)
+	else:
+		$bg_energy.visible = true
+		tween.tween_callback( func(): 
+			add_a_clikmi())
+
+func click():
 	if can_click:
-		if event.is_action_pressed("select"):
-			_num_clicks += 1
-			_num_clicks = _num_clicks % num_clicks_to_open
-			if _num_clicks == 0:
-				can_click = false
-				screw()
-			else:
-				set_speed_uniforms()
+		_num_clicks += 1
+		_num_clicks = _num_clicks % num_clicks_to_open
+		if _num_clicks == 0:
+			set_speed_uniforms(false)
+			can_click = false
+			screw()
+		else:
+			set_speed_uniforms()

@@ -27,3 +27,28 @@ func shader_float_tween(tween: Tween, s: Sprite2D, uniform_str: String, duration
 	else:
 		tween.tween_method(uniform_float_fn.bind(s, uniform_str), 
 						0.0, 1.0, duration).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
+
+
+func dir_contents(path, fn):
+	var dir = DirAccess.open(path)
+	assert(dir)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				pass
+				#arr.append(file_name)
+				#print("Found directory: " + file_name)
+			else:
+				fn.call(file_name)
+				#print("Found file: " + file_name)
+			file_name = dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.")
+
+
+func load_wav_audio_stream_from_path(path, audio_stream: AudioStreamWAV):
+	assert(FileAccess.file_exists(path))
+	var file = FileAccess.open(path, FileAccess.READ)
+	audio_stream.buffer = file.get_buffer( file.get_length())
