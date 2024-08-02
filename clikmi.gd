@@ -21,10 +21,13 @@ var target_loc = null
 var cam_rect: TextureRect
 
 #----------------------------
-signal sucked_in
+signal sucked_in() # -- void hole (REFACTOR THIS PLEASE)
+signal started_being_sucked_in( a_clikmi ) # -- clikmi container for crown logic
 signal clikmi_freed
 signal void_hole_made
 signal released_light_pos
+signal timer_collectable_collected(this_voids_wait_time, a_clikmi)
+
 #----------------------------
 enum MoveDirs{
 	IDLE,
@@ -103,11 +106,6 @@ func _physics_process(delta):
 	if !void_hole_timer.is_stopped() and !void_hole_timer.is_paused():
 		set_void_hole_label()
 
-
-func stop():
-	dir = Vector2.ZERO
-	anim_player.play("idle")
-
 #static _ALWAYS_INLINE_ double move_toward(double p_from, double p_to, double p_delta) {
 	#return abs(p_to - p_from) <= p_delta ? p_to : p_from + SIGN(p_to - p_from) * p_delta;
 #}
@@ -124,17 +122,27 @@ func euler_update( delta: float ):
 		#target_loc = null
 		
 @export var tolerance = 50 # in pixels squared
+var last_rel_pos
 func vel_resolution():
-	var dist_sqr = (target_loc - global_position).length_squared()
+	var rel_pos = target_loc - global_position
+	var dist_sqr = (rel_pos).length_squared()
+	# ------------------------------------------------------------------
 	if dist_sqr > tolerance:
-		vel = vel.move_toward(max_speed * dir, max_speed / 20.0)
+		vel = vel.move_toward(max_speed * rel_pos.normalized(), max_speed / 10.0)
 	elif dist_sqr <= tolerance * 3.0:
 		vel = vel.move_toward(Vector2.ZERO, max_speed / 3.0)
-	
+		
+	# ------------------------------------------------------------------
+	last_rel_pos = rel_pos
 	if vel.is_equal_approx(Vector2.ZERO):
-		anim_player.play("idle")
-		target_loc = null
-	
+		stop_moving(dist_sqr)
+
+func stop_moving(dist_sqr=null):
+	anim_player.play("idle")
+	if dist_sqr and dist_sqr < tolerance:
+		global_position = target_loc
+	target_loc = null
+
 #func is_on_target() -> bool:
 	#return (target_loc - global_position).length_squared() < tolerance
 #@export var tolerance = 150 # in pixels squared
@@ -173,7 +181,9 @@ func set_target( pos: Vector2):
 		MoveDirs.NORTH_WEST:
 			anim_player.play("walk_north_west")
 
+var crownable = true # -- REFACTOR this
 func start_sucking_in( void_hole_pos, void_hole_anim_duration ):
+	crownable = false
 	# -- turn off void hole timer to prevent instantiating void holes 
 	# -- while tweening inside 
 	void_hole_timer.stop()
@@ -186,14 +196,16 @@ func start_sucking_in( void_hole_pos, void_hole_anim_duration ):
 	tween.tween_property(self, "global_position", void_hole_pos, 0.8 * void_hole_anim_duration).set_trans(Tween.TRANS_BOUNCE)
 	
 	# tell that this clikmi is unselectable
-	#emit_signal("clikmi_freed", self)
+	
 	$CollisionShape2D.set_deferred("disabled", true)
 	$PanelContainer.visible = false
-	tween.chain().tween_callback( func(): 
-		emit_signal("sucked_in")
-		#queue_free()
+	emit_signal("started_being_sucked_in", self)
+	emit_signal("released_light_pos", self)       # -- this won't change the col of the clikmi, but I kinda like it
+	tween.chain().tween_callback( func():
+		emit_signal("sucked_in") 
 		my_queue_free())
 	anim_player.play("spin")
+
 
 func set_dir():
 	var rel_pos = target_loc - global_position
@@ -289,27 +301,15 @@ func entered_safe_zone():
 	void_hole_timer.set_paused( true )
 
 
+func get_void_hole_time():
+	return void_hole_timer.wait_time
+
+
 func time_increase( time_num: int) -> void:
 	void_hole_timer.wait_time += time_num
+	emit_signal("timer_collectable_collected", void_hole_timer.wait_time, self)
 
 @onready var audio_stream_players = $clikmi_sounds_container.get_children()
 func play_clikmi_sound() -> void:
 	var clikmi_sound_index = utils_rng.randi_range(0., audio_stream_players.size() - 1)
 	audio_stream_players[clikmi_sound_index].playing = true
-
-#@onready var clikmi_wav_sounds
-#func init_clikmi_sounds():
-	#var sounds_path = "res://assets/SFX/Effects/clikmi_vocalizations/"
-	#var dir_contents = []
-	#Utils.dir_contents(sounds_path, func(file_name):
-		#if ".import" not in file_name:
-			#var path = sounds_path + file_name
-			#var wav_audio_stream = AudioStreamWAV.new()
-			#Utils.load_wav_audio_stream_from_path(path, wav_audio_stream)
-			#clikmi_wav_sounds.append(wav_audio_stream)
-			#)
-#
-#func play_clikmi_sound():
-	#var clikmi_sound_index = utils_rng.randi_range(0., clikmi_wav_sounds.size() - 1)
-	#audio_stream_player.stream = clikmi_wav_sounds[clikmi_sound_index]
-	#audio_stream_player.playing = true

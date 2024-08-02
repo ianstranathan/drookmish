@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dr5p6ho4awm34"]
+[gd_scene load_steps=20 format=3 uid="uid://dr5p6ho4awm34"]
 
 [ext_resource type="Script" path="res://clikmi_maker/v2/clikmi_maker.gd" id="1_hl3rf"]
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="2_4krsg"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bn3hjrkhcph8g" path="res://misc/vfx/spawn_safe_zone.tscn" id="5_wsef5"]
 [ext_resource type="Script" path="res://clikmi_maker/v2/pillar_area.gd" id="6_a74pk"]
 [ext_resource type="Shader" path="res://clikmi_maker/v2/bg_energy.gdshader" id="7_qm3wk"]
+[ext_resource type="Script" path="res://clikmi_maker/v2/ClickingArea.gd" id="8_qoivq"]
+[ext_resource type="AudioStream" uid="uid://by16af6n5sifm" path="res://assets/SFX/Effects/bg_energy_spawning/478179__contant_aghony__spawn-sound.wav" id="9_637un"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vumo0"]
 
@@ -49,6 +51,9 @@ shader_parameter/pillar_mat = ExtResource("3_1x8lv")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ei8mq"]
 size = Vector2(128, 128)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o3vam"]
+size = Vector2(64, 64)
+
 [node name="ClikmiMaker" type="Node2D"]
 script = ExtResource("1_hl3rf")
 
@@ -66,7 +71,9 @@ texture = ExtResource("2_4krsg")
 
 [node name="Area2D" type="Area2D" parent="sprites_container/top_pillar"]
 visible = false
+collision_layer = 8
 script = ExtResource("6_a74pk")
+death_dir = Vector2(0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="sprites_container/top_pillar/Area2D"]
 shape = SubResource("RectangleShape2D_afbff")
@@ -79,6 +86,7 @@ texture = ExtResource("2_4krsg")
 
 [node name="Area2D" type="Area2D" parent="sprites_container/bottom_pillar"]
 visible = false
+collision_layer = 8
 script = ExtResource("6_a74pk")
 death_dir = Vector2(0, -1)
 
@@ -90,3 +98,16 @@ shape = SubResource("RectangleShape2D_ei8mq")
 [node name="OpenTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
+
+[node name="ClickingArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 32
+script = ExtResource("8_qoivq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickingArea"]
+shape = SubResource("RectangleShape2D_o3vam")
+
+[node name="BgEnergyAudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_637un")
+pitch_scale = 0.9
+bus = &"SFX"

@@ -1,9 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://by2nolvl3kja2"]
+[gd_scene load_steps=12 format=3 uid="uid://by2nolvl3kja2"]
 
 [ext_resource type="Script" path="res://HUD/game_ui.gd" id="1_nuj4q"]
 [ext_resource type="PackedScene" uid="uid://dl0g7keusp60j" path="res://HUD/cam_texture_rect.tscn" id="2_40hs4"]
+[ext_resource type="Shader" path="res://HUD/crown_icon.gdshader" id="2_qutgy"]
+[ext_resource type="Texture2D" uid="uid://drg4l0pqroxe6" path="res://assets/crown_sdf.png" id="3_2gtof"]
 [ext_resource type="Shader" path="res://HUD/camera_icon.gdshader" id="3_qro3a"]
 [ext_resource type="Script" path="res://HUD/game_timer.gd" id="5_q7nbc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_31hy8"]
+shader = ExtResource("2_qutgy")
+shader_parameter/selectable = 0.0
+shader_parameter/hovering = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_efi8y"]
 resource_local_to_scene = true
@@ -58,32 +65,45 @@ theme_override_constants/margin_right = 7
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer2/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer2/PanelContainer/HBoxContainer/MarginContainer2"]
+material = SubResource("ShaderMaterial_31hy8")
+layout_mode = 2
+texture = ExtResource("3_2gtof")
+expand_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/PanelContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_right = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/PanelContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 2
 
-[node name="TextureRect" parent="MarginContainer2/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+[node name="TextureRect" parent="MarginContainer2/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
 material = SubResource("ShaderMaterial_efi8y")
 layout_mode = 2
 set_color = Color(0.972549, 0.301961, 0, 1)
 
-[node name="TextureRect2" parent="MarginContainer2/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+[node name="TextureRect2" parent="MarginContainer2/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
 material = SubResource("ShaderMaterial_fvlfk")
 layout_mode = 2
 set_color = Color(0.815686, 0.0784314, 0.243137, 1)
 
-[node name="TextureRect3" parent="MarginContainer2/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+[node name="TextureRect3" parent="MarginContainer2/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
 material = SubResource("ShaderMaterial_raggb")
 layout_mode = 2
 set_color = Color(0.121569, 0.764706, 0.27451, 1)
 
-[node name="TextureRect4" parent="MarginContainer2/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
+[node name="TextureRect4" parent="MarginContainer2/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_40hs4")]
 material = SubResource("ShaderMaterial_mgjl8")
 layout_mode = 2
 set_color = Color(0, 0.447059, 0.972549, 1)

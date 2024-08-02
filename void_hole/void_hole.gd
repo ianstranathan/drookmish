@@ -20,7 +20,13 @@ TODO:
 	suck in any clikmis that come in, not just those that happen on suck_in_clikmis after visual cue
 """
 
+var can_make_sounds :bool = true
+
 func _ready():
+	# -- SFX
+	$SFX_container/VisibleOnScreenNotifier2D.screen_entered.connect(func(): can_make_sounds = true)
+	$SFX_container/VisibleOnScreenNotifier2D.screen_exited.connect(func(): can_make_sounds = true)
+	# --------------------------------
 	z_index = Ordering.black_hole
 	area_entered.connect( func(area): suck_in_clikmis() )
 	$CollisionShape2D.disabled = true
@@ -38,7 +44,8 @@ func _ready():
 		coyote_timer.start() # -- start the black hole check after coyote timer is done
 		black_hole_duration_timer.start() # -- when black hole is done growing, start timer
 	)
-
+	$SFX_container/stop.finished.connect( func(): queue_free())
+	$SFX_container/start.play()
 
 func on_coyote_timer_timeout():
 	$CollisionShape2D.set_deferred("disabled", false) # -- the inspector value is already disabled
@@ -84,11 +91,13 @@ func evaporate():
 	
 	# turn off its ability to suck in clikmis (player won't like random suck in at end)
 	set_deferred("monitoring", false)
-	
+	$SFX_container/stop.play() # --  clip is 2.12 seconds, so if finished queues free, there is enough time or scale tween
 	var tween = get_tree().create_tween()
 	tween.tween_property(void_sprite, "scale", Vector2.ZERO, 1.2).set_trans(Tween.TRANS_ELASTIC)
-	tween.tween_callback( func(): 
-		queue_free())
+	tween.tween_callback( func():
+		$CollisionShape2D.set_deferred("disabled", true)
+		#queue_free()
+		)
 
 
 func set_size(_scale: float):

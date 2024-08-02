@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dcry3kkxtie4s"]
+[gd_scene load_steps=10 format=3 uid="uid://dcry3kkxtie4s"]
 
 [ext_resource type="Script" path="res://void_hole/void_hole.gd" id="1_aa4ja"]
 [ext_resource type="Shader" path="res://void_hole/void_hole.gdshader" id="1_i2epx"]
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="3_s3s46"]
+[ext_resource type="AudioStream" uid="uid://bfrtlfxhbjkfc" path="res://assets/SFX/Effects/void_hole/250589__univ_lyon3__onoro_julian_2014_2015_vortex.wav" id="4_3j6nc"]
+[ext_resource type="AudioStream" uid="uid://btjo3gp56hl2k" path="res://assets/SFX/Effects/void_hole/9081__tigersound__disappear.wav" id="5_y7c8l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_blyxv"]
 radius = 72.0
@@ -37,3 +39,20 @@ one_shot = true
 [node name="CoyoteTimer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="SFX_container" type="Node2D" parent="."]
+
+[node name="start" type="AudioStreamPlayer2D" parent="SFX_container"]
+stream = ExtResource("4_3j6nc")
+volume_db = -5.0
+pitch_scale = 2.01
+bus = &"SFX"
+
+[node name="stop" type="AudioStreamPlayer2D" parent="SFX_container"]
+stream = ExtResource("5_y7c8l")
+volume_db = 5.0
+pitch_scale = 0.92
+bus = &"SFX"
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="SFX_container"]
+rect = Rect2(-50, -50, 100, 100)

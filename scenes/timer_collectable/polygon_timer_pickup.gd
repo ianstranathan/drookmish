@@ -104,7 +104,7 @@ func _physics_process(delta):
 
 
 func on_tween_area_entered(area: Area2D):
-	if area is Clikmi and area!= target:
+	if !target and area is Clikmi:
 		var tween = create_tween()
 		tween.tween_property(self,
 		 "global_position",

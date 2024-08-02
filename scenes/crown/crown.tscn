@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://b82406oes47bd"]
+
+[ext_resource type="Shader" path="res://scenes/crown/crown.gdshader" id="1_26njj"]
+[ext_resource type="Texture2D" uid="uid://q0c6b5pmjk28" path="res://assets/crown_sdf_64.png" id="2_ew0u8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hta71"]
+shader = ExtResource("1_26njj")
+
+[node name="Crown" type="Sprite2D"]
+material = SubResource("ShaderMaterial_hta71")
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_ew0u8")

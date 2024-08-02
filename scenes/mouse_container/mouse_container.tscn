@@ -18,6 +18,8 @@ shader_parameter/closed_palm = ExtResource("4_scoxv")
 script = ExtResource("1_2yjxl")
 
 [node name="mouse_area2d" type="Area2D" parent="."]
+collision_layer = 129
+collision_mask = 33
 script = ExtResource("2_xy3ml")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="mouse_area2d"]

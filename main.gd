@@ -28,12 +28,16 @@ func _ready():
 			x.clikmi_freed(a_clikmi)))
 	$clikmi_container.void_hole_made.connect(func(a_clikmi): 
 		$vfx_container/VoidHoleShockwaves.void_hole_made(a_clikmi))
+	$clikmi_container.started_being_sucked_in.connect( func(a_clikmi):
+		$SelectionBg.remove_clikmi( a_clikmi ))
+	$clikmi_container.crown_changed.connect( func(nullable_clikmi):
+		$HUD.crown_icon_fn( nullable_clikmi ))
 	# ---------------------------------
 	# -- Mouse container signals
 	mouse_container.clikmi_selected.connect(func(a_clikmi):
 		$CollectableContainer.selected_clikmi_callback(a_clikmi)
 		$SelectionBg.set_clikmi( a_clikmi ))
-
+	
 	# ---------------------------------
 	$HUD.cam_icon_selected.connect(  func( fn: Callable ): fn.call( mouse_container.get_selected_clikmi() ) )
 	$HUD.camera_icon_hovered.connect(func( fn: Callable ): fn.call( mouse_container.get_selected_clikmi() ) )

@@ -20,7 +20,6 @@ Ideas:
 @onready var root = get_tree().get_root()
 func _ready():
 	assert(time_value)
-	
 	$AnimatedSprite2D.frame = Utils.rng.randi_range(0, 4)
 	area_entered.connect( on_area_entered )
 	
@@ -29,7 +28,7 @@ func _ready():
 		#number_visual())
 
 func on_area_entered(area: Area2D):
-	if area is Clikmi and area!= target:
+	if !target and area is Clikmi:
 		var tween = create_tween()
 		tween.tween_property(self,
 		 "global_position",

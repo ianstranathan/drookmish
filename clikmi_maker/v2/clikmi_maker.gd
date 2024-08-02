@@ -48,13 +48,15 @@ func set_speed_uniforms(b: bool=true) -> void:
 
 
 func _ready():
+	$ClickingArea.was_clicked.connect(click)
 	# -----------------------------------------
 	area_2ds.map(func(x):
-		x.connect("clikmi_crushed", func(a_clickmi):
+		x.clikmi_crushed.connect(func(a_clickmi):
 			if !can_click:
 				a_clickmi.crush())
-		x.connect("was_clicked", func():
-			click())
+		# -- moved to ClickingArea
+		#x.was_clicked.connect(func():
+			#click())
 		)
 	# -----------------------------------------	
 	sprites.map( func(x): x.z_index = Ordering.portal_pillar)
@@ -75,6 +77,8 @@ func _ready():
 
 func screw(_in:bool=false):
 	var in_or_out = 0.0 if _in else 1.0
+	if !_in:
+		$BgEnergyAudioStreamPlayer2D.play()
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property($sprites_container/top_pillar,
 						"global_position",
@@ -109,6 +113,8 @@ func add_a_clikmi():
 func tween_in_bg_portal(_in: bool = false):
 	var tween = create_tween()
 	var target_scale: Vector2 = Vector2(0.0, 0.0) if _in else Vector2(1.0, 1.0)
+	
+	
 	tween.tween_property($bg_energy, "scale", target_scale, 0.7).set_trans(Tween.TRANS_ELASTIC)
 	if _in:
 		tween.tween_callback( func(): 
