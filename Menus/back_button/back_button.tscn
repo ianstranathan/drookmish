@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://bfs67jgtt8bsb"]
+
+[ext_resource type="Shader" path="res://Menus/back_button/back_button.gdshader" id="1_60irn"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="2_pnutl"]
+[ext_resource type="Script" path="res://Menus/back_button/back_button.gd" id="3_kd67h"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_we34r"]
+shader = ExtResource("1_60irn")
+shader_parameter/hover = 0.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7swa7"]
+texture = ExtResource("2_pnutl")
+
+[node name="BackButton" type="PanelContainer"]
+material = SubResource("ShaderMaterial_we34r")
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_7swa7")
+script = ExtResource("3_kd67h")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+flat = true

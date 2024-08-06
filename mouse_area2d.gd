@@ -17,7 +17,7 @@ func _ready():
 func signal_area_up(area: Area2D, entered=true):
 	if area is Clikmi:
 		emit_signal( "clikmi_hovered", area if entered else null)
-	if area is MakerArea:
+	if area is ClikmiMakerArea:
 		emit_signal( "maker_hovered", area if entered else null)
 
 

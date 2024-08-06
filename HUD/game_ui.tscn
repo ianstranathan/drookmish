@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://by2nolvl3kja2"]
+[gd_scene load_steps=13 format=3 uid="uid://by2nolvl3kja2"]
 
 [ext_resource type="Script" path="res://HUD/game_ui.gd" id="1_nuj4q"]
 [ext_resource type="PackedScene" uid="uid://dl0g7keusp60j" path="res://HUD/cam_texture_rect.tscn" id="2_40hs4"]
 [ext_resource type="Shader" path="res://HUD/crown_icon.gdshader" id="2_qutgy"]
 [ext_resource type="Texture2D" uid="uid://drg4l0pqroxe6" path="res://assets/crown_sdf.png" id="3_2gtof"]
 [ext_resource type="Shader" path="res://HUD/camera_icon.gdshader" id="3_qro3a"]
+[ext_resource type="Script" path="res://HUD/crown_tex_rect.gd" id="4_ln6g7"]
 [ext_resource type="Script" path="res://HUD/game_timer.gd" id="5_q7nbc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_31hy8"]
@@ -77,6 +78,7 @@ material = SubResource("ShaderMaterial_31hy8")
 layout_mode = 2
 texture = ExtResource("3_2gtof")
 expand_mode = 2
+script = ExtResource("4_ln6g7")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/PanelContainer/HBoxContainer"]
 layout_mode = 2

@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=3 uid="uid://bhnycjhca2gey"]
+
+[ext_resource type="Script" path="res://Menus/start_menu/start_menu_container.gd" id="1_3updl"]
+[ext_resource type="PackedScene" uid="uid://c2045ae6tbw3n" path="res://Menus/button/menu_buttontscn.tscn" id="1_rh173"]
+[ext_resource type="Shader" path="res://Menus/button/button_outline.gdshader" id="2_ut6h6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i2wm1"]
+resource_local_to_scene = true
+shader = ExtResource("2_ut6h6")
+shader_parameter/t = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e8du6"]
+resource_local_to_scene = true
+shader = ExtResource("2_ut6h6")
+shader_parameter/t = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x6cgs"]
+resource_local_to_scene = true
+shader = ExtResource("2_ut6h6")
+shader_parameter/t = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h1tdo"]
+resource_local_to_scene = true
+shader = ExtResource("2_ut6h6")
+shader_parameter/t = 0.0
+
+[node name="start_menu_container" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3updl")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -103.0
+offset_right = 74.0
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Play" parent="VBoxContainer" instance=ExtResource("1_rh173")]
+material = SubResource("ShaderMaterial_i2wm1")
+layout_mode = 2
+
+[node name="Settings" parent="VBoxContainer" instance=ExtResource("1_rh173")]
+material = SubResource("ShaderMaterial_e8du6")
+layout_mode = 2
+text = "Settings"
+
+[node name="Stats" parent="VBoxContainer" instance=ExtResource("1_rh173")]
+material = SubResource("ShaderMaterial_x6cgs")
+layout_mode = 2
+text = "Stats"
+
+[node name="Quit" parent="VBoxContainer" instance=ExtResource("1_rh173")]
+material = SubResource("ShaderMaterial_h1tdo")
+layout_mode = 2
+text = "Quit"

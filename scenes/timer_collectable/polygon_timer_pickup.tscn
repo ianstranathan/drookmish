@@ -1,9 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://b3cp6gvm6iypc"]
+[gd_scene load_steps=5 format=3 uid="uid://b3cp6gvm6iypc"]
 
 [ext_resource type="Script" path="res://scenes/timer_collectable/polygon_timer_pickup.gd" id="1_xd44j"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_03w85"]
 radius = 73.0
+
+[sub_resource type="Gradient" id="Gradient_7pmud"]
+offsets = PackedFloat32Array(0.417722, 0.664557)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0r48j"]
+gradient = SubResource("Gradient_7pmud")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [node name="PolygonTimerPickup" type="Node2D"]
 position = Vector2(471, 245)
@@ -24,3 +33,5 @@ collision_mask = 3
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PolygonArea2D"]
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 0.0
+texture = SubResource("GradientTexture2D_0r48j")

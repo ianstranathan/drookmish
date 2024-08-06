@@ -2,7 +2,6 @@ extends Node2D
 
 @export var num_clicks_to_open: int = 4
 var _num_clicks :int = 0
-@export var clikmi_container: Node2D
 @onready var clikmi_scene: PackedScene = preload("res://clikmi/clikmi.tscn")
 
 # ---------------------------------------------------------------------------
@@ -34,7 +33,9 @@ var can_click = true
 @onready var area_2ds = [$sprites_container/top_pillar/Area2D, $sprites_container/bottom_pillar/Area2D]
 # ---------------------------------------
 @onready var shader_normalized_float_tween = Utils.shader_float_tween
+# ---------------------------------------
 
+signal clikmi_instantiated( a_clikmi )
 
 
 func set_speed_uniforms(b: bool=true) -> void:
@@ -106,7 +107,7 @@ func screw(_in:bool=false):
 
 func add_a_clikmi():
 	var a_clikmi = clikmi_scene.instantiate()
-	clikmi_container.add_clikmi( a_clikmi)
+	emit_signal("clikmi_instantiated", a_clikmi)
 	$OpenTimer.start()
 	
 

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqk03sopskomd"]
+
+[ext_resource type="PackedScene" uid="uid://b5wcg0kytjs8t" path="res://UI/game_over_menu/menu.tscn" id="1_jspch"]
+[ext_resource type="Script" path="res://UI/game_over_menu/game_over_menu.gd" id="1_nn0f0"]
+
+[node name="GameOverMenu" type="CanvasLayer"]
+script = ExtResource("1_nn0f0")
+
+[node name="Menu" parent="." instance=ExtResource("1_jspch")]

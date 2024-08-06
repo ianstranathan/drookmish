@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5wcg0kytjs8t"]
+[gd_scene load_steps=3 format=3 uid="uid://b5wcg0kytjs8t"]
 
-[ext_resource type="Script" path="res://UI/menu.gd" id="1_kiepa"]
+[ext_resource type="Script" path="res://UI/game_over_menu/menu.gd" id="1_kiepa"]
+[ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="2_6ew4f"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -30,10 +31,12 @@ layout_mode = 2
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_6ew4f")
 theme_override_font_sizes/font_size = 40
 text = "Try Again?"
 
 [node name="Button2" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_6ew4f")
 theme_override_font_sizes/font_size = 40
 text = "Quit"

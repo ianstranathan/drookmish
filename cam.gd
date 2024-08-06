@@ -15,8 +15,7 @@ func move(pos: Vector2):
 	# -- camera must clamp its own movement due to set limits
 	global_position += pos
 	global_position = global_position.clamp(min_pos, max_pos)
-	#print(global_position)
-	
+
 
 func set_stage_limits( stage_dims: Vector2):
 	var viewport_size_half_size = get_viewport().size / 2.0
@@ -27,6 +26,3 @@ func set_stage_limits( stage_dims: Vector2):
 	
 	min_pos = Vector2(limit_left, limit_top)
 	max_pos = Vector2(limit_right, limit_bottom)
-	
-	print(min_pos)
-	print(max_pos)

@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://ljt33namf1xs"]
+
+[ext_resource type="PackedScene" uid="uid://c2045ae6tbw3n" path="res://Menus/button/menu_buttontscn.tscn" id="1_bjln5"]
+[ext_resource type="Script" path="res://Menus/settings_menu/settings_container.gd" id="1_h3k2d"]
+[ext_resource type="Shader" path="res://Menus/button/button_outline.gdshader" id="2_ket5l"]
+[ext_resource type="PackedScene" uid="uid://bfs67jgtt8bsb" path="res://Menus/back_button/back_button.tscn" id="3_v4hcv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_00l2i"]
+resource_local_to_scene = true
+shader = ExtResource("2_ket5l")
+shader_parameter/t = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3jip8"]
+resource_local_to_scene = true
+shader = ExtResource("2_ket5l")
+shader_parameter/t = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_armu2"]
+resource_local_to_scene = true
+shader = ExtResource("2_ket5l")
+shader_parameter/t = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mafte"]
+resource_local_to_scene = true
+shader = ExtResource("2_ket5l")
+shader_parameter/t = 0.0
+
+[node name="settings_container" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h3k2d")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -73.0
+offset_top = -94.0
+offset_right = 73.0
+offset_bottom = 94.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" parent="VBoxContainer" instance=ExtResource("1_bjln5")]
+material = SubResource("ShaderMaterial_00l2i")
+layout_mode = 2
+
+[node name="PanelContainer2" parent="VBoxContainer" instance=ExtResource("1_bjln5")]
+material = SubResource("ShaderMaterial_3jip8")
+layout_mode = 2
+
+[node name="PanelContainer3" parent="VBoxContainer" instance=ExtResource("1_bjln5")]
+material = SubResource("ShaderMaterial_armu2")
+layout_mode = 2
+
+[node name="PanelContainer4" parent="VBoxContainer" instance=ExtResource("1_bjln5")]
+material = SubResource("ShaderMaterial_mafte")
+layout_mode = 2
+
+[node name="BackButton" parent="." instance=ExtResource("3_v4hcv")]
+layout_mode = 0
+offset_left = 517.0
+offset_top = 200.0
+offset_right = 617.0
+offset_bottom = 264.0

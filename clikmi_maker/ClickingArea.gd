@@ -1,6 +1,6 @@
 extends Area2D
 
-class_name MakerArea
+class_name ClikmiMakerArea
 
 signal was_clicked
 
