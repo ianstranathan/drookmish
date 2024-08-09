@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://dnn6mr6exoxdg"]
+[gd_scene load_steps=47 format=3 uid="uid://dnn6mr6exoxdg"]
 
 [ext_resource type="Script" path="res://clikmi.gd" id="1_6wiuj"]
 [ext_resource type="PackedScene" uid="uid://b5g4skxgdvyxa" path="res://clikmi/clikmi_spirit.tscn" id="2_bs8rv"]
@@ -28,6 +28,7 @@
 [ext_resource type="AudioStream" uid="uid://8iqiaxo2ah67" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_01864.wav" id="26_tx7fu"]
 [ext_resource type="AudioStream" uid="uid://x26gcop6vcth" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_01891.wav" id="27_h5pnk"]
 [ext_resource type="AudioStream" uid="uid://bu1m3qmybdl8t" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_018323.wav" id="28_nuhk4"]
+[ext_resource type="PackedScene" uid="uid://bjnirnosqilnk" path="res://scenes/VFX/particle_effects/pickup_effect.tscn" id="29_cixi4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6hq65"]
 radius = 7.0
@@ -589,3 +590,5 @@ bus = &"SFX"
 [node name="AudioStreamPlayer2D14" type="AudioStreamPlayer2D" parent="clikmi_sounds_container"]
 stream = ExtResource("28_nuhk4")
 bus = &"SFX"
+
+[node name="pickup_particles" parent="." instance=ExtResource("29_cixi4")]

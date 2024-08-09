@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://by2nolvl3kja2"]
+[gd_scene load_steps=15 format=3 uid="uid://by2nolvl3kja2"]
 
 [ext_resource type="Script" path="res://HUD/game_ui.gd" id="1_nuj4q"]
 [ext_resource type="PackedScene" uid="uid://dl0g7keusp60j" path="res://HUD/cam_texture_rect.tscn" id="2_40hs4"]
@@ -7,6 +7,7 @@
 [ext_resource type="Shader" path="res://HUD/camera_icon.gdshader" id="3_qro3a"]
 [ext_resource type="Script" path="res://HUD/crown_tex_rect.gd" id="4_ln6g7"]
 [ext_resource type="Script" path="res://HUD/game_timer.gd" id="5_q7nbc"]
+[ext_resource type="Shader" path="res://HUD/meter.gdshader" id="9_uurxa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_31hy8"]
 shader = ExtResource("2_qutgy")
@@ -48,6 +49,10 @@ shader_parameter/hovered_over_bind_hotkey = 0.0
 shader_parameter/default_col = Color(1, 0.4, 0.2, 1)
 shader_parameter/set_col = null
 shader_parameter/hover_set_bind_col = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ujyid"]
+shader = ExtResource("9_uurxa")
+shader_parameter/points_lvl = 0.0
 
 [node name="CanvasLayer" type="CanvasLayer"]
 script = ExtResource("1_nuj4q")
@@ -129,3 +134,23 @@ layout_mode = 2
 size_flags_horizontal = 4
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Meter" type="MarginContainer" parent="."]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -200.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_right = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="Meter"]
+material = SubResource("ShaderMaterial_ujyid")
+custom_minimum_size = Vector2(20, 100)
+layout_mode = 2
+
+[node name="ScoreEffectsContainer" type="Node2D" parent="."]

@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://bjnirnosqilnk"]
+
+[ext_resource type="Texture2D" uid="uid://8gfdabnk8x4x" path="res://assets/particle_masks/floaty_64.png" id="1_0lsxj"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4vb7o"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 7
+particles_anim_v_frames = 7
+particles_anim_loop = true
+
+[sub_resource type="Curve" id="Curve_eccwe"]
+min_value = -5.0
+max_value = 5.0
+_data = [Vector2(0, 4.78022), 0.0, 1.58654, 0, 0, Vector2(0.727273, -3.68132), -8.8, -8.8, 0, 0, Vector2(1, 0.164835), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_4d35l"]
+curve = SubResource("Curve_eccwe")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_o0qow"]
+particle_flag_disable_z = true
+radial_velocity_max = 100.0
+radial_velocity_curve = SubResource("CurveTexture_4d35l")
+gravity = Vector3(0, 0, 0)
+
+[node name="ScoreEffect" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_4vb7o")
+emitting = false
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_o0qow")
+texture = ExtResource("1_0lsxj")
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.8
+randomness = 0.5
+local_coords = true

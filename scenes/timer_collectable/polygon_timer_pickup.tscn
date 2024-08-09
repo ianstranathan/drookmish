@@ -6,11 +6,13 @@
 radius = 73.0
 
 [sub_resource type="Gradient" id="Gradient_7pmud"]
-offsets = PackedFloat32Array(0.417722, 0.664557)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0.158228, 0.56962, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0.545098, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_0r48j"]
 gradient = SubResource("Gradient_7pmud")
+width = 100
+height = 100
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 

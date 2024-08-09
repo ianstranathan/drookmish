@@ -38,6 +38,9 @@ func _ready():
 		$SelectionBg.remove_clikmi( a_clikmi ))
 	$clikmi_container.crown_changed.connect( func(nullable_clikmi):
 		$HUD.crown_icon_fn( nullable_clikmi ))
+		
+	$clikmi_container.a_clikmi_scored_points.connect(func(a_clikmi):
+		$HUD.score_effect(a_clikmi, cam))
 	# ---------------------------------
 	# -- Mouse container signals
 	mouse_container.clikmi_selected.connect(func(a_clikmi):

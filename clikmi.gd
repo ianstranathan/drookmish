@@ -27,7 +27,7 @@ signal clikmi_freed
 signal void_hole_made
 signal released_light_pos
 signal timer_collectable_collected(this_voids_wait_time, a_clikmi)
-
+signal scored_points(a_clikmi)
 #----------------------------
 enum MoveDirs{
 	IDLE,
@@ -80,11 +80,14 @@ func eight_dir(vec : Vector2) -> void:
 
 func make_void_hole():
 	var void_hole = void_hole_scene.instantiate();
+	# -- signal for score effect in game UI
+	emit_signal("scored_points", self)
 	emit_signal("void_hole_made", self)
 	get_tree().root.call_deferred("add_child", void_hole);
 	void_hole.global_position = global_position;
 	void_hole.z_index = Ordering.black_hole
 
+	
 
 @export var void_hole_wait_time: float
 func _ready():
@@ -212,16 +215,6 @@ func set_dir():
 	var unit_rel_pos :Vector2 = rel_pos.normalized()
 
 
-#func set_hotkey_color( col: Vector4, assoc_cam_rect: TextureRect):
-	##if cam_rect: # if a cam_rect has this saved,
-		##cam_rect.unbind_from_a_clikmi(self) # tell it to forget about you
-	##cam_rect = assoc_cam_rect
-	#$Sprite2D.material.set_shader_parameter("color", col)
-#
-#func remove_hotkey_color():
-	#$Sprite2D.material.set_shader_parameter("color", 0.0)
-
-
 var unbind: Callable
 
 func set_hotkey( cam_rect_unbind_fn, col: Color):
@@ -276,10 +269,7 @@ func crush():
 		my_queue_free()
 		released_spirit = true
 
-func set_label_material_params( ):
-	pass
-	
-	
+
 func set_void_hole_label():
 	label_panel.material.set_shader_parameter("t", void_hole_timer_time_left_fn.call(void_hole_timer))
 	label_panel_label.text = str(int(void_hole_timer.time_left))
@@ -306,8 +296,11 @@ func get_void_hole_time():
 
 
 func time_increase( time_num: int) -> void:
+	$pickup_particles.emitting = true
 	void_hole_timer.wait_time += time_num
+	# -- signal for crown logic in clikmi container
 	emit_signal("timer_collectable_collected", void_hole_timer.wait_time, self)
+
 
 @onready var audio_stream_players = $clikmi_sounds_container.get_children()
 func play_clikmi_sound() -> void:

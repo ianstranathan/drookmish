@@ -4,6 +4,7 @@ signal clikmi_freed(    a_clikmi )
 signal void_hole_made(  a_clikmi )
 signal started_being_sucked_in(a_clikmi )
 signal crown_changed( a_clikmi )
+signal a_clikmi_scored_points( a_clikmi )
 
 @onready var crown = $Crown
 
@@ -34,7 +35,8 @@ func add_clikmi(a_clikmi):
 			clikmi_with_highest_time = a_clikmi
 			emit_signal("crown_changed", clikmi_with_highest_time)
 		)
-
+	a_clikmi.scored_points.connect( func(a_clikmi):
+		emit_signal("a_clikmi_scored_points", a_clikmi))
 	add_child( a_clikmi )
 
 func clikmi_died_process_crown(a_clikmi):

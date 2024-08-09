@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://dkne58vk8d88u"]
+
+[ext_resource type="Texture2D" uid="uid://8gfdabnk8x4x" path="res://assets/particle_masks/floaty_64.png" id="1_umdr1"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5iajv"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 7
+particles_anim_v_frames = 7
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0sj5a"]
+particle_flag_disable_z = true
+direction = Vector3(1, 1, 0)
+spread = 0.0
+initial_velocity_min = 600.0
+initial_velocity_max = 700.0
+gravity = Vector3(0, 0, 0)
+
+[node name="ScoreEffect" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_5iajv")
+emitting = false
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_0sj5a")
+texture = ExtResource("1_umdr1")
+one_shot = true
+explosiveness = 0.81
+randomness = 0.52

@@ -28,7 +28,9 @@ func _ready():
 	$SFX_container/VisibleOnScreenNotifier2D.screen_exited.connect(func(): can_make_sounds = true)
 	# --------------------------------
 	z_index = Ordering.black_hole
-	area_entered.connect( func(area): suck_in_clikmis() )
+	area_entered.connect( func(area): 
+		suck_in_clikmis() )
+	
 	$CollisionShape2D.disabled = true
 
 	# -- coyote timer should allow some buffer space to get out of black hole
