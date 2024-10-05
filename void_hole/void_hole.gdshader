@@ -1,13 +1,7 @@
 shader_type canvas_item;
 
-uniform float swirl_dist_normal;
-
-void vertex() {
-	float sign_x = sign(VERTEX.x) * 1.0 + (1. - sign(VERTEX.x)) * -1.;
-	float sign_y = sign(VERTEX.y) * 1.0 + (1. - sign(VERTEX.y)) * -1.;
-	VERTEX.xy += vec2(sign_x, sign_y) * sin(30.0 * swirl_dist_normal);
-}
-
+const float max_swirl = 1.0;
+uniform float swirl_dist_normal: hint_range(0.0, 1.0, 0.01);
 uniform sampler2D noise_tex: repeat_enable;
 
 mat2 rot(float angle){
@@ -15,18 +9,11 @@ mat2 rot(float angle){
 	             vec2(sin(angle), cos(angle)));
 }
 
-//float expStep( float x, float k, float n ){
-    //return exp( -k*pow(x,n) );
-//}
-
 void fragment()
 {
+	float swirl_param = max_swirl * swirl_dist_normal* swirl_dist_normal;
     vec2 uv = 2. * UV - 1.;
-	uv  = rot(-2. * TIME - swirl_dist_normal * 15. * length(uv)) * uv;
-	
-	//
-	//vec4 center_offset_noise = texture(noise_tex, UV - vec2(0.2 * TIME));
-	//vec2 center_offset = uv - 0.1 * center_offset_noise.r * normalize(vec2(center_offset_noise.r));
+	uv  = rot(-2. * TIME - swirl_param * 15. * length(uv)) * uv;
 	
     vec2 polar = vec2( length(uv), atan(uv.y, uv.x));
 	
@@ -41,8 +28,3 @@ void fragment()
 	vec3 col = smoothstep(0.8, 1.5, 2. * noise_sample.r * noise_sample.r) * mix(vec3(0.), stc, length(uv)) + 0.5 * pow(length(uv), 2.);
     COLOR = vec4( col, mask);
 }
-
-//void light() {
-	// Called for every pixel for every light affecting the CanvasItem.
-	// Uncomment to replace the default light processing function with this one.
-//}

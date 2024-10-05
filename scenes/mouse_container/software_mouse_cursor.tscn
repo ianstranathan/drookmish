@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://diqlqnvs7dq47"]
+
+[ext_resource type="Shader" path="res://scenes/mouse_container/mouse_icon.gdshader" id="1_kknv1"]
+[ext_resource type="Texture2D" uid="uid://b7o27eyfdnyp1" path="res://assets/icons/cursor/cursor_grabbing.png" id="2_mrmf4"]
+[ext_resource type="Texture2D" uid="uid://1jjyb73qii8y" path="res://assets/icons/cursor/cursor_grab.png" id="3_ie14w"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0x4xu"]
+shader = ExtResource("1_kknv1")
+shader_parameter/grabbing = 0.0
+shader_parameter/closed_palm = ExtResource("2_mrmf4")
+
+[node name="mouse_cursor" type="Sprite2D"]
+light_mask = 0
+material = SubResource("ShaderMaterial_0x4xu")
+texture = ExtResource("3_ie14w")

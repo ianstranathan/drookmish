@@ -12,4 +12,3 @@ func _ready():
 			if (global_position - area.global_position).dot(death_dir) < 0.0:
 				emit_signal("clikmi_crushed", area)
 	)
-

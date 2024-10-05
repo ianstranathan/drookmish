@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dr5p6ho4awm34"]
+[gd_scene load_steps=21 format=3 uid="uid://dr5p6ho4awm34"]
 
 [ext_resource type="Script" path="res://clikmi_maker/clikmi_maker.gd" id="1_hl3rf"]
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="2_4krsg"]
@@ -9,6 +9,7 @@
 [ext_resource type="Shader" path="res://clikmi_maker/bg_energy.gdshader" id="7_qm3wk"]
 [ext_resource type="Script" path="res://clikmi_maker/ClickingArea.gd" id="8_qoivq"]
 [ext_resource type="AudioStream" uid="uid://by16af6n5sifm" path="res://assets/SFX/Effects/bg_energy_spawning/478179__contant_aghony__spawn-sound.wav" id="9_637un"]
+[ext_resource type="AudioStream" uid="uid://c4u1k504ttl6c" path="res://assets/SFX/Effects/clikmi_crush/555127__theplax__can-crush.wav" id="10_4p3sh"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vumo0"]
 
@@ -111,3 +112,9 @@ shape = SubResource("RectangleShape2D_o3vam")
 stream = ExtResource("9_637un")
 pitch_scale = 0.9
 bus = &"SFX"
+
+[node name="CrushedSoundAudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_4p3sh")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-50, -50, 100, 100)

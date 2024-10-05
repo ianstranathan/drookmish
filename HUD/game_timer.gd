@@ -4,6 +4,9 @@ extends PanelContainer
 #@onready var start_time = time_since_engine_started.call()
 @onready var time_label: Label = $MarginContainer/Label
 var game_timer: Timer
+@onready var set_game_timer_fn = func(the_stage_game_timer: Timer): game_timer = the_stage_game_timer
+
+signal game_timer_requested( fn: Callable)
 
 func time_string()-> String:
 	var t_msecs = game_timer.time_left * 1000.0
@@ -15,6 +18,8 @@ func time_string()-> String:
 	# 3 -> minimum of 3 chars long
 	return "%02d:%02d:%03d" % [minutes, seconds, msecs] 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if game_timer:
 		time_label.text = time_string()
+	else:
+		emit_signal("game_timer_requested", set_game_timer_fn)

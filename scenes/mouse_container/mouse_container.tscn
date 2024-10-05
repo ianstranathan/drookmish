@@ -1,18 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://l3gtsu2nfduy"]
+[gd_scene load_steps=4 format=3 uid="uid://l3gtsu2nfduy"]
 
 [ext_resource type="Script" path="res://scenes/mouse_container/mouse_container.gd" id="1_2yjxl"]
 [ext_resource type="Script" path="res://mouse_area2d.gd" id="2_xy3ml"]
-[ext_resource type="Shader" path="res://scenes/mouse_container/mouse_icon.gdshader" id="4_lnb6t"]
-[ext_resource type="Texture2D" uid="uid://b7o27eyfdnyp1" path="res://assets/icons/cursor/cursor_grabbing.png" id="4_scoxv"]
-[ext_resource type="Texture2D" uid="uid://1jjyb73qii8y" path="res://assets/icons/cursor/cursor_grab.png" id="5_1eeu5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t6m7k"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0x4xu"]
-shader = ExtResource("4_lnb6t")
-shader_parameter/grabbing = 0.0
-shader_parameter/hovering = 0.0
-shader_parameter/closed_palm = ExtResource("4_scoxv")
 
 [node name="mouse_container" type="Node2D"]
 script = ExtResource("1_2yjxl")
@@ -25,8 +16,3 @@ script = ExtResource("2_xy3ml")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="mouse_area2d"]
 shape = SubResource("CircleShape2D_t6m7k")
 debug_color = Color(0.615686, 0.380392, 0.952941, 0.419608)
-
-[node name="mouse_cursor" type="Sprite2D" parent="."]
-light_mask = 0
-material = SubResource("ShaderMaterial_0x4xu")
-texture = ExtResource("5_1eeu5")

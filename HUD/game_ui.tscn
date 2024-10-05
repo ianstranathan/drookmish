@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://by2nolvl3kja2"]
+[gd_scene load_steps=19 format=3 uid="uid://by2nolvl3kja2"]
 
 [ext_resource type="Script" path="res://HUD/game_ui.gd" id="1_nuj4q"]
 [ext_resource type="PackedScene" uid="uid://dl0g7keusp60j" path="res://HUD/cam_texture_rect.tscn" id="2_40hs4"]
@@ -7,7 +7,11 @@
 [ext_resource type="Shader" path="res://HUD/camera_icon.gdshader" id="3_qro3a"]
 [ext_resource type="Script" path="res://HUD/crown_tex_rect.gd" id="4_ln6g7"]
 [ext_resource type="Script" path="res://HUD/game_timer.gd" id="5_q7nbc"]
+[ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="8_xoob1"]
 [ext_resource type="Shader" path="res://HUD/meter.gdshader" id="9_uurxa"]
+[ext_resource type="PackedScene" uid="uid://c4k2b0t0msr6d" path="res://HUD/life_tex_rect.tscn" id="10_38gwg"]
+[ext_resource type="PackedScene" uid="uid://dvy7gbi1o7bkt" path="res://UI/paused_menu/Pause_Menu.tscn" id="11_6rsgx"]
+[ext_resource type="Texture2D" uid="uid://clnroqlcuucj6" path="res://assets/baking/baked_images/baked_image.png" id="12_fuxn3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_31hy8"]
 shader = ExtResource("2_qutgy")
@@ -52,7 +56,11 @@ shader_parameter/hover_set_bind_col = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ujyid"]
 shader = ExtResource("9_uurxa")
-shader_parameter/points_lvl = 0.0
+shader_parameter/real_time_points_lvl = 0.2
+shader_parameter/total_points_lvl = 0.6
+shader_parameter/total_col = Color(1, 1, 1, 1)
+shader_parameter/real_time_col = Color(1, 0.572549, 0, 1)
+shader_parameter/bg_col = Color(0.203922, 0.203922, 0.203922, 1)
 
 [node name="CanvasLayer" type="CanvasLayer"]
 script = ExtResource("1_nuj4q")
@@ -116,10 +124,14 @@ layout_mode = 2
 set_color = Color(0, 0.447059, 0.972549, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
 offset_right = 40.0
-offset_bottom = 40.0
+grow_vertical = 0
 theme_override_constants/margin_left = 7
-theme_override_constants/margin_top = 7
+theme_override_constants/margin_bottom = 7
 
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -153,4 +165,96 @@ material = SubResource("ShaderMaterial_ujyid")
 custom_minimum_size = Vector2(20, 100)
 layout_mode = 2
 
+[node name="Timer" type="Timer" parent="Meter"]
+wait_time = 1.4
+one_shot = true
+
 [node name="ScoreEffectsContainer" type="Node2D" parent="."]
+
+[node name="MainScoreMarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 5
+
+[node name="Label" type="Label" parent="MainScoreMarginContainer"]
+modulate = Color(1, 1, 1, 0.521569)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8_xoob1")
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="life_margin_container" type="MarginContainer" parent="."]
+offset_right = 204.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
+
+[node name="PanelContainer" type="PanelContainer" parent="life_margin_container"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="life_margin_container/PanelContainer"]
+layout_mode = 2
+
+[node name="TextureRect" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 4
+
+[node name="TextureRect2" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 4
+
+[node name="TextureRect3" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 4
+
+[node name="TextureRect4" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 4
+
+[node name="TextureRect5" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 4
+
+[node name="TextureRect6" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
+layout_mode = 2
+expand_mode = 2
+stretch_mode = 4
+
+[node name="PausedMenu" parent="." instance=ExtResource("11_6rsgx")]
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer3"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer3/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("12_fuxn3")
+
+[node name="Label" type="Label" parent="MarginContainer3/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8_xoob1")
+theme_override_font_sizes/font_size = 30
+text = "x0"

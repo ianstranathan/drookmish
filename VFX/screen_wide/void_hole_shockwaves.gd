@@ -9,7 +9,7 @@ var managed_clikmis: Dictionary = {}
 
 func _ready():
 	assert( curr_cam )
-	init_sprite_and_shader_params
+	init_sprite_and_shader_params()
 	get_tree().get_root().size_changed.connect(func():
 		init_sprite_and_shader_params())
 	## -- set size to

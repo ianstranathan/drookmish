@@ -7,19 +7,21 @@ var selected_clikmi
 var hovered_clikmi
 var hovered_maker
 
+@onready var grabbing_img: Resource = load("res://assets/icons/cursor/cursor_grabbing.png")
+@onready var open_palm_img: Resource = load("res://assets/icons/cursor/cursor_grab.png")
+
 func _ready():
 	Input.set_custom_mouse_cursor(load("res://assets/icons/cursor/cursor_grab.png"))
-	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)  # -- using a software cursor for shader utils
-	# -- area signals
+
 	$mouse_area2d.maker_hovered.connect( func(area):
 		hovered_maker = area)
 	$mouse_area2d.clikmi_hovered.connect( func(area):
 		hovered_clikmi = area)
 	# -- want mouse to be last draw
-	$mouse_cursor.z_index = Ordering.software_mouse
+	#$mouse_cursor.z_index = Ordering.software_mouse
 
 
-func _process(delta):
+func _process(_delta):
 	global_position = get_global_mouse_position()
 
 var is_pressed = false
@@ -36,10 +38,12 @@ func _input(event):
 	if event.is_action_pressed("select") and !is_pressed:
 		is_pressed = true
 		last_mouse_pos = event.position
-		$mouse_cursor.material.set_shader_parameter("grabbing", 1.0)
+		Input.set_custom_mouse_cursor(grabbing_img)
+		#$mouse_cursor.material.set_shader_parameter("grabbing", 1.0)
 	elif event.is_action_released("select") and is_pressed:
 		is_pressed = false
-		$mouse_cursor.material.set_shader_parameter("grabbing", 0.0)
+		Input.set_custom_mouse_cursor(open_palm_img)
+		#$mouse_cursor.material.set_shader_parameter("grabbing", 0.0)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("select"):

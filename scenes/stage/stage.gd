@@ -12,13 +12,19 @@ extends Node2D
 #@export  var MUSIC: bool = true
 #@onready var music_fn: Callable = func(): BgMusic.playing = MUSIC
 # -------------------------------------------------------------------
-@export var game_time_seconds: float = 10.0 
+
 """
 Mouse container is split because the selection icon isn't always the mouse
 this is probably not ideal
 """
 
 signal stage_ready
+@onready var score: int = 0
+
+# -------------------------------------------------------------------
+@export var STARTING_LIVES_NUM: int = 3
+@export var MAX_LIVES_NUM: int = 10
+# -------------------------------------------------------------------
 
 func _ready():
 	# ---------------------------------
@@ -29,9 +35,16 @@ func _ready():
 	$bg.scale = stage_dimensions / Vector2($bg.texture.get_size())
 	# ---------------------------------
 	# -- Clikmi container signals
+		# -- I can make the assumption that only a cliky will ever leave from this node
+		# -- saves filter call, leaving here for future in case I redesign or w/e
+		#$HUD.update_clikmi_multiplier_visual(
+			#$clikmi_container.get_children().filter( func(x): return x is Clikmi).size()))
+		
 	$clikmi_container.clikmi_freed.connect(func(a_clikmi):
+		$HUD.update_clikmi_multiplier_visual( $clikmi_container.get_children().size() - 2) # -- 2, because: crown is always there, and the freeing clikmi is still a child
 		[$vfx_container/VoidHoleShockwaves, mouse_container, $SelectionBg].map( func(x):
 			x.clikmi_freed(a_clikmi)))
+
 	$clikmi_container.void_hole_made.connect(func(a_clikmi): 
 		$vfx_container/VoidHoleShockwaves.void_hole_made(a_clikmi))
 	$clikmi_container.started_being_sucked_in.connect( func(a_clikmi):
@@ -40,8 +53,12 @@ func _ready():
 		$HUD.crown_icon_fn( nullable_clikmi ))
 		
 	$clikmi_container.a_clikmi_scored_points.connect(func(a_clikmi):
-		$HUD.score_effect(a_clikmi, cam))
+		score += int(a_clikmi.void_hole_timer.wait_time)
+		$HUD.score_effect(a_clikmi, cam, score))
 	# ---------------------------------
+	# -- CollectableContainer signals
+	$CollectableContainer.collectable_made.connect(func(a_collectable):
+		a_collectable.clikmi_num_fn = func(): return $clikmi_container.get_children().size() - 1)
 	# -- Mouse container signals
 	mouse_container.clikmi_selected.connect(func(a_clikmi):
 		$CollectableContainer.selected_clikmi_callback(a_clikmi)
@@ -53,12 +70,18 @@ func _ready():
 	$HUD.camera_icon_hovered.connect(func( fn: Callable ): fn.call( mouse_container.get_selected_clikmi() ) )
 	$HUD.camera_hotkey_pressed.connect(func(loc: Vector2): cam.jump_to_hotkey_loc(loc))
 	$HUD.crown_icon_clicked.connect(func(loc: Vector2): cam.jump_to_hotkey_loc(loc))
+	$HUD.game_timer_requested.connect( func(fn):
+		fn.call($GameTimer))
+	
 	# do I want to release a selection if camera hotkey is made?
 	#$HUD.camera_hotkey_made.connect(func(): pass)#mouse_area.disable_selection())
 	# ---------------------------------
 	# -- Clikmi Maker
 	$ClikmiMaker.clikmi_instantiated.connect(func(a_clikmi): 
-		$clikmi_container.add_clikmi(a_clikmi))
+		$clikmi_container.add_clikmi(a_clikmi)
+		$HUD.update_clikmi_multiplier_visual(
+			$clikmi_container.get_children().filter( func(x): return x is Clikmi).size()))
+	
 	# ---------------------------------
 	# -- Camera	
 	cam.set_stage_limits( stage_dimensions )
@@ -82,3 +105,9 @@ func game_over():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	get_tree().paused = true
 	$GameOverMenu.show()
+
+
+func _process(delta):
+	if Input.is_action_just_pressed("pause"):
+		get_tree().paused = true
+		

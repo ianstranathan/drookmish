@@ -39,10 +39,10 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0, 1)
 
 [node name="Stage" type="Node2D"]
+position = Vector2(-5, 0)
 script = ExtResource("1_trcsx")
 stage_scale = 1.0
-level_seconds = 120.0
-game_time_seconds = 2.0
+level_seconds = 500.0
 metadata/_edit_group_ = true
 
 [node name="bg" type="Sprite2D" parent="."]

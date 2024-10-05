@@ -16,6 +16,7 @@ seamless = true
 noise = SubResource("FastNoiseLite_3mcs6")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hup3u"]
+resource_local_to_scene = true
 shader = ExtResource("1_i2epx")
 shader_parameter/swirl_dist_normal = 0.0
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_u6vnu")

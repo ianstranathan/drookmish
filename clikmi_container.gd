@@ -68,7 +68,8 @@ func init_crown_vars(b: bool, t: float = 0.0):
 	set_process( b )
 
 var offset := Vector2(0.0, -30.0)
-func _process(delta):
+
+func _process(_delta):
 	if crown.global_position != clikmi_with_highest_time.global_position:
 		crown.global_position = clikmi_with_highest_time.global_position + offset
 	

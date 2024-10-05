@@ -7,6 +7,11 @@ func set_sprite_to_resolution(sprite_ref: Sprite2D) -> void:
 	sprite_ref.scale = Vector2(get_viewport().get_size()) / sprite_ref.texture.get_size()
 	
 
+func do_fn_if_on_screen(_notifier: VisibleOnScreenNotifier2D, fn: Callable) -> Callable:
+	return func():
+		if _notifier.is_on_screen():
+			fn.call()
+
 func rel_unit_pos(A: Vector2, B: Vector2) -> Vector2:
 	return (B - A).normalized()
 
@@ -20,6 +25,11 @@ func uniform_float_fn(v: float, s: Sprite2D, p: String):
 ## Helper function to animate using shaders
 ## Tweens a float to a shader when a timer is too heavy handed
 ## Binds the args to the 'uniform_float_fn' and then tweens a float
+
+"""
+Refactor this to not break where it's already being used
+Sprite should be optional param (sometimes you're just using a material data structure)
+"""
 func shader_float_tween(tween: Tween, s: Sprite2D, uniform_str: String, duration: float, reverse: bool = false):
 	if reverse:
 		tween.tween_method(uniform_float_fn.bind(s, uniform_str), 
@@ -28,6 +38,14 @@ func shader_float_tween(tween: Tween, s: Sprite2D, uniform_str: String, duration
 		tween.tween_method(uniform_float_fn.bind(s, uniform_str), 
 						0.0, 1.0, duration).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
 
+
+func material_uniform_float_fn(v: float, mat: Material, p: String):
+	mat.set_shader_parameter(p, v);
+	
+func material_shader_float_tween(tween: Tween, mat: Material, uniform_str: String, duration: float):
+	tween.tween_method( material_uniform_float_fn.bind(mat, uniform_str), 
+						0.0, 1.0, duration).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
+	
 
 func dir_contents(path, fn):
 	var dir = DirAccess.open(path)

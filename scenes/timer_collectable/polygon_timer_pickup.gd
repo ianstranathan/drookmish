@@ -1,8 +1,10 @@
 extends Node2D
 
+var clikmi_num_fn: Callable
 var time_value: int
 var target = null
 @export var number_label_scene : PackedScene = preload("res://scenes/collected_number_visual/collected_number_visual.tscn")
+
 """
 1 -> triangle
 3 -> square
@@ -34,6 +36,7 @@ func col_fn(n) -> Color:
 @onready var polygon_area_2d = $PolygonArea2D
 @onready var poly =  polygon_area_2d.get_node("Polygon2D")
 @onready var root = get_tree().get_root()
+
 func _ready():
 	polygon_area_2d.area_entered.connect(on_polygon_area_entered)
 	$TweenArea2D.area_entered.connect(on_tween_area_entered)
@@ -47,6 +50,18 @@ func _ready():
 	# --------------------------------
 	time_value = time_value_fn(num_sides)
 	bloom_in()
+	timer_logic()
+
+
+func timer_logic():
+	# -- relate how long the lifetime of collectible is to the value/ side number
+	$Timer.wait_time = 10.0 - num_sides
+	var tween = create_tween()
+	Utils.material_shader_float_tween(tween, $PolygonArea2D/Polygon2D.material, "t", $Timer.wait_time)
+	tween.tween_callback(func(): 
+		queue_free())
+	$Timer.start()
+
 
 func initialize_tween_detection_area():
 	$TweenArea2D/CollisionShape2D.disabled = true
@@ -127,8 +142,13 @@ func pickup():
 func number_visual():
 	# -- make a number
 	assert(target)
-	target.time_increase( time_value )
-	var number_visual = number_label_scene.instantiate()
-	number_visual.text = str(time_value)
-	number_visual.global_position = global_position
+	var _time_val = time_value * clikmi_num_fn.call()
+	target.time_increase( _time_val )
+	# -- the number it is
+	var number_visual     = number_label_scene.instantiate()
+	# -- 
+	number_visual.text     = str( _time_val )
+	
+	number_visual.global_position = global_position + Vector2.RIGHT * 20.0
+
 	root.add_child(number_visual)

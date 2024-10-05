@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://oi5lmlne7tty"]
+[gd_scene load_steps=13 format=3 uid="uid://oi5lmlne7tty"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_4gdta"]
 [ext_resource type="PackedScene" uid="uid://l3gtsu2nfduy" path="res://scenes/mouse_container/mouse_container.tscn" id="2_i0wxk"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bhnycjhca2gey" path="res://Menus/start_menu/start_menu_container.tscn" id="5_5whm8"]
 [ext_resource type="PackedScene" uid="uid://ljt33namf1xs" path="res://Menus/settings_menu/settings_container.tscn" id="6_dtr76"]
 [ext_resource type="PackedScene" uid="uid://cqvnf04undfwt" path="res://Menus/stats_menu/stats_container.tscn" id="7_0xwu1"]
+[ext_resource type="PackedScene" uid="uid://dvy7gbi1o7bkt" path="res://UI/paused_menu/Pause_Menu.tscn" id="9_sytur"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ao0ah"]
 
@@ -37,3 +38,5 @@ texture = ExtResource("4_q5756")
 [node name="stats_container" parent="start_screen" instance=ExtResource("7_0xwu1")]
 
 [node name="mouse_container" parent="start_screen" instance=ExtResource("2_i0wxk")]
+
+[node name="PausedMenu" parent="." instance=ExtResource("9_sytur")]

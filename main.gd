@@ -9,7 +9,7 @@ func _ready ():
 	# --
 	$start_screen.game_started.connect( on_game_started )
 
-	
+# -- Center screen callback
 func init_bg():
 	if $start_screen:
 		$start_screen/Sprite2D.global_position = get_viewport().get_size() / 2.0
@@ -18,10 +18,4 @@ func init_bg():
 func on_game_started():
 	$start_screen.queue_free()
 	var _stage = stage.instantiate()
-	_stage.stage_ready.connect( make_pause_menu )
 	add_child(_stage)
-
-
-func make_pause_menu():
-	pass
-	

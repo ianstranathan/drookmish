@@ -36,7 +36,7 @@ radius = 7.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wkxkh"]
 resource_local_to_scene = true
 shader = ExtResource("2_ovqai")
-shader_parameter/col_switch = 1.0
+shader_parameter/col_switch = 0.0
 shader_parameter/color = Color(1, 0.4, 0.9, 0)
 
 [sub_resource type="Animation" id="Animation_02h3p"]
@@ -479,17 +479,17 @@ _data = {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mcv14"]
 resource_local_to_scene = true
 shader = ExtResource("14_l6pb6")
-shader_parameter/t = null
-shader_parameter/is_paused = null
+shader_parameter/t = 0.0
+shader_parameter/is_paused = 0.0
 
 [node name="clikmi" type="Area2D"]
 collision_mask = 13
 script = ExtResource("1_6wiuj")
 void_hole_scene = ExtResource("13_nr0yn")
 spirit_sprite = ExtResource("2_bs8rv")
-void_hole_wait_time = 5.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CapsuleShape2D_6hq65")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -519,8 +519,7 @@ offset_bottom = 45.0
 [node name="Label" type="Label" parent="PanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 18
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1

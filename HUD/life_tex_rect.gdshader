@@ -1,34 +1,22 @@
 shader_type canvas_item;
 
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
-
 float circ( vec2 uv, float r){
 	return smoothstep(r, r + 0.03, length(uv));
-}
-
-mat2 rot(float angle){
-	return mat2( vec2(cos(angle), -sin(angle)),
-	             vec2(sin(angle), cos(angle)));
 }
 
 float avg(vec3 c){
 	return (c.x + c.y + c.z) / 3.0;
 }
 
-uniform sampler2D noise_tex: repeat_enable;
-
 void fragment() {
 	vec2 uv = 2. * UV - 1.;
-	//uv.x *= 32.0/ 48.0;
-
-	//
-	vec4 noise_tex_sample = UV.y * UV.y * texture(noise_tex, UV - vec2(0., TIME));
+	
+	// SEE SPIRIT SHADER FOR ORIGINAL. I JUST TOOK OUT NOISE AND SIN DISP
+	//vec4 noise_tex_sample = UV.y * UV.y * texture(noise_tex, UV - vec2(0., TIME));
 	//
 	vec2 scale = vec2(mix(1., 3., pow(UV.y, 2.)), 1.15);
-	vec2 disp = vec2(pow(UV.y, 4.) * sin(4. * UV.y - 6. * TIME), 0.);
-	vec4 tex_sample = texture(TEXTURE, scale * (UV - vec2(0.5)) + vec2(0.5) + disp - 0.2 * noise_tex_sample.r);
+	vec2 disp = vec2(0., -0.1 * pow(UV.y, 4.)); //vec2(pow(UV.y, 4.),2.);// * sin(4. * UV.y - 6. * TIME), 0.);
+	vec4 tex_sample = texture(TEXTURE, scale * (UV - vec2(0.5)) + vec2(0.5) + disp);// - 0.2 * noise_tex_sample.r);
 
 	//some grey-pink
 	vec3 step_col = vec3(0.5, 0.1, 0.25);

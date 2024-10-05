@@ -47,14 +47,17 @@ func set_speed_uniforms(b: bool=true) -> void:
 		shader_normalized_float_tween.call(tween, x, "decay_interpolant", 1.0)
 	)
 
+@onready var play_crushed_sound:Callable = Utils.do_fn_if_on_screen($VisibleOnScreenNotifier2D, func(): $CrushedSoundAudioStreamPlayer2D.play())
 
 func _ready():
 	$ClickingArea.was_clicked.connect(click)
 	# -----------------------------------------
 	area_2ds.map(func(x):
 		x.clikmi_crushed.connect(func(a_clickmi):
-			if !can_click:
-				a_clickmi.crush())
+			if screwing_together:
+				a_clickmi.crush()
+				play_crushed_sound.call()
+				)
 		# -- moved to ClickingArea
 		#x.was_clicked.connect(func():
 			#click())
@@ -76,7 +79,9 @@ func _ready():
 	var pillar_half_len = $sprites_container/top_pillar/Area2D/CollisionShape2D.shape.size.x / 2.0
 	pillar_disp = ring_rad - 0.8 * pillar_half_len
 
+var screwing_together := false
 func screw(_in:bool=false):
+	screwing_together = _in
 	var in_or_out = 0.0 if _in else 1.0
 	if !_in:
 		$BgEnergyAudioStreamPlayer2D.play()
@@ -97,6 +102,7 @@ func screw(_in:bool=false):
 		shader_normalized_float_tween.call(tween, $sprites_container/top_pillar, "spin_speed", seperation_time, true)
 		
 	tween.chain().tween_callback( func():
+		screwing_together = false
 		if _in:
 			area_2ds.map(func(x): x.set_deferred("disabled", false))
 			can_click = true

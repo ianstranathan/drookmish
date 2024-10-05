@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4k2b0t0msr6d"]
+
+[ext_resource type="Texture2D" uid="uid://clnroqlcuucj6" path="res://assets/baking/baked_images/baked_image.png" id="1_srea3"]
+[ext_resource type="Shader" path="res://HUD/life_tex_rect.gdshader" id="1_xhbjl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fcsfp"]
+shader = ExtResource("1_xhbjl")
+
+[node name="TextureRect" type="TextureRect"]
+material = SubResource("ShaderMaterial_fcsfp")
+texture = ExtResource("1_srea3")

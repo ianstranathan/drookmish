@@ -4,15 +4,16 @@ class_name Clikmi
 
 @onready var utils_rng = Utils.rng
 @onready var void_hole_timer: Timer = $VoidHoleTimer
-@onready var void_hole_timer_time_left_fn = Utils.timers_remaining_time_normalized
 
-# better to have direct ref to something you're querying all the time
+#-------------------------------------------------------------------------------
 @onready var label_panel = $PanelContainer
 @onready var label_panel_label = $PanelContainer/Label
-
+#-------------------------------------------------------------------------------
 @export var void_hole_scene: PackedScene
 @export var spirit_sprite: PackedScene
-#------------------------
+@export var score_point_visual_scene: PackedScene = preload("res://scenes/collected_number_visual/collected_number_visual.tscn")
+#-------------------------------------------------------------------------------
+
 
 var dir := Vector2.ZERO
 var target_loc = null
@@ -79,21 +80,35 @@ func eight_dir(vec : Vector2) -> void:
 
 
 func make_void_hole():
+	label_panel.material.set_shader_parameter("t", 0.0)
 	var void_hole = void_hole_scene.instantiate();
 	# -- signal for score effect in game UI
-	emit_signal("scored_points", self)
 	emit_signal("void_hole_made", self)
+	#void_hole.tween_anim_in_finished.connect( func(): emit_signal("scored_points", self))
+	#$emit_signal("scored_points", self)
+	score_points()
 	get_tree().root.call_deferred("add_child", void_hole);
 	void_hole.global_position = global_position;
 	void_hole.z_index = Ordering.black_hole
 
-	
 
-@export var void_hole_wait_time: float
+@onready var root = get_tree().get_root()
+func score_points(is_and_one:bool = false):
+	emit_signal("scored_points", self)
+	var text = "2x" if is_and_one else str(int(void_hole_timer.wait_time))
+	var score_point_visual = score_point_visual_scene.instantiate()
+	score_point_visual.text = text
+	score_point_visual.global_position = global_position + Vector2.LEFT * 20.0
+	score_point_visual.z_index = z_index
+	root.add_child(score_point_visual)
+
+
+func and_one():
+	score_points(true)
+
 func _ready():
 	z_index = Ordering.clikmi_index
 	$PanelContainer.visible = false
-	void_hole_timer.wait_time = void_hole_wait_time
 	# simplify this, it needs to be a minimum of the union of the void hole's timers
 	# but probably needs to be tuned for fun
 	void_hole_timer.timeout.connect( func():
@@ -105,7 +120,6 @@ func _physics_process(delta):
 	# move the clikmi to it's target location
 	if target_loc:
 		euler_update(delta)
-		
 	if !void_hole_timer.is_stopped() and !void_hole_timer.is_paused():
 		set_void_hole_label()
 
@@ -185,21 +199,22 @@ func set_target( pos: Vector2):
 			anim_player.play("walk_north_west")
 
 var crownable = true # -- REFACTOR this
-func start_sucking_in( void_hole_pos, void_hole_anim_duration ):
+# void_hole_anim_duration --> fn.call()
+func start_sucking_in( void_hole_pos, void_hole_timer_fn ):
 	crownable = false
 	# -- turn off void hole timer to prevent instantiating void holes 
 	# -- while tweening inside 
 	void_hole_timer.stop()
 	
 	# -- tween spin and scale
+	var t = void_hole_timer_fn.call()
 	var tween = create_tween().set_parallel(true)#get_tree().create_tween()
 	# -- clikmi sucked in animation should be slightly shorter than the void hole
-	tween.tween_property(anim_player, "speed_scale", 5.0, 0.5 * void_hole_anim_duration).set_trans(Tween.TRANS_ELASTIC)
-	tween.tween_property($Sprite2D, "scale", Vector2.ZERO, void_hole_anim_duration).set_trans(Tween.TRANS_ELASTIC)
-	tween.tween_property(self, "global_position", void_hole_pos, 0.8 * void_hole_anim_duration).set_trans(Tween.TRANS_BOUNCE)
+	tween.tween_property(anim_player, "speed_scale",     5.0,           0.5 * t).set_trans(Tween.TRANS_ELASTIC)
+	tween.tween_property($Sprite2D,   "scale",           Vector2.ZERO,        t).set_trans(Tween.TRANS_ELASTIC)
+	tween.tween_property(self,        "global_position", void_hole_pos, 0.8 * t).set_trans(Tween.TRANS_BOUNCE)
 	
 	# tell that this clikmi is unselectable
-	
 	$CollisionShape2D.set_deferred("disabled", true)
 	$PanelContainer.visible = false
 	emit_signal("started_being_sucked_in", self)
@@ -210,13 +225,7 @@ func start_sucking_in( void_hole_pos, void_hole_anim_duration ):
 	anim_player.play("spin")
 
 
-func set_dir():
-	var rel_pos = target_loc - global_position
-	var unit_rel_pos :Vector2 = rel_pos.normalized()
-
-
 var unbind: Callable
-
 func set_hotkey( cam_rect_unbind_fn, col: Color):
 	if unbind:
 		emit_signal("released_light_pos", self)
@@ -236,42 +245,48 @@ func set_color(col: Color = Color(0., 0., 0., 0.)):
 			var _tween = get_tree().create_tween()
 			Utils.shader_float_tween( _tween, $Sprite2D, "col_switch", 1.0, true))
 	$Sprite2D.material.set_shader_parameter("color", col_uniform)
-	
+
 
 func my_queue_free():
 	if unbind:
 		unbind.call()
 	emit_signal("clikmi_freed", self)
 	queue_free()
+	release_spirit()
 
-var released_spirit = false
+
+func release_spirit():
+	var tree = get_tree()
+	var spirit = spirit_sprite.instantiate()
+	tree.root.add_child(spirit)
+	spirit.global_position = global_position
+	
+	# -- give it a random direction
+	var sprit_loc_xy := Vector2(Utils.rng.randf_range(-500.0, 500.0), Utils.rng.randf_range(-500.0, 500.0))
+	# -- give it a random lifetime
+	var spirit_lifetime = Utils.rng.randf_range(4.0, 8.0)
+	spirit.global_rotation = Vector2.UP.angle_to(sprit_loc_xy)
+	
+	var tween = tree.create_tween()
+	tween.tween_property(spirit, "global_position",  global_position + sprit_loc_xy, spirit_lifetime)
+	tween.tween_callback(func(): 
+		spirit.queue_free())
+
+
+var crushed: bool = false
 func crush():
-	# -- case: area is detected by both pillar pieces and the clikmi hasn't queued free yet
-	# ==> can't release spirit if have already released spirit
-	# -- spirit resource is added to tree -> it's independent of the resource
-	# -- lifetime of the clikmi
-	if !released_spirit:
-		var tree = get_tree()
-		var spirit = spirit_sprite.instantiate()
-		tree.root.add_child(spirit)
-		spirit.global_position = global_position
-		
-		# -- give it a random direction
-		var sprit_loc_xy = Vector2(Utils.rng.randf_range(-500.0, 500.0), Utils.rng.randf_range(-500.0, 500.0))
-		# -- give it a random lifetime
-		var spirit_lifetime = Utils.rng.randf_range(4.0, 8.0)
-		spirit.global_rotation = Vector2.UP.angle_to(sprit_loc_xy)
-		
-		var tween = tree.create_tween()
-		tween.tween_property(spirit, "global_position", sprit_loc_xy, spirit_lifetime)
-		tween.tween_callback(func(): 
-			spirit.queue_free())
+	if !crushed:
+		crushed = true
 		my_queue_free()
-		released_spirit = true
 
+# -- I want the time indication to start blinking at whatever this is for
+# -- all clikmis
+@onready var time_to_start_flashing = 0.8 * void_hole_timer.wait_time
 
 func set_void_hole_label():
-	label_panel.material.set_shader_parameter("t", void_hole_timer_time_left_fn.call(void_hole_timer))
+	if void_hole_timer.time_left <= time_to_start_flashing:
+		var t = 1.0 - (void_hole_timer.time_left / time_to_start_flashing)
+		label_panel.material.set_shader_parameter("t", t)
 	label_panel_label.text = str(int(void_hole_timer.time_left))
 
 
