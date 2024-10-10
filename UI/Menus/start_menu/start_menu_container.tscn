@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://bhnycjhca2gey"]
 
-[ext_resource type="Script" path="res://Menus/start_menu/start_menu_container.gd" id="1_3updl"]
-[ext_resource type="PackedScene" uid="uid://c2045ae6tbw3n" path="res://Menus/button/menu_buttontscn.tscn" id="1_rh173"]
-[ext_resource type="Shader" path="res://Menus/button/button_outline.gdshader" id="2_ut6h6"]
+[ext_resource type="Script" path="res://UI/Menus/start_menu/start_menu_container.gd" id="1_3updl"]
+[ext_resource type="PackedScene" uid="uid://c2045ae6tbw3n" path="res://UI/Menus/button/menu_buttontscn.tscn" id="1_rh173"]
+[ext_resource type="Shader" path="res://UI/Menus/button/button_outline.gdshader" id="2_ut6h6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i2wm1"]
 resource_local_to_scene = true

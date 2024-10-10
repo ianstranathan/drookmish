@@ -14,14 +14,12 @@ class_name Clikmi
 @export var score_point_visual_scene: PackedScene = preload("res://scenes/collected_number_visual/collected_number_visual.tscn")
 #-------------------------------------------------------------------------------
 
-
-var dir := Vector2.ZERO
-var target_loc = null
 @export var speed := 200.0
 
 var cam_rect: TextureRect
 
-#----------------------------
+#-------------------------------------------------------------------------------
+
 signal sucked_in() # -- void hole (REFACTOR THIS PLEASE)
 signal started_being_sucked_in( a_clikmi ) # -- clikmi container for crown logic
 signal clikmi_freed
@@ -29,7 +27,8 @@ signal void_hole_made
 signal released_light_pos
 signal timer_collectable_collected(this_voids_wait_time, a_clikmi)
 signal scored_points(a_clikmi)
-#----------------------------
+
+#-------------------------------------------------------------------------------
 enum MoveDirs{
 	IDLE,
 	NORTH,
@@ -43,40 +42,28 @@ enum MoveDirs{
 }
 
 @onready var anim_player = $AnimationPlayer
-var move_state = MoveDirs.IDLE
 
-func eight_dir(vec : Vector2) -> void:
-	# divide a hemisphere into 8 sections (1 for each slivers of east and west, 2 for north east, west and north)
-	var section = PI / 8.0
-	var angle = vec.angle_to(Vector2.RIGHT)
-	if angle > 0:
-		if angle <= section:
-			move_state = MoveDirs.EAST
-		elif angle <= 3.0 * section:
-			move_state = MoveDirs.NORTH_EAST
-		elif angle <= 5.0 * section:
-			move_state = MoveDirs.NORTH
-		elif angle <= 7.0 * section:
-			move_state = MoveDirs.NORTH_WEST
-		else:
-			move_state = MoveDirs.WEST
-	elif angle < 0:
-		if angle >= -section:
-			move_state = MoveDirs.EAST
-		elif angle >= -3.0 * section:
-			move_state = MoveDirs.SOUTH_EAST
-		elif angle >= -5.0 * section:
-			move_state = MoveDirs.SOUTH
-		elif angle >= -7.0 * section:
-			move_state = MoveDirs.SOUTH_WEST
-		else:
-			move_state = MoveDirs.WEST
-	else:
-		# -- case where angle is essentially zeo (vector2.right)
-		if target_loc:
-			move_state = MoveDirs.EAST
-		else:
-			move_state = MoveDirs.IDLE
+#-------------------------------------------------------------------------------
+# Fns
+#-------------------------------------------------------------------------------
+func _ready():
+	z_index = Ordering.clikmi_index
+	$PanelContainer.visible = false
+	# simplify this, it needs to be a minimum of the union of the void hole's timers
+	# but probably needs to be tuned for fun
+	void_hole_timer.timeout.connect( func():
+		make_void_hole())
+	$Sprite2D.material.set_shader_parameter("col_switch", 0.)
+
+
+func _process(delta: float) -> void:
+	if !void_hole_timer.is_stopped() and !void_hole_timer.is_paused():
+		set_void_hole_label()
+
+
+func _physics_process(delta):
+	if target_fn:
+		euler_update(delta)
 
 
 func make_void_hole():
@@ -106,79 +93,108 @@ func score_points(is_and_one:bool = false):
 func and_one():
 	score_points(true)
 
-func _ready():
-	z_index = Ordering.clikmi_index
-	$PanelContainer.visible = false
-	# simplify this, it needs to be a minimum of the union of the void hole's timers
-	# but probably needs to be tuned for fun
-	void_hole_timer.timeout.connect( func():
-		make_void_hole())
-	$Sprite2D.material.set_shader_parameter("col_switch", 0.)
-
-
-func _physics_process(delta):
-	# move the clikmi to it's target location
-	if target_loc:
-		euler_update(delta)
-	if !void_hole_timer.is_stopped() and !void_hole_timer.is_paused():
-		set_void_hole_label()
-
+# ------------------------------------------------------------------------------
+# -- Kinematics
+# ------------------------------------------------------------------------------
 #static _ALWAYS_INLINE_ double move_toward(double p_from, double p_to, double p_delta) {
 	#return abs(p_to - p_from) <= p_delta ? p_to : p_from + SIGN(p_to - p_from) * p_delta;
 #}
 @onready var vel := Vector2.ZERO
 @export var max_speed : float = 300
 @onready var delta_accl : = max_speed / 6.0
+
 func euler_update( delta: float ):
 	vel_resolution()
 	global_position += delta * vel
-	#global_position +=  speed * delta * dir
-	# remove target if sufficiently close to destination
-	#if is_on_target():
-		#arrived_anim_callback()
-		#target_loc = null
-		
+
+
 @export var tolerance = 50 # in pixels squared
-var last_rel_pos
 func vel_resolution():
-	var rel_pos = target_loc - global_position
+	var rel_pos = target_pos_fn.call() - global_position
 	var dist_sqr = (rel_pos).length_squared()
-	# ------------------------------------------------------------------
+	var _rpn = rel_pos.normalized()
+	# --------------------------------------------------------------------------
+	# Accumulate acceleration
 	if dist_sqr > tolerance:
-		vel = vel.move_toward(max_speed * rel_pos.normalized(), max_speed / 10.0)
+		vel = vel.move_toward(max_speed * _rpn, max_speed / 10.0)
 	elif dist_sqr <= tolerance * 3.0:
 		vel = vel.move_toward(Vector2.ZERO, max_speed / 3.0)
-		
-	# ------------------------------------------------------------------
-	last_rel_pos = rel_pos
-	if vel.is_equal_approx(Vector2.ZERO):
-		stop_moving(dist_sqr)
-
-func stop_moving(dist_sqr=null):
-	anim_player.play("idle")
-	if dist_sqr and dist_sqr < tolerance:
-		global_position = target_loc
-	target_loc = null
-
-#func is_on_target() -> bool:
-	#return (target_loc - global_position).length_squared() < tolerance
-#@export var tolerance = 150 # in pixels squared
-#func is_near_target() -> bool:
-	#return (target_loc - global_position).length_squared() < tolerance
-	#if dir != Vector2.ZERO:
-			#velocity = velocity.move_toward(max_speed * dir, delta_accl)
-		#else:
-			#velocity = velocity.move_toward(Vector2.ZERO, delta_decl)
 	
-func arrived_anim_callback():
+	# --------------------------------------------------------------------------
+	if vel.is_equal_approx(Vector2.ZERO):
+		stop_moving()
+		
+	if is_clikmi_fn.call(target_fn.call()):
+		set_animation_dir(target_fn.call().global_position - global_position)
+	# --------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# -- Target logic
+# ------------------------------------------------------------------------------
+func stop_moving():
 	anim_player.play("idle")
 
 
-func set_target( pos: Vector2):
-	target_loc = pos
-	dir = (pos - global_position).normalized()
-	eight_dir( dir )
-	match move_state:
+func visual_follow_cue():
+	# turn grey if following
+	pass
+
+var clikmi_offset_fn = func(x): return x + 50.0 * (global_position - x).normalized()
+var target_pos_fn    = func():  return (clikmi_offset_fn.call(target_fn.call().global_position) if 
+											is_clikmi_fn.call(target_fn.call()) else target_fn.call())
+var is_clikmi_fn     = func(x): return x is Clikmi
+var target_fn
+
+func set_target(x):
+	target_fn = func(): return x
+	set_animation_dir( target_pos_fn.call() - global_position )
+
+# ------------------------------------------------------------------------------
+# -- Animation functions
+# ------------------------------------------------------------------------------
+func eight_dir(vec : Vector2) -> int:
+	# divide a hemisphere into 8 sections (1 for each slivers of east and west, 2 for north east, west and north)
+	var section = PI / 8.0
+	var angle = vec.angle_to(Vector2.RIGHT)
+	var eight_dir_move
+	if angle > 0:
+		if angle <= section:
+			eight_dir_move = MoveDirs.EAST
+		elif angle <= 3.0 * section:
+			eight_dir_move = MoveDirs.NORTH_EAST
+		elif angle <= 5.0 * section:
+			eight_dir_move = MoveDirs.NORTH
+		elif angle <= 7.0 * section:
+			eight_dir_move = MoveDirs.NORTH_WEST
+		else:
+			eight_dir_move = MoveDirs.WEST
+	elif angle < 0:
+		if angle >= -section:
+			eight_dir_move = MoveDirs.EAST
+		elif angle >= -3.0 * section:
+			eight_dir_move = MoveDirs.SOUTH_EAST
+		elif angle >= -5.0 * section:
+			eight_dir_move = MoveDirs.SOUTH
+		elif angle >= -7.0 * section:
+			eight_dir_move = MoveDirs.SOUTH_WEST
+		else:
+			eight_dir_move = MoveDirs.WEST
+	else:
+		# -- case where angle is essentially zeo (vector2.right)
+		if target_pos_fn.call():
+			eight_dir_move = MoveDirs.EAST
+		else:
+			eight_dir_move = MoveDirs.IDLE
+
+	return eight_dir_move
+
+
+func set_animation_dir(_rel_pos_vec):
+	move_anim( eight_dir( _rel_pos_vec.normalized() ) )
+
+
+func move_anim(eight_dir_move: int):
+	match eight_dir_move:
 		MoveDirs.IDLE: 
 			anim_player.play("idle")
 		MoveDirs.NORTH:
@@ -198,7 +214,8 @@ func set_target( pos: Vector2):
 		MoveDirs.NORTH_WEST:
 			anim_player.play("walk_north_west")
 
-var crownable = true # -- REFACTOR this
+
+var crownable = true # -- REFACTOR PLEASE
 # void_hole_anim_duration --> fn.call()
 func start_sucking_in( void_hole_pos, void_hole_timer_fn ):
 	crownable = false
@@ -262,14 +279,18 @@ func release_spirit():
 	spirit.global_position = global_position
 	
 	# -- give it a random direction
-	var sprit_loc_xy := Vector2(Utils.rng.randf_range(-500.0, 500.0), Utils.rng.randf_range(-500.0, 500.0))
+	var spirit_dir := Vector2(Utils.rng.randf_range(-1.0, 1.0), Utils.rng.randf_range(-1.0, 1.0)).normalized()
+	var sprit_loc_xy = Utils.rng.randf_range(1000, 5000) * spirit_dir
 	# -- give it a random lifetime
-	var spirit_lifetime = Utils.rng.randf_range(4.0, 8.0)
+	var spirit_lifetime = Utils.rng.randf_range(10.0, 20.0)
 	spirit.global_rotation = Vector2.UP.angle_to(sprit_loc_xy)
 	
-	var tween = tree.create_tween()
+	var tween = tree.create_tween().set_parallel(true)
 	tween.tween_property(spirit, "global_position",  global_position + sprit_loc_xy, spirit_lifetime)
-	tween.tween_callback(func(): 
+	Utils.material_shader_float_tween(tween, spirit.material, "t", 0.7 * spirit_lifetime)
+	#Utils.shader_float_tween(tween, spirit, "transparency_normal_val", spirit_lifetime)
+	#tween.chain().tween_callback
+	tween.chain().tween_callback(func(): 
 		spirit.queue_free())
 
 
@@ -321,3 +342,21 @@ func time_increase( time_num: int) -> void:
 func play_clikmi_sound() -> void:
 	var clikmi_sound_index = utils_rng.randi_range(0., audio_stream_players.size() - 1)
 	audio_stream_players[clikmi_sound_index].playing = true
+	
+# ------------------------------------------------------------------------------
+# -- Delete Buffer
+# ------------------------------------------------------------------------------
+
+# -- This is already more or less being done with move toward built in
+#func arrival_steer():
+	#var arrival_radius := 20
+	#var rel_pos = target_loc - global_position
+	#var distance = rel_pos.length()
+	#var steer = Vector2.ZERO
+	#if distance > 0:
+		#rel_pos.normalize()
+		#if distance < arrival_radius:
+			#rel_pos *= max_speed * (distance / arrival_radius)
+		#else:
+			#rel_pos *= max_speed
+		#steer = rel_pos - vel

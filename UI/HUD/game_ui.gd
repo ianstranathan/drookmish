@@ -10,11 +10,12 @@ signal crown_icon_clicked( a_clikmi_global_pos)
 signal game_timer_timed_out
 signal leveled_up
 signal game_timer_requested
+signal HUD_ready( fn )
 
 @onready var camera_tex_rect_container = $MarginContainer2/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer
 @onready var crown_tex_rect = $MarginContainer2/PanelContainer/HBoxContainer/MarginContainer2/TextureRect
 @onready var meter_timer = $Meter/Timer
-@onready var life_tex_rect_scene: PackedScene = preload("res://HUD/life_tex_rect.tscn")
+@onready var life_tex_rect_scene: PackedScene = preload("res://UI/HUD/life_texture_rect/life_tex_rect.tscn")
 
 var last_meter_anim_level = 0.0
 func _ready():
@@ -47,6 +48,13 @@ func _ready():
 			last_meter_anim_level = meter_level_collected_points
 			)
 		)
+
+
+func initialize_lives(max_lives_from_stage: int, starting_lives_num_from_stage: int):
+	max_num_lives = max_lives_from_stage
+	for i in range(starting_lives_num_from_stage):
+		add_a_life()
+
 
 func get_cam_tex_rects() -> Array:
 	return camera_tex_rect_container.get_children()
@@ -95,6 +103,31 @@ func score_effect(a_clikmi, the_camera: Camera2D, stage_score: int) -> void: #re
 		)
 
 
+# -- it probably doesn't make sense to churn data when you could (freeing TextureRect data)
+# -- just make it not visible
+
+var max_num_lives: int
+@onready var life_icon_container = $life_margin_container/PanelContainer/HBoxContainer
+
+func add_life_icon():
+	var life_icon = life_tex_rect_scene.instantiate()
+	life_icon.expand_mode = 3 #EXPAND_FIT_WIDTH_PROPORTIONAL
+	life_icon.stretch_mode = 4 #KEEP_ASPECT
+	life_icon_container.add_child(life_icon)
+
+
+func add_a_life():
+	assert(max_num_lives)
+	if life_icon_container.get_children().size() < max_num_lives:
+		add_life_icon()
+
+
+func remove_a_life():
+	var life_icons = life_icon_container.get_children()
+	if life_icons.size() > 0:
+		life_icon_container.get_children().pop_back().queue_free()
+
+
 func write_label_from_number(_label, num, x=""):
 	_label.text = str(x, num,)
 
@@ -107,21 +140,5 @@ func update_total_score_label(score: int):
 	write_label_from_number($MainScoreMarginContainer/Label, score)
 
 
-var max_num_lives: int
 func current_num_lives() -> int:
-	return $life_margin_container/HBoxContainer.get_children().size()
-
-func add_a_life():
-	var life_icon = life_tex_rect_scene.instantiate()
-	$life_margin_container.add_child(life_icon)
-
-
-func life_count_update(b: bool):
-	if b:
-		if max_num_lives:
-			add_a_life()
-		else:
-			emit_signal("max_life_num_requested", func(x): 
-				max_num_lives = x;
-				if current_num_lives() < max_num_lives:
-					add_a_life())
+	return $life_margin_container/PanelContainer/HBoxContainer.get_children().size()

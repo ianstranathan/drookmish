@@ -46,6 +46,7 @@ func _input(event):
 		#$mouse_cursor.material.set_shader_parameter("grabbing", 0.0)
 
 func _unhandled_input(event):
+	# -- Left mouse btn stuff
 	if event.is_action_pressed("select"):
 		if hovered_maker:
 			hovered_maker.click()
@@ -60,6 +61,13 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion and is_pressed and !hovered_clikmi and cam_reference:
 		pan_cam(event.position)
 
+	# -- Right mouse btn stuff
+	elif event.is_action_pressed("right_click") and selected_clikmi:
+		if hovered_clikmi and hovered_clikmi != selected_clikmi:
+			selected_clikmi.set_target( hovered_clikmi )
+			emit_signal("clikmi_selected", null)
+			selected_clikmi = null
+
 func get_selected_clikmi():
 	return selected_clikmi
 
@@ -72,34 +80,3 @@ func pan_cam(event_pos):
 func clikmi_freed(a_clikmi):
 	if a_clikmi == selected_clikmi:
 		selected_clikmi = null
-
-
-# ---------------------------------------------------
-# Delete buffer
-# ---------------------------------------------------
-#func _unhandled_input(event):
-	## -- grab and selection
-	#print("yo")
-	#if event.is_action_pressed("select") and !is_pressed:
-		##is_pressed = true
-		##last_mouse_pos = event.position
-		##$mouse_cursor.material.set_shader_parameter("grabbing", 1.0)
-		#
-		#if hovered_clikmi and !selected_clikmi:
-			#selected_clikmi = hovered_clikmi
-			#emit_signal("clikmi_selected", selected_clikmi)
-			#selected_clikmi.play_clikmi_sound()
-		#elif selected_clikmi:
-			#selected_clikmi.set_target( global_position )
-			#emit_signal("clikmi_selected", null)
-			#selected_clikmi = null
-		#if hovered_maker:
-			#hovered_maker.click()
-			#
-	##elif event.is_action_released("select") and is_pressed:
-		##is_pressed = false
-		##$mouse_cursor.material.set_shader_parameter("grabbing", 0.0)
-		##
-	## camera panning
-	#if event is InputEventMouseMotion and is_pressed and !hovered_clikmi:
-		#pan_cam(event.position)

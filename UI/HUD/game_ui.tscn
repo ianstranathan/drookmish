@@ -1,15 +1,14 @@
-[gd_scene load_steps=19 format=3 uid="uid://by2nolvl3kja2"]
+[gd_scene load_steps=18 format=3 uid="uid://by2nolvl3kja2"]
 
-[ext_resource type="Script" path="res://HUD/game_ui.gd" id="1_nuj4q"]
-[ext_resource type="PackedScene" uid="uid://dl0g7keusp60j" path="res://HUD/cam_texture_rect.tscn" id="2_40hs4"]
-[ext_resource type="Shader" path="res://HUD/crown_icon.gdshader" id="2_qutgy"]
+[ext_resource type="Script" path="res://UI/HUD/game_ui.gd" id="1_nuj4q"]
+[ext_resource type="PackedScene" uid="uid://dl0g7keusp60j" path="res://UI/HUD/cam_texture_rect.tscn" id="2_40hs4"]
+[ext_resource type="Shader" path="res://UI/HUD/crown_icon.gdshader" id="2_qutgy"]
 [ext_resource type="Texture2D" uid="uid://drg4l0pqroxe6" path="res://assets/crown_sdf.png" id="3_2gtof"]
-[ext_resource type="Shader" path="res://HUD/camera_icon.gdshader" id="3_qro3a"]
-[ext_resource type="Script" path="res://HUD/crown_tex_rect.gd" id="4_ln6g7"]
-[ext_resource type="Script" path="res://HUD/game_timer.gd" id="5_q7nbc"]
+[ext_resource type="Shader" path="res://UI/HUD/camera_icon.gdshader" id="3_qro3a"]
+[ext_resource type="Script" path="res://UI/HUD/crown_tex_rect.gd" id="4_ln6g7"]
+[ext_resource type="Script" path="res://UI/HUD/game_timer.gd" id="5_q7nbc"]
 [ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="8_xoob1"]
-[ext_resource type="Shader" path="res://HUD/meter.gdshader" id="9_uurxa"]
-[ext_resource type="PackedScene" uid="uid://c4k2b0t0msr6d" path="res://HUD/life_tex_rect.tscn" id="10_38gwg"]
+[ext_resource type="Shader" path="res://UI/HUD/meter.gdshader" id="9_uurxa"]
 [ext_resource type="PackedScene" uid="uid://dvy7gbi1o7bkt" path="res://UI/paused_menu/Pause_Menu.tscn" id="11_6rsgx"]
 [ext_resource type="Texture2D" uid="uid://clnroqlcuucj6" path="res://assets/baking/baked_images/baked_image.png" id="12_fuxn3"]
 
@@ -201,36 +200,6 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="life_margin_container/PanelContainer"]
 layout_mode = 2
-
-[node name="TextureRect" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
-layout_mode = 2
-expand_mode = 2
-stretch_mode = 4
-
-[node name="TextureRect2" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
-layout_mode = 2
-expand_mode = 2
-stretch_mode = 4
-
-[node name="TextureRect3" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
-layout_mode = 2
-expand_mode = 2
-stretch_mode = 4
-
-[node name="TextureRect4" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
-layout_mode = 2
-expand_mode = 2
-stretch_mode = 4
-
-[node name="TextureRect5" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
-layout_mode = 2
-expand_mode = 2
-stretch_mode = 4
-
-[node name="TextureRect6" parent="life_margin_container/PanelContainer/HBoxContainer" instance=ExtResource("10_38gwg")]
-layout_mode = 2
-expand_mode = 2
-stretch_mode = 4
 
 [node name="PausedMenu" parent="." instance=ExtResource("11_6rsgx")]
 

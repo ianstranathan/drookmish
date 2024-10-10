@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://7t8eyopxkiff"]
+
+[ext_resource type="Script" path="res://scenes/void_hole_manager/void_hole_manager.gd" id="1_o70ws"]
+[ext_resource type="PackedScene" uid="uid://dcry3kkxtie4s" path="res://scenes/void_hole/void_hole.tscn" id="2_0se50"]
+
+[node name="void_hole_manager" type="Node2D"]
+script = ExtResource("1_o70ws")
+void_hole_scene = ExtResource("2_0se50")

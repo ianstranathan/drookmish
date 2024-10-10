@@ -1,16 +1,16 @@
 extends Control
 
-signal pause_menu_quit_clicked
-signal pause_menu_retry_clicked
+@export var restart_btn: Button
+@export var quit_btn: Button
+
+signal retry
+signal quit
 
 func _ready():
-	visible = false
 	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
-	
-	$VBoxContainer/HBoxContainer/PanelContainer2/Quit.pressed.connect(func():
-		emit_signal("pause_menu_quit_clicked"))
-	$VBoxContainer/HBoxContainer/PanelContainer/Retry.pressed.connect(func():
-		emit_signal("pause_menu_retry_clicked"))
+	visible = false
+	restart_btn.connect("pressed", func(): emit_signal("retry"))
+	quit_btn.connect(   "pressed", func(): emit_signal("quit"))
 
 var can_unpause := false
 

@@ -12,11 +12,12 @@ noise = SubResource("FastNoiseLite_xst2y")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2aifp"]
 shader = ExtResource("1_cwknx")
+shader_parameter/t = 1.0
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_mr8js")
 
 [node name="Sprite2D" type="Sprite2D"]
 material = SubResource("ShaderMaterial_2aifp")
-scale = Vector2(1.2, 1.6)
+scale = Vector2(1, 1.2)
 texture = ExtResource("1_25k0l")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

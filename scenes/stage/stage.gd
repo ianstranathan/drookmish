@@ -19,10 +19,15 @@ this is probably not ideal
 """
 
 signal stage_ready
+signal game_over
+signal game_paused
+
 @onready var score: int = 0
 
 # -------------------------------------------------------------------
+
 @export var STARTING_LIVES_NUM: int = 3
+@onready var num_lives: int = STARTING_LIVES_NUM
 @export var MAX_LIVES_NUM: int = 10
 # -------------------------------------------------------------------
 
@@ -41,7 +46,9 @@ func _ready():
 			#$clikmi_container.get_children().filter( func(x): return x is Clikmi).size()))
 		
 	$clikmi_container.clikmi_freed.connect(func(a_clikmi):
-		$HUD.update_clikmi_multiplier_visual( $clikmi_container.get_children().size() - 2) # -- 2, because: crown is always there, and the freeing clikmi is still a child
+		update_lives(false)
+		#$HUD.remove_a_clikmi()
+		#$HUD.update_clikmi_multiplier_visual( $clikmi_container.get_children().size() - 2) # -- 2, because: crown is always there, and the freeing clikmi is still a child
 		[$vfx_container/VoidHoleShockwaves, mouse_container, $SelectionBg].map( func(x):
 			x.clikmi_freed(a_clikmi)))
 
@@ -72,13 +79,14 @@ func _ready():
 	$HUD.crown_icon_clicked.connect(func(loc: Vector2): cam.jump_to_hotkey_loc(loc))
 	$HUD.game_timer_requested.connect( func(fn):
 		fn.call($GameTimer))
-	
+
 	# do I want to release a selection if camera hotkey is made?
 	#$HUD.camera_hotkey_made.connect(func(): pass)#mouse_area.disable_selection())
 	# ---------------------------------
 	# -- Clikmi Maker
 	$ClikmiMaker.clikmi_instantiated.connect(func(a_clikmi): 
 		$clikmi_container.add_clikmi(a_clikmi)
+		$HUD.remove_a_life()
 		$HUD.update_clikmi_multiplier_visual(
 			$clikmi_container.get_children().filter( func(x): return x is Clikmi).size()))
 	
@@ -88,26 +96,33 @@ func _ready():
 	# ---------------------------------
 	# -- Let lights get information from camera hotkey tex rects
 	$camera_lights_container.set_up_light_cols($HUD.get_cam_tex_rects())
-
-	init_level()
 	
+	init_level()
+
+
 func init_level():
 	#music_fn.call()
-	$GameOverMenu.hide()
-	$GameTimer.wait_time = level_seconds
-	$GameTimer.timeout.connect( game_over )
-	$GameTimer.start()
+	#$GameTimer.wait_time = level_seconds
+	#$GameTimer.timeout.connect( game_over )
+	#$GameTimer.start()
+	
+	$HUD.initialize_lives(MAX_LIVES_NUM, STARTING_LIVES_NUM)
 
 	emit_signal("stage_ready")
 
-func game_over():
-	$mouse_container.visible = false
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	get_tree().paused = true
-	$GameOverMenu.show()
 
+func update_lives(b: bool):
+	num_lives += 1 if b else -1
+	if num_lives <= 0:
+		end_game()
+
+
+func end_game():
+	emit_signal("game_over")
+	#get_tree().paused = true
 
 func _process(delta):
 	if Input.is_action_just_pressed("pause"):
-		get_tree().paused = true
-		
+		emit_signal("game_paused")
+		#get_tree().paused = true
+		#

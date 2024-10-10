@@ -18,7 +18,7 @@ float avg(vec3 c){
 }
 
 uniform sampler2D noise_tex: repeat_enable;
-
+uniform float t = 0.;
 void fragment() {
 	vec2 uv = 2. * UV - 1.;
 	//uv.x *= 32.0/ 48.0;
@@ -45,7 +45,7 @@ void fragment() {
 	col += glow;
 
 	col = 1.0 - exp( -col );
-	COLOR = vec4(col, tex_sample.a * s);
+	COLOR = vec4(col, tex_sample.a * s * (1. - t));
 	//COLOR = tex_sample;
 	//COLOR = vec4(vec3(UV.y), 1.);
 }

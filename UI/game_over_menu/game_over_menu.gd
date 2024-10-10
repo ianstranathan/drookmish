@@ -1,17 +1,28 @@
-extends CanvasLayer
+extends Control
 
-#@export var _main: PackedScene = preload("res://main.tscn")
+
+@export var restart_btn: Button
+@export var quit_btn: Button
+
+signal retry
+signal quit
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
-	# -- change scene to next level
-	$Menu.restart_clicked.connect(func():pass)
-		# -- will delete the current scene immediately
-		# -- https://docs.godotengine.org/en/stable/tutorials/scripting/change_scenes_manually.html
-		#get_tree().change_scene_to_packed(_main))
-		
-	$Menu.quit_clicked.connect(func():
-		get_tree().quit())
+	visible = false
+	restart_btn.connect("pressed", func(): emit_signal("retry"))
+	quit_btn.connect(   "pressed", func(): emit_signal("quit"))
 
-func game_over():
-	$Menu.enable()
+
+# --------------------------------------------------------------------
+# -- parent is set to process only when paused, this makes the following code
+# -- unecessary
+# --------------------------------------------------------------------
+	#disable(true)
+
+#func disable(b: bool) -> void:
+	#visible = !b
+	#[restart, quit].map( func(x): x.disabled = b)
+
+#func enable() -> void:
+	#disable(false)

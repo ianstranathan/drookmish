@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://ljt33namf1xs"]
 
-[ext_resource type="PackedScene" uid="uid://c2045ae6tbw3n" path="res://Menus/button/menu_buttontscn.tscn" id="1_bjln5"]
-[ext_resource type="Script" path="res://Menus/settings_menu/settings_container.gd" id="1_h3k2d"]
-[ext_resource type="Shader" path="res://Menus/button/button_outline.gdshader" id="2_ket5l"]
-[ext_resource type="PackedScene" uid="uid://bfs67jgtt8bsb" path="res://Menus/back_button/back_button.tscn" id="3_v4hcv"]
+[ext_resource type="PackedScene" uid="uid://c2045ae6tbw3n" path="res://UI/Menus/button/menu_buttontscn.tscn" id="1_bjln5"]
+[ext_resource type="Script" path="res://UI/Menus/settings_menu/settings_container.gd" id="1_h3k2d"]
+[ext_resource type="Shader" path="res://UI/Menus/button/button_outline.gdshader" id="2_ket5l"]
+[ext_resource type="PackedScene" uid="uid://bfs67jgtt8bsb" path="res://UI/Menus/back_button/back_button.tscn" id="3_v4hcv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_00l2i"]
 resource_local_to_scene = true

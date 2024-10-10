@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://UI/paused_menu/Pause_Menu.gd" id="1_s7b2k"]
 [ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="2_v0oc2"]
 
-[node name="PausedMenu" type="Control"]
+[node name="PausedMenu" type="Control" node_paths=PackedStringArray("restart_btn", "quit_btn")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +11,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s7b2k")
+restart_btn = NodePath("VBoxContainer/HBoxContainer/PanelContainer/Retry")
+quit_btn = NodePath("VBoxContainer/HBoxContainer/PanelContainer2/Quit")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://mhm8h3bhj6mv"]
+[gd_scene load_steps=20 format=3 uid="uid://mhm8h3bhj6mv"]
 
 [ext_resource type="Script" path="res://scenes/stage/stage.gd" id="1_trcsx"]
 [ext_resource type="Shader" path="res://bg.gdshader" id="2_kf8ny"]
@@ -6,18 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://ptdfq71lo23e" path="res://assets/arabesque_textures/6345300.jpg" id="4_ptemi"]
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="5_dg7at"]
 [ext_resource type="PackedScene" uid="uid://bkdl5wwbjqf7m" path="res://scenes/clikmi_container/clikmi_container.tscn" id="6_50xrn"]
-[ext_resource type="Script" path="res://cam.gd" id="7_hiols"]
-[ext_resource type="PackedScene" uid="uid://by2nolvl3kja2" path="res://HUD/game_ui.tscn" id="8_vqdr4"]
+[ext_resource type="Script" path="res://camera/cam.gd" id="7_hiols"]
+[ext_resource type="PackedScene" uid="uid://by2nolvl3kja2" path="res://UI/HUD/game_ui.tscn" id="8_vqdr4"]
 [ext_resource type="PackedScene" uid="uid://l3gtsu2nfduy" path="res://scenes/mouse_container/mouse_container.tscn" id="9_ofna5"]
 [ext_resource type="PackedScene" uid="uid://cw1yw6g34n65a" path="res://VFX/screen_wide/void_hole_shockwaves.tscn" id="10_ebeaj"]
-[ext_resource type="Script" path="res://camera_lights_container.gd" id="11_x4chg"]
-[ext_resource type="Script" path="res://cam_point_light.gd" id="12_jb7fb"]
+[ext_resource type="Script" path="res://camera/camera_lights_container.gd" id="11_x4chg"]
+[ext_resource type="Script" path="res://camera/cam_point_light.gd" id="12_jb7fb"]
+[ext_resource type="Texture2D" uid="uid://h4cb7ci6s8oa" path="res://camera/camera_lights/cam_light_gradient_texture_2d.tres" id="12_x51h8"]
 [ext_resource type="PackedScene" uid="uid://dr5p6ho4awm34" path="res://clikmi_maker/clikmi_maker.tscn" id="13_bmegm"]
 [ext_resource type="PackedScene" uid="uid://b01ke3px34cff" path="res://scenes/collectable_container/collectable_container.tscn" id="14_u3c1j"]
-[ext_resource type="PackedScene" uid="uid://c36tkrjiatwve" path="res://selection_bg.tscn" id="15_32tm2"]
-[ext_resource type="Script" path="res://selection_bg.gd" id="16_yjo7q"]
+[ext_resource type="PackedScene" uid="uid://c36tkrjiatwve" path="res://scenes/selection_bg/selection_bg.tscn" id="15_32tm2"]
+[ext_resource type="Script" path="res://scenes/selection_bg/selection_bg.gd" id="16_yjo7q"]
 [ext_resource type="PackedScene" uid="uid://bn3hjrkhcph8g" path="res://misc/vfx/spawn_safe_zone.tscn" id="17_5wtc2"]
-[ext_resource type="PackedScene" uid="uid://cqk03sopskomd" path="res://UI/game_over_menu/game_over_menu.tscn" id="18_ohi8e"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5b1u5"]
 shader = ExtResource("2_kf8ny")
@@ -25,18 +25,6 @@ shader_parameter/rock_uv_coeff = 8.0
 shader_parameter/tex_uv_coeff = 3.0
 shader_parameter/tex = ExtResource("4_ptemi")
 shader_parameter/normal_map = ExtResource("3_ufj87")
-
-[sub_resource type="Gradient" id="Gradient_saop5"]
-offsets = PackedFloat32Array(0, 0.64557)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_u7iix"]
-gradient = SubResource("Gradient_saop5")
-width = 500
-height = 500
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0, 1)
 
 [node name="Stage" type="Node2D"]
 position = Vector2(-5, 0)
@@ -70,22 +58,22 @@ script = ExtResource("11_x4chg")
 
 [node name="point_light" type="PointLight2D" parent="camera_lights_container"]
 position = Vector2(-342, 0)
-texture = SubResource("GradientTexture2D_u7iix")
+texture = ExtResource("12_x51h8")
 script = ExtResource("12_jb7fb")
 
 [node name="point_light2" type="PointLight2D" parent="camera_lights_container"]
 position = Vector2(278, 0)
-texture = SubResource("GradientTexture2D_u7iix")
+texture = ExtResource("12_x51h8")
 script = ExtResource("12_jb7fb")
 
 [node name="point_light3" type="PointLight2D" parent="camera_lights_container"]
 position = Vector2(-11, -196)
-texture = SubResource("GradientTexture2D_u7iix")
+texture = ExtResource("12_x51h8")
 script = ExtResource("12_jb7fb")
 
 [node name="point_light4" type="PointLight2D" parent="camera_lights_container"]
 position = Vector2(-7, 232)
-texture = SubResource("GradientTexture2D_u7iix")
+texture = ExtResource("12_x51h8")
 script = ExtResource("12_jb7fb")
 
 [node name="ClikmiMaker" parent="." instance=ExtResource("13_bmegm")]
@@ -105,8 +93,6 @@ position = Vector2(-448, 549)
 
 [node name="SpawnSafeZone3" parent="safe_zone_container" instance=ExtResource("17_5wtc2")]
 position = Vector2(-194, -495)
-
-[node name="GameOverMenu" parent="." instance=ExtResource("18_ohi8e")]
 
 [node name="GameTimer" type="Timer" parent="."]
 wait_time = 2.0

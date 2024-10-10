@@ -8,7 +8,7 @@ func _ready ():
 	get_viewport().size_changed.connect(func(): init_bg())
 	# --
 	$start_screen.game_started.connect( on_game_started )
-
+	
 # -- Center screen callback
 func init_bg():
 	if $start_screen:
@@ -18,4 +18,14 @@ func init_bg():
 func on_game_started():
 	$start_screen.queue_free()
 	var _stage = stage.instantiate()
+	_stage.stage_ready.connect(func(): pass)
+	_stage.game_over.connect(func():
+		get_tree().paused = true;
+		$MenusContainer.game_over())
+	_stage.game_paused.connect(func(): 
+		print("pause")
+		get_tree().paused = true;
+		$MenusContainer.pause())
 	add_child(_stage)
+
+	

@@ -1,6 +1,6 @@
 [gd_scene load_steps=47 format=3 uid="uid://dnn6mr6exoxdg"]
 
-[ext_resource type="Script" path="res://clikmi.gd" id="1_6wiuj"]
+[ext_resource type="Script" path="res://clikmi/clikmi.gd" id="1_6wiuj"]
 [ext_resource type="PackedScene" uid="uid://b5g4skxgdvyxa" path="res://clikmi/clikmi_spirit.tscn" id="2_bs8rv"]
 [ext_resource type="Texture2D" uid="uid://bxc8llu2mcbwn" path="res://assets/pink_guy_8_dir/pink_8direction_standing-Sheet.png" id="2_jjx4q"]
 [ext_resource type="Shader" path="res://clikmi/clikmi_sprite.gdshader" id="2_ovqai"]
@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://cxh4acnbo4ht5" path="res://assets/pink_guy_8_dir/pink_walk_SOUTH-EAST-Sheet.png" id="7_godcn"]
 [ext_resource type="Texture2D" uid="uid://cvw5y7jpp7dtf" path="res://assets/pink_guy_8_dir/pink_walk_SOUTH-WEST-Sheet.png" id="8_ye5oa"]
 [ext_resource type="Texture2D" uid="uid://dydfvd0ivoio5" path="res://assets/pink_guy_8_dir/pink_walk_NORTH-WEST-Sheet.png" id="9_qo53y"]
-[ext_resource type="PackedScene" uid="uid://dcry3kkxtie4s" path="res://void_hole/void_hole.tscn" id="13_nr0yn"]
+[ext_resource type="PackedScene" uid="uid://dcry3kkxtie4s" path="res://scenes/void_hole/void_hole.tscn" id="13_nr0yn"]
 [ext_resource type="Shader" path="res://clikmi/label_modulate.gdshader" id="14_l6pb6"]
 [ext_resource type="AudioStream" uid="uid://cxjr8rrhpacio" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_0180.wav" id="15_eesj1"]
 [ext_resource type="AudioStream" uid="uid://cxnmjielg4xlo" path="res://assets/SFX/Effects/clikmi_vocalizations/240507_0183.wav" id="16_6vhtr"]
@@ -44,7 +44,7 @@ length = 0.001
 
 [sub_resource type="Animation" id="Animation_sivax"]
 resource_name = "idle"
-loop_mode = 1
+length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -76,7 +76,7 @@ resource_name = "idle_north"
 [sub_resource type="Animation" id="Animation_3gwon"]
 resource_name = "spin"
 length = 0.8
-loop_mode = 2
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true

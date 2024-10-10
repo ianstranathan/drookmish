@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://dl0g7keusp60j"]
 
-[ext_resource type="Texture2D" uid="uid://cv406cgn24xa3" path="res://HUD/512px-Video_camera_icon.svg.png" id="1_033lk"]
-[ext_resource type="Shader" path="res://HUD/camera_icon.gdshader" id="1_pyg4s"]
-[ext_resource type="Script" path="res://HUD/cam_texture_rect.gd" id="3_d3mws"]
+[ext_resource type="Texture2D" uid="uid://cv406cgn24xa3" path="res://UI/HUD/512px-Video_camera_icon.svg.png" id="1_033lk"]
+[ext_resource type="Shader" path="res://UI/HUD/camera_icon.gdshader" id="1_pyg4s"]
+[ext_resource type="Script" path="res://UI/HUD/cam_texture_rect.gd" id="3_d3mws"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lbwh1"]
 resource_local_to_scene = true

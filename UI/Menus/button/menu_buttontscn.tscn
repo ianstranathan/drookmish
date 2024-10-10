@@ -1,9 +1,9 @@
 [gd_scene load_steps=12 format=3 uid="uid://c2045ae6tbw3n"]
 
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="1_hil07"]
-[ext_resource type="Shader" path="res://Menus/button/button_outline.gdshader" id="1_ok51a"]
+[ext_resource type="Shader" path="res://UI/Menus/button/button_outline.gdshader" id="1_ok51a"]
 [ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="2_jcd2i"]
-[ext_resource type="Script" path="res://Menus/button/menu_button.gd" id="4_45utc"]
+[ext_resource type="Script" path="res://UI/Menus/button/menu_button.gd" id="4_45utc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y570s"]
 resource_local_to_scene = true
