@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://q2d8smes65lp"]
+
+[ext_resource type="Texture2D" uid="uid://8gfdabnk8x4x" path="res://assets/particle_masks/floaty_64.png" id="1_vy3da"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jr87v"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 7
+particles_anim_v_frames = 7
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_o70pr"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+inherit_velocity_ratio = 1.0
+spread = 15.33
+initial_velocity_max = 273.97
+gravity = Vector3(0, 0, 0)
+
+[node name="sub_emitter_sparkles" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_jr87v")
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_o70pr")
+texture = ExtResource("1_vy3da")
+lifetime = 2.0
+randomness = 0.5

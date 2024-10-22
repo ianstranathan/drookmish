@@ -19,7 +19,7 @@ func _ready():
 	# -- Settings menu signals
 	[$settings_container, $stats_container].map( func(x): x.back.connect(func(): change_menu( last_menu)))
 
-	
+
 var last_menu
 func change_menu( menu_changed_to: Control):
 	last_menu = curr_menu

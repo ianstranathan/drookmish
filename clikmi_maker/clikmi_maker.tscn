@@ -33,9 +33,10 @@ shader_parameter/noise_tex_2 = SubResource("NoiseTexture2D_8s1og")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bkolm"]
 resource_local_to_scene = true
 shader = ExtResource("2_pjeli")
-shader_parameter/decay_interpolant = 5.0
+shader_parameter/decay_interpolant = 10.0
 shader_parameter/spin_speed = 0.0
 shader_parameter/spin_dir = 1.0
+shader_parameter/out_of_lives = 0.0
 shader_parameter/pillar_mat = ExtResource("3_1x8lv")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_afbff"]
@@ -44,9 +45,10 @@ size = Vector2(128, 128)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_olc2b"]
 resource_local_to_scene = true
 shader = ExtResource("2_pjeli")
-shader_parameter/decay_interpolant = 5.0
+shader_parameter/decay_interpolant = 10.0
 shader_parameter/spin_speed = 0.0
 shader_parameter/spin_dir = -1.0
+shader_parameter/out_of_lives = 0.0
 shader_parameter/pillar_mat = ExtResource("3_1x8lv")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ei8mq"]

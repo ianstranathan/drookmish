@@ -1,5 +1,6 @@
 extends TextureRect
 
+
 signal cam_icon_selected
 signal camera_hotkey_pressed 
 signal camera_icon_hovered
@@ -18,10 +19,20 @@ func _ready():
 	mouse_entered.connect(on_mouse_entered)
 	mouse_exited.connect( on_mouse_exited)
 	
+	
 func on_mouse_entered():
+	MouseContainer.hovering_over_cam_tex_rect = true
 	_can_select = true
 	# check if there is a clikmi selected, if yes, check if it's the same one as in the hotkey
 	emit_signal("camera_icon_hovered", camera_hover_callback_fn)
+
+
+func on_mouse_exited():
+	MouseContainer.hovering_over_cam_tex_rect = false
+	print("exited")
+	_can_select = false
+	turn_off_button_cues()
+
 
 func camera_hover_callback_fn( a_selected_clikmi ):
 	# if your mouse is hovering over the icon:
@@ -39,22 +50,23 @@ func camera_hover_callback_fn( a_selected_clikmi ):
 			material.set_shader_parameter("hovered_over_hotkey_jump", 1.0)
 
 
-func on_mouse_exited():
-	_can_select = false
-	turn_off_button_cues()
-
-
 func turn_off_button_cues():
 	material.set_shader_parameter("hover_set_bind_col", 0.0)
 	material.set_shader_parameter("hovered_over_bind_hotkey", 0.0)
 	material.set_shader_parameter("hovered_over_hotkey_jump", 0.0)
 
 
-func _input(event):
+func _gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("select") and _can_select:
+		# -- send out signal: this rect -> gui -> stage
+		# --                  stage -> selected_clikmi -> this rect
 		emit_signal("cam_icon_selected", cam_hotkey_click_callback_fn)
+#func _input(event):
+	#if event.is_action_pressed("select") and _can_select:
+		#emit_signal("cam_icon_selected", cam_hotkey_click_callback_fn)
 
 
+# -- closure around a clikmi
 func cam_loc_fn(a_clickmi) -> Callable:
 	return func(b=false):
 		if b: 
@@ -71,6 +83,8 @@ func cam_hotkey_click_callback_fn(a_selected_clikmi):
 			camera_hot_key_fn.call(true).set_color()
 		
 		turn_off_button_cues() # stop vertex shader stuff
+		
+		# the clikmi must also be able to unbind
 		a_selected_clikmi.set_hotkey(unbind_from_a_clikmi, set_color) 
 		camera_hot_key_fn = cam_loc_fn(a_selected_clikmi)
 		emit_signal("camera_hotkey_made")
@@ -78,6 +92,7 @@ func cam_hotkey_click_callback_fn(a_selected_clikmi):
 	# otherwise call the func and let the camera jump to the hotkey loc
 	elif camera_hot_key_fn:
 		camera_hot_key_fn.call()
+
 
 func unbind_from_a_clikmi():
 	camera_hot_key_fn = null

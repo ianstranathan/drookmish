@@ -29,6 +29,8 @@ func uniform_float_fn(v: float, s: Sprite2D, p: String):
 """
 Refactor this to not break where it's already being used
 Sprite should be optional param (sometimes you're just using a material data structure)
+
+This should also be refactored to allow more than just unit interpolation
 """
 func shader_float_tween(tween: Tween, s: Sprite2D, uniform_str: String, duration: float, reverse: bool = false):
 	if reverse:
@@ -70,3 +72,11 @@ func load_wav_audio_stream_from_path(path, audio_stream: AudioStreamWAV):
 	assert(FileAccess.file_exists(path))
 	var file = FileAccess.open(path, FileAccess.READ)
 	audio_stream.buffer = file.get_buffer( file.get_length())
+	
+	
+func pause_node(a_node, b: bool):
+	if b:
+		a_node.set_deferred("process_mode", PROCESS_MODE_DISABLED)
+	else:
+		a_node.set_deferred("process_mode", PROCESS_MODE_INHERIT)
+	

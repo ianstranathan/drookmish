@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://UI/HUD/game_timer.gd" id="5_q7nbc"]
 [ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="8_xoob1"]
 [ext_resource type="Shader" path="res://UI/HUD/meter.gdshader" id="9_uurxa"]
-[ext_resource type="PackedScene" uid="uid://dvy7gbi1o7bkt" path="res://UI/paused_menu/Pause_Menu.tscn" id="11_6rsgx"]
+[ext_resource type="PackedScene" uid="uid://diletx3442kwe" path="res://VFX/particles/level_up_reward_visual/star_particles.tscn" id="9_wa21m"]
 [ext_resource type="Texture2D" uid="uid://clnroqlcuucj6" path="res://assets/baking/baked_images/baked_image.png" id="12_fuxn3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_31hy8"]
@@ -68,11 +68,12 @@ script = ExtResource("1_nuj4q")
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -204.0
-offset_bottom = 40.0
+offset_left = -267.0
+offset_bottom = 50.0
 grow_horizontal = 0
 theme_override_constants/margin_top = 7
 theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 10
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer2"]
 layout_mode = 2
@@ -85,7 +86,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer2/PanelContainer/HBoxContainer/MarginContainer2"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer2/PanelContainer/HBoxContainer/MarginContainer2" groups=["CameraHotkey"]]
 material = SubResource("ShaderMaterial_31hy8")
 layout_mode = 2
 texture = ExtResource("3_2gtof")
@@ -159,14 +160,17 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_constants/margin_right = 10
 
-[node name="PanelContainer" type="PanelContainer" parent="Meter"]
-material = SubResource("ShaderMaterial_ujyid")
-custom_minimum_size = Vector2(20, 100)
-layout_mode = 2
-
 [node name="Timer" type="Timer" parent="Meter"]
 wait_time = 1.4
 one_shot = true
+
+[node name="PanelContainer" type="PanelContainer" parent="Meter"]
+material = SubResource("ShaderMaterial_ujyid")
+custom_minimum_size = Vector2(20, 400)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="StarParticles" parent="Meter/PanelContainer" instance=ExtResource("9_wa21m")]
 
 [node name="ScoreEffectsContainer" type="Node2D" parent="."]
 
@@ -200,8 +204,6 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="life_margin_container/PanelContainer"]
 layout_mode = 2
-
-[node name="PausedMenu" parent="." instance=ExtResource("11_6rsgx")]
 
 [node name="MarginContainer3" type="MarginContainer" parent="."]
 anchors_preset = 7

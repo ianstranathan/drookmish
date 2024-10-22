@@ -26,4 +26,3 @@ func crown_icon_fn(nullable_clikmi):
 	crown_target = nullable_clikmi
 	selectable = true if nullable_clikmi else false
 	material.set_shader_parameter("selectable", 1.0 if selectable else 0.0)
-

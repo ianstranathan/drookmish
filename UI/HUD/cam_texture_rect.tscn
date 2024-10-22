@@ -13,7 +13,7 @@ shader_parameter/default_col = Color(1, 0.4, 0.2, 1)
 shader_parameter/set_col = null
 shader_parameter/hover_set_bind_col = null
 
-[node name="TextureRect" type="TextureRect"]
+[node name="TextureRect" type="TextureRect" groups=["CameraHotkey"]]
 material = SubResource("ShaderMaterial_lbwh1")
 texture = ExtResource("1_033lk")
 expand_mode = 2

@@ -1,7 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://oi5lmlne7tty"]
+[gd_scene load_steps=14 format=3 uid="uid://oi5lmlne7tty"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_4gdta"]
-[ext_resource type="PackedScene" uid="uid://l3gtsu2nfduy" path="res://scenes/mouse_container/mouse_container.tscn" id="2_i0wxk"]
 [ext_resource type="Script" path="res://UI/Menus/start_screen.gd" id="2_xlrxe"]
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="4_q5756"]
 [ext_resource type="Shader" path="res://scenes/void_hole/void_hole.gdshader" id="4_wm08t"]
@@ -38,18 +37,31 @@ texture = ExtResource("4_q5756")
 [node name="settings_container" parent="start_screen" instance=ExtResource("6_dtr76")]
 
 [node name="stats_container" parent="start_screen" instance=ExtResource("7_0xwu1")]
+visible = false
 
-[node name="mouse_container" parent="start_screen" instance=ExtResource("2_i0wxk")]
+[node name="MenusCanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="MenusContainer" type="Control" parent="."]
+[node name="MenusContainer" type="Control" parent="MenusCanvasLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("9_u2w8o")
 
-[node name="PausedMenu" parent="MenusContainer" instance=ExtResource("9_sytur")]
+[node name="GameOverMenu" parent="MenusCanvasLayer/MenusContainer" instance=ExtResource("11_pm520")]
 layout_mode = 1
 
-[node name="GameOverMenu" parent="MenusContainer" instance=ExtResource("11_pm520")]
+[node name="PausedMenu" parent="MenusCanvasLayer/MenusContainer" instance=ExtResource("9_sytur")]
 layout_mode = 1
+
+[node name="stage_container" type="Node2D" parent="."]

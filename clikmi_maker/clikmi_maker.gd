@@ -112,7 +112,13 @@ func screw(_in:bool=false):
 	)
 
 func add_a_clikmi():
+	# -- 
+	update_lives( -1 )
+	# -- 
 	var a_clikmi = clikmi_scene.instantiate()
+	#a_clikmi.clikmi_freed.connect(func(_a_clickmi: Clikmi):
+		#
+		#)
 	emit_signal("clikmi_instantiated", a_clikmi)
 	$OpenTimer.start()
 	
@@ -131,8 +137,31 @@ func tween_in_bg_portal(_in: bool = false):
 		tween.tween_callback( func(): 
 			add_a_clikmi())
 
+
+func update_lives(incr: int):
+	_lives += incr
+	if _lives == 0:
+		out_of_lives_visual_cue( true )
+	# -- if lives went from 0 to 1
+	elif incr == 1 and _lives == 1:
+		out_of_lives_visual_cue( false )
+
+var _lives: int
+func initialize_lives(max_lives_num, start_lives_num):
+	# -- not using max lives, keeping to make stage initialization cleaner
+	_lives = start_lives_num
+
+
+# -- Pillars should blink or something when there are no more lives
+func out_of_lives_visual_cue(b: bool):
+	# -- they're the same material/ shader, should only need to send once
+	[$sprites_container/top_pillar.material, $sprites_container/bottom_pillar.material].map(
+		func(x): x.set_shader_parameter("out_of_lives", 1.0 if b else 0.0)
+	)
+
+
 func click():
-	if can_click:
+	if can_click and _lives > 0:
 		_num_clicks += 1
 		_num_clicks = _num_clicks % num_clicks_to_open
 		if _num_clicks == 0:

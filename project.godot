@@ -23,6 +23,7 @@ buses/default_bus_layout="res://singletons/default_bus_layout.tres"
 
 Utils="*res://singletons/utils.gd"
 Ordering="*res://singletons/ordering.gd"
+MouseContainer="*res://singletons/mouse_container/mouse_container.tscn"
 
 [display]
 

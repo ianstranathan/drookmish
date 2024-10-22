@@ -11,6 +11,7 @@ signal game_timer_timed_out
 signal leveled_up
 signal game_timer_requested
 signal HUD_ready( fn )
+signal HUD_meter_leveled_up( fn )
 
 @onready var camera_tex_rect_container = $MarginContainer2/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer
 @onready var crown_tex_rect = $MarginContainer2/PanelContainer/HBoxContainer/MarginContainer2/TextureRect
@@ -18,9 +19,22 @@ signal HUD_ready( fn )
 @onready var life_tex_rect_scene: PackedScene = preload("res://UI/HUD/life_texture_rect/life_tex_rect.tscn")
 
 var last_meter_anim_level = 0.0
+@onready var score_effects_container = $ScoreEffectsContainer
+@onready var a_score_effect_scene: PackedScene = preload("res://scenes/VFX/particle_effects/score_effect.tscn")
+var points_to_next_level :float = 0.0
+var _score: float = 0.0
+
+@onready var panel_meter_mat: ShaderMaterial = $Meter/PanelContainer.material
+
+@onready var meter_fill_up_particles: GPUParticles2D = $Meter/PanelContainer/StarParticles
 func _ready():
-	$Meter/PanelContainer.material.set_shader_parameter("total_points_lvl", 0.0)
-	$Meter/PanelContainer.material.set_shader_parameter("real_time_points_lvl", 0.0)
+	# -- When the meter particles are done animating, let stage know (will pause game for upgrade menu or w/e)
+	meter_fill_up_particles.finished.connect( func():
+		emit_signal("HUD_meter_leveled_up", meter_filled_up_callback_fn))
+
+	
+	panel_meter_mat.set_shader_parameter("total_points_lvl", 0.0)
+	panel_meter_mat.set_shader_parameter("real_time_points_lvl", 0.0)
 	# -- camera icons
 	for child in camera_tex_rect_container.get_children():
 		child.cam_icon_selected.connect( func(fn): emit_signal("cam_icon_selected", fn))
@@ -39,16 +53,50 @@ func _ready():
 	# -- meter juice timer
 	meter_timer.timeout.connect( func():
 		var tween = create_tween()
+		
+		#-- animate street fighter-esque hit to give immediacy to filling
 		var uniform_float_fn = func(v: float, m: Material, p: String):
 			m.set_shader_parameter(p, v);
-		tween.tween_method(uniform_float_fn.bind($Meter/PanelContainer.material, "real_time_points_lvl"), 
-						last_meter_anim_level/points_to_next_level, 
-						meter_level_collected_points/points_to_next_level, 1.2).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
-		tween.tween_callback( func():
-			last_meter_anim_level = meter_level_collected_points
-			)
-		)
+		
+		tween.tween_method(uniform_float_fn.bind(panel_meter_mat, "real_time_points_lvl"), 
+							hit_effect_meter_lvl(), meter_lvl(), 1.2).set_trans(
+							Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
 
+		# -- when the meter is done filling
+		# -- if it's full, give visual effect & let the stage know (
+		# -- otherwise, just increment animation vars
+		tween.tween_callback( func():
+			if _score >= points_to_next_level:
+				# -- emit the visual cue that the meter is filled
+				# -- its finished signal is connected to a callback fn
+				# -- callback fn updates the meter anim vars & resets anim
+				meter_fill_up_particles.emitting = true
+			else:
+				last_meter_anim_level = _score)
+			)
+
+var previous_points_to_next_level: float = 0.0
+
+func hit_effect_meter_lvl() -> float:
+	return (last_meter_anim_level - previous_points_to_next_level)/(points_to_next_level - previous_points_to_next_level)
+	
+func meter_lvl() -> float:
+	return (_score- previous_points_to_next_level)/(points_to_next_level - previous_points_to_next_level)
+
+
+func meter_filled_up_callback_fn(num: int):
+	# -- save last points threshold to normalize meter val
+	previous_points_to_next_level = points_to_next_level
+	# -- update the points to next level threshold
+	points_to_next_level = num
+	
+	# -- do the shader animation
+	last_meter_anim_level = _score
+	panel_meter_mat.set_shader_parameter("total_points_lvl", meter_lvl())
+	panel_meter_mat.set_shader_parameter("real_time_points_lvl", hit_effect_meter_lvl())
+	
+	#print("hit ratio", hit_effect_meter_lvl())
+	#print("meter ratio", meter_lvl())
 
 func initialize_lives(max_lives_from_stage: int, starting_lives_num_from_stage: int):
 	max_num_lives = max_lives_from_stage
@@ -63,26 +111,21 @@ func get_cam_tex_rects() -> Array:
 func crown_icon_fn(nullable_clikmi):
 	crown_tex_rect.crown_icon_fn(nullable_clikmi)
 
-@onready var score_effects_container = $ScoreEffectsContainer
-@onready var a_score_effect_scene: PackedScene = preload("res://scenes/VFX/particle_effects/score_effect.tscn")
 
-var points_to_next_level :float = 200.0
-var meter_level_collected_points: float = 0.0
-
-func collected_meters_threshold():
-	#meter_level_collected_points
-	emit_signal("leveled_up", points_to_next_level, func(next_levels_threshold): points_to_next_level = next_levels_threshold)
+func init_level_points(num: float):
+	points_to_next_level = num
 
 
 # -- scoring particle effect
-func score_effect(a_clikmi, the_camera: Camera2D, stage_score: int) -> void: #rel_pos_from_camera: Vector2, amount: float) -> void:
+func score_effect(clikmi_rel_pos_from_camera: Vector2, void_timer_points: float, stage_score: int) -> void:
 	update_total_score_label(stage_score)
-	# -------
-	var rel_pos_from_camera = a_clikmi.global_position - the_camera.global_position
+	# --
 	var score_particle_system = a_score_effect_scene.instantiate()
 	score_effects_container.add_child(score_particle_system)
-	 
-	score_particle_system.position = (get_viewport().get_size() / 2.0) + rel_pos_from_camera
+	# --
+	#score_particle_system.position = (get_viewport().get_size() / 2.0) + rel_pos_from_camera
+	score_particle_system.position = (get_viewport().get_size() / 2.0) + clikmi_rel_pos_from_camera
+	# -- 
 	# -- target is near the bottom of the meter
 	var to_meter_rel_pos = ($Meter.position + 0.93 * $Meter.get_size()) - score_particle_system.position
 	var dir = Vector3(to_meter_rel_pos.x, to_meter_rel_pos.y, 0.0)
@@ -90,18 +133,18 @@ func score_effect(a_clikmi, the_camera: Camera2D, stage_score: int) -> void: #re
 	var vel = score_particle_system.process_material.initial_velocity_max
 	score_particle_system.lifetime = 0.95 * (dist / vel)
 	score_particle_system.process_material.set_direction(dir)
-	score_particle_system.amount = a_clikmi.void_hole_timer.wait_time
-	meter_level_collected_points += a_clikmi.void_hole_timer.wait_time
+	score_particle_system.amount = void_timer_points
 	score_particle_system.emitting = true
-	
-	# -- restart timer, don't tween real time mask until timer stops
-	meter_timer.start()
-	
 	score_particle_system.finished.connect( func(): 
 		score_particle_system.queue_free()
-		$Meter/PanelContainer.material.set_shader_parameter("total_points_lvl", meter_level_collected_points / points_to_next_level)
-		)
-
+		panel_meter_mat.set_shader_parameter("total_points_lvl", 
+											 meter_lvl()))
+	
+	# -- update the total score for meter visual
+	_score = stage_score
+	
+	# -- interpolant for fighter game style juice in meter
+	meter_timer.start()  # -- restart timer, don't tween real time mask until timer stops
 
 # -- it probably doesn't make sense to churn data when you could (freeing TextureRect data)
 # -- just make it not visible

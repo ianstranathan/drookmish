@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dvy7gbi1o7bkt"]
 
-[ext_resource type="Script" path="res://UI/paused_menu/Pause_Menu.gd" id="1_s7b2k"]
+[ext_resource type="Script" path="res://UI/paused_menu/pause_menu.gd" id="1_s7b2k"]
 [ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="2_v0oc2"]
 
 [node name="PausedMenu" type="Control" node_paths=PackedStringArray("restart_btn", "quit_btn")]
@@ -33,7 +33,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="VBoxContainer/PanelContainer"]
+[node name="Paused" type="Label" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_v0oc2")
 theme_override_font_sizes/font_size = 60

@@ -1,18 +1,23 @@
 extends Control
 
+signal retry
 
 func _ready():
-	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
-	
-	get_children().map( func(child): 
-		child.retry.connect(func(): pass)
-		child.quit.connect(func(): get_tree().quit())
-		)
+	get_children().map( func(child):
+		child.visible = false
+		child.retry.connect(func():
+			emit_signal("retry"))
+		child.quit.connect( func(): 
+			get_tree().quit()))
 
 
-func pause():
-	$PausedMenu.visible = true
-	
+func pause(b: bool):
+	$PausedMenu.pause( b )
+
 
 func game_over():
 	$GameOverMenu.visible = true
+	
+func reset_menus():
+	get_children().map( func(child):
+		child.visible = false)

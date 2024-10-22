@@ -148,7 +148,9 @@ var target_fn
 func set_target(x):
 	target_fn = func(): return x
 	set_animation_dir( target_pos_fn.call() - global_position )
-
+	if x is Clikmi:
+		x.clikmi_freed.connect( func():
+			target_fn=null)
 # ------------------------------------------------------------------------------
 # -- Animation functions
 # ------------------------------------------------------------------------------
