@@ -1,18 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://dvy7gbi1o7bkt"]
+[gd_scene load_steps=5 format=3 uid="uid://bjmtpi8fgaild"]
 
-[ext_resource type="Script" path="res://UI/paused_menu/pause_menu.gd" id="1_s7b2k"]
-[ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="2_v0oc2"]
+[ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="1_sohb2"]
+[ext_resource type="Script" path="res://UI/MenusV2/retry_and_game_over.gd" id="1_uyqm6"]
+[ext_resource type="Shader" path="res://UI/MenusV2/message.gdshader" id="2_wt5ut"]
 
-[node name="PausedMenu" type="Control" node_paths=PackedStringArray("restart_btn", "quit_btn")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2sspj"]
+shader = ExtResource("2_wt5ut")
+shader_parameter/tt = null
+shader_parameter/is_paused_message = 1.0
+
+[node name="RetryAndGameOver" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_s7b2k")
-restart_btn = NodePath("VBoxContainer/HBoxContainer/PanelContainer/Retry")
-quit_btn = NodePath("VBoxContainer/HBoxContainer/PanelContainer2/Quit")
+script = ExtResource("1_uyqm6")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -33,11 +37,13 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Paused" type="Label" parent="VBoxContainer/PanelContainer"]
+[node name="message" type="Label" parent="VBoxContainer/PanelContainer"]
+material = SubResource("ShaderMaterial_2sspj")
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_v0oc2")
+theme_override_colors/font_color = Color(0.36122, 0.408498, 0.968032, 1)
+theme_override_fonts/font = ExtResource("1_sohb2")
 theme_override_font_sizes/font_size = 60
-text = "PAUSED"
+text = "FAILURE"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -49,7 +55,7 @@ size_flags_horizontal = 0
 
 [node name="Retry" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_v0oc2")
+theme_override_fonts/font = ExtResource("1_sohb2")
 theme_override_font_sizes/font_size = 30
 text = "Retry"
 
@@ -60,6 +66,6 @@ size_flags_vertical = 4
 
 [node name="Quit" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer2"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_v0oc2")
+theme_override_fonts/font = ExtResource("1_sohb2")
 theme_override_font_sizes/font_size = 30
 text = "Quit"

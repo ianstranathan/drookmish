@@ -13,6 +13,8 @@ signal game_timer_requested
 signal HUD_ready( fn )
 signal HUD_meter_leveled_up( fn )
 
+# --------------------------------------------------------------------------------------------------
+
 @onready var camera_tex_rect_container = $MarginContainer2/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer
 @onready var crown_tex_rect = $MarginContainer2/PanelContainer/HBoxContainer/MarginContainer2/TextureRect
 @onready var meter_timer = $Meter/Timer

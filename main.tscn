@@ -7,9 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://bhnycjhca2gey" path="res://UI/Menus/start_menu/start_menu_container.tscn" id="5_5whm8"]
 [ext_resource type="PackedScene" uid="uid://ljt33namf1xs" path="res://UI/Menus/settings_menu/settings_container.tscn" id="6_dtr76"]
 [ext_resource type="PackedScene" uid="uid://cqvnf04undfwt" path="res://UI/Menus/stats_menu/stats_container.tscn" id="7_0xwu1"]
-[ext_resource type="PackedScene" uid="uid://dvy7gbi1o7bkt" path="res://UI/paused_menu/Pause_Menu.tscn" id="9_sytur"]
-[ext_resource type="Script" path="res://menus_container.gd" id="9_u2w8o"]
-[ext_resource type="PackedScene" uid="uid://b5wcg0kytjs8t" path="res://UI/game_over_menu/game_over_menu.tscn" id="11_pm520"]
+[ext_resource type="Script" path="res://pause_retry_menus.gd" id="9_oj600"]
+[ext_resource type="PackedScene" uid="uid://bjmtpi8fgaild" path="res://UI/MenusV2/RetryAndGameOver.tscn" id="10_nr5ep"]
+[ext_resource type="PackedScene" uid="uid://cip30rpkg6ksa" path="res://UI/upgrade_menu/upgrade_menu.tscn" id="12_6xbje"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ao0ah"]
 
@@ -41,27 +41,19 @@ visible = false
 
 [node name="MenusCanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="MenusContainer" type="Control" parent="MenusCanvasLayer"]
+[node name="MenuContainer" type="Control" parent="MenusCanvasLayer"]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-script = ExtResource("9_u2w8o")
+script = ExtResource("9_oj600")
 
-[node name="GameOverMenu" parent="MenusCanvasLayer/MenusContainer" instance=ExtResource("11_pm520")]
+[node name="UpgradeMenu" parent="MenusCanvasLayer/MenuContainer" instance=ExtResource("12_6xbje")]
 layout_mode = 1
 
-[node name="PausedMenu" parent="MenusCanvasLayer/MenusContainer" instance=ExtResource("9_sytur")]
+[node name="RetryAndGameOver" parent="MenusCanvasLayer/MenuContainer" instance=ExtResource("10_nr5ep")]
 layout_mode = 1
 
 [node name="stage_container" type="Node2D" parent="."]

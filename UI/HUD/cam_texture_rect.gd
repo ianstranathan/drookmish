@@ -29,7 +29,6 @@ func on_mouse_entered():
 
 func on_mouse_exited():
 	MouseContainer.hovering_over_cam_tex_rect = false
-	print("exited")
 	_can_select = false
 	turn_off_button_cues()
 

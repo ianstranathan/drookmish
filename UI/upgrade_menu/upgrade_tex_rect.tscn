@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://dvaaw4swukxka"]
+
+[ext_resource type="Shader" path="res://UI/upgrade_menu/upgrade_tex_rect.gdshader" id="1_6aoqc"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="1_wnyx0"]
+[ext_resource type="Script" path="res://UI/upgrade_menu/upgrade_tex_rect.gd" id="3_r1s57"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mwsjy"]
+resource_local_to_scene = true
+shader = ExtResource("1_6aoqc")
+shader_parameter/hovered_over = 1.0
+shader_parameter/offset_time = 1.0
+
+[node name="UpgradeTextureButton" type="TextureButton"]
+material = SubResource("ShaderMaterial_mwsjy")
+texture_normal = ExtResource("1_wnyx0")
+stretch_mode = 3
+script = ExtResource("3_r1s57")

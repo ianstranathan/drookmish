@@ -65,7 +65,6 @@ func _input(event):
 
 
 func left_mouse_btn_fn():
-	print(MouseContainer.hovering_over_cam_tex_rect)
 	if hovered_maker:
 		hovered_maker.click()
 	elif selected_clikmi and !hovering_over_cam_tex_rect:

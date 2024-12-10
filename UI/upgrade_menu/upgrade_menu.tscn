@@ -1,0 +1,130 @@
+[gd_scene load_steps=9 format=3 uid="uid://cip30rpkg6ksa"]
+
+[ext_resource type="Script" path="res://UI/upgrade_menu/upgrade_menu.gd" id="1_2u0mx"]
+[ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="1_ohbcr"]
+[ext_resource type="PackedScene" uid="uid://dvaaw4swukxka" path="res://UI/upgrade_menu/upgrade_tex_rect.tscn" id="2_sh0iy"]
+[ext_resource type="Shader" path="res://UI/upgrade_menu/upgrade_tex_rect.gdshader" id="4_q6u0o"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_23342"]
+resource_local_to_scene = true
+shader = ExtResource("4_q6u0o")
+shader_parameter/hovered_over = 1.0
+shader_parameter/offset_time = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jor4a"]
+resource_local_to_scene = true
+shader = ExtResource("4_q6u0o")
+shader_parameter/hovered_over = 1.0
+shader_parameter/offset_time = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jxbpf"]
+resource_local_to_scene = true
+shader = ExtResource("4_q6u0o")
+shader_parameter/hovered_over = 1.0
+shader_parameter/offset_time = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_okdh4"]
+resource_local_to_scene = true
+shader = ExtResource("4_q6u0o")
+shader_parameter/hovered_over = 1.0
+shader_parameter/offset_time = 1.0
+
+[node name="UpgradeMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2u0mx")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="UpgradeDescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_ohbcr")
+theme_override_font_sizes/font_size = 35
+text = "Description Here!"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+
+[node name="UpgradeTextureButton" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_sh0iy")]
+material = SubResource("ShaderMaterial_23342")
+layout_mode = 2
+
+[node name="UpgradeTextureButton2" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_sh0iy")]
+material = SubResource("ShaderMaterial_jor4a")
+layout_mode = 2
+
+[node name="UpgradeTextureButton3" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_sh0iy")]
+material = SubResource("ShaderMaterial_jxbpf")
+layout_mode = 2
+
+[node name="UpgradeTextureButton4" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_sh0iy")]
+material = SubResource("ShaderMaterial_okdh4")
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.878431, 0.505882, 0.886275, 1)
+theme_override_fonts/font = ExtResource("1_ohbcr")
+theme_override_font_sizes/font_size = 65
+text = "LEVEL UP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.435294)
+theme_override_fonts/font = ExtResource("1_ohbcr")
+theme_override_font_sizes/font_size = 30
+text = "SELECT 1 Upgrade"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -20,6 +20,7 @@ this is probably not ideal
 
 signal stage_ready
 signal game_over
+signal leveled_up
 
 @onready var score: int = 0
 
@@ -55,7 +56,10 @@ func _ready():
 	$clikmi_container.clikmi_freed.connect(func(a_clikmi):
 		update_lives(false)
 		#$HUD.remove_a_clikmi()
-		#$HUD.update_clikmi_multiplier_visual( $clikmi_container.get_children().size() - 2) # -- 2, because: crown is always there, and the freeing clikmi is still a child
+		
+		# -- hardcoded/ magic 2 needs to go
+		# -- it's 2, because: crown child is always there, and the freeing clikmi is still a child
+		$HUD.update_clikmi_multiplier_visual( $clikmi_container.get_children().size() - 2) 
 		[$vfx_container/VoidHoleShockwaves, MouseContainer, $SelectionBg].map( func(x):
 			x.clikmi_freed(a_clikmi)))
 
@@ -92,7 +96,8 @@ func _ready():
 	$HUD.crown_icon_clicked.connect(func(loc: Vector2): cam.jump_to_hotkey_loc(loc))
 	$HUD.game_timer_requested.connect( func(fn: Callable):
 		fn.call($GameTimer))
-	$HUD.HUD_meter_leveled_up.connect(func(fn: Callable): 
+	$HUD.HUD_meter_leveled_up.connect(func(fn: Callable):
+		emit_signal("leveled_up")
 		curr_lvl_points = LVL_UP_MULTIPLIER * curr_lvl_points
 		fn.call(curr_lvl_points))
 
