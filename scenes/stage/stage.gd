@@ -142,3 +142,9 @@ func update_lives(b: bool):
 
 func end_game():
 	emit_signal("game_over")
+	
+
+func process_upgrade( data ):
+	match data.name:
+		"1UP":
+			print("lvled up")

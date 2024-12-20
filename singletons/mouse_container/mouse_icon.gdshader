@@ -15,4 +15,3 @@ void fragment() {
 	vec4 col = (open_palm_sample * (1. - grabbing) + closed_palm_sample * grabbing);
 	COLOR = col;
 }
-

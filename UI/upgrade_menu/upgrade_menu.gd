@@ -26,8 +26,10 @@ func shuffle_and_set_upgrades():
 	pass
 
 
+@onready var upgrade_label: Label = $MarginContainer/VBoxContainer/UpgradeDescriptionLabel
+
 func _ready() -> void:
-	visible = false
+	#visible = false
 	
 	# -- each texture rect should have different upgrades
 	var shuffled_upgrades = upgrade_arr.duplicate()
@@ -42,6 +44,7 @@ func _ready() -> void:
 			x.clicked.connect( func(data):
 				# -- just relay up signal
 				emit_signal("upgrade_selected", data))
-			x.hovering.connect(func(label: String):
-				$MarginContainer/VBoxContainer/UpgradeDescriptionLabel.text = label
+			x.hovering.connect(func(upgrade_description: String):
+				if upgrade_label.text != upgrade_description:
+					$MarginContainer/VBoxContainer/UpgradeDescriptionLabel.text = upgrade_description
 				))
