@@ -10,6 +10,7 @@ func _ready() -> void:
 	$RetryAndGameOver.retry.connect(func(): emit_signal("retry"))
 	$RetryAndGameOver.quit.connect(func(): get_tree().quit())
 	$UpgradeMenu.upgrade_selected.connect(func(data):
+		pause(level_up_fn(false), false)
 		emit_signal("upgrade_selected", data))
 
 
@@ -32,36 +33,34 @@ func pause(fn: Callable, b: bool):
 		Utils.pause_node(stage_ref, b)
 	
 	# -- need to turn on parent node's visibility
-	visible = true
+	visible = b
 	fn.call() #if !args else fn.call(args) # -- do relevant UI
 
 
-func pause_game_fn(b) -> Callable:
+func pause_game_fn(b: bool) -> Callable:
 	return func():
 		$RetryAndGameOver.visible = b
 		$RetryAndGameOver.disp("Paused")
-	
-#func pause_game_fn(b=true):
-	#$RetryAndGameOver.visible = true
-	#$RetryAndGameOver.disp("Paused")
 
 # ------------------------------------------------------------------------------
 
-func game_over_fn():
-	$RetryAndGameOver.visibile = true
+func game_over_fn() -> void:
+	$RetryAndGameOver.visible = true
 	$RetryAndGameOver.disp("Failure")
 
 
-func game_over():
+func game_over() -> void:
 	pause(game_over_fn, true)
 
 # ------------------------------------------------------------------------------
 
-func level_up():
-	pause(level_up_fn, true)
+func level_up() -> void:
+	pause(level_up_fn(true), true)
 
 
-func level_up_fn():
-	$UpgradeMenu.visible = true
-	
+func level_up_fn(b: bool) -> Callable:
+	return func():
+		$UpgradeMenu.visible = b
+
+
 # ------------------------------------------------------------------------------

@@ -8,16 +8,16 @@ signal upgrade_selected( data )
 # -- It's currently being set on the object (texture rect) itself, should be managed here
 
 var upgrade_arr: Array = [
-	{"NAME": "1UP",
+	{"name": "1UP",
 	"offset": 0.0, 
 	"label":  "Get an additional life"},
-	{"NAME": "PLACEHOLDER 1",
+	{"name": "PLACEHOLDER 1",
 	"offset": 0.3, 
 	"label":  "1. Description here"},
-	{"NAME": "PLACEHOLDER 2",
+	{"name": "PLACEHOLDER 2",
 	"offset": 0.8, 
 	"label":  "2. Description here"},
-	{"NAME": "PLACEHOLDER 3",
+	{"name": "PLACEHOLDER 3",
 	"offset": 0.5, 
 	"label":  "3. Description here"},
 ]

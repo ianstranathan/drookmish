@@ -100,10 +100,18 @@ func meter_filled_up_callback_fn(num: int):
 	#print("hit ratio", hit_effect_meter_lvl())
 	#print("meter ratio", meter_lvl())
 
-func initialize_lives(max_lives_from_stage: int, starting_lives_num_from_stage: int):
-	max_num_lives = max_lives_from_stage
-	for i in range(starting_lives_num_from_stage):
-		add_a_life()
+func num_lives_from_stage(num_lives: int):
+	# -- difference is taken to make initialization and adding life later
+	# -- blind
+	var num_life_icons_now = life_icon_container.get_children().size()
+	var num_icons_to_make = num_lives - num_life_icons_now
+	for i in range(num_icons_to_make):
+		add_life_icon()
+		
+#func initialize_lives(max_lives_from_stage: int, starting_lives_num_from_stage: int):
+	##max_num_lives = max_lives_from_stage
+	#for i in range(starting_lives_num_from_stage):
+		#add_a_life()
 
 
 func get_cam_tex_rects() -> Array:
@@ -151,7 +159,7 @@ func score_effect(clikmi_rel_pos_from_camera: Vector2, void_timer_points: float,
 # -- it probably doesn't make sense to churn data when you could (freeing TextureRect data)
 # -- just make it not visible
 
-var max_num_lives: int
+#var max_num_lives: int
 @onready var life_icon_container = $life_margin_container/PanelContainer/HBoxContainer
 
 func add_life_icon():
@@ -161,10 +169,10 @@ func add_life_icon():
 	life_icon_container.add_child(life_icon)
 
 
-func add_a_life():
-	assert(max_num_lives)
-	if life_icon_container.get_children().size() < max_num_lives:
-		add_life_icon()
+#func add_a_life():
+	#assert(max_num_lives)
+	#if life_icon_container.get_children().size() < max_num_lives:
+		#add_life_icon()
 
 
 func remove_a_life():
@@ -178,8 +186,8 @@ func write_label_from_number(_label, num, x=""):
 
 
 func update_clikmi_multiplier_visual(num):
+	$MarginContainer3/HBoxContainer/Label.material.set_shader_parameter("num_clikmis", num)
 	write_label_from_number($MarginContainer3/HBoxContainer/Label, num, "x")
-
 
 func update_total_score_label(score: int):
 	write_label_from_number($MainScoreMarginContainer/Label, score)

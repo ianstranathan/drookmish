@@ -10,7 +10,7 @@ float avg(vec3 c){
 
 void fragment() {
 	vec2 uv = 2. * UV - 1.;
-	
+
 	// SEE SPIRIT SHADER FOR ORIGINAL. I JUST TOOK OUT NOISE AND SIN DISP
 	//vec4 noise_tex_sample = UV.y * UV.y * texture(noise_tex, UV - vec2(0., TIME));
 	//

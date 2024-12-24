@@ -147,10 +147,12 @@ func update_lives(incr: int):
 		out_of_lives_visual_cue( false )
 
 var _lives: int
-func initialize_lives(max_lives_num, start_lives_num):
-	# -- not using max lives, keeping to make stage initialization cleaner
-	_lives = start_lives_num
-
+#func initialize_lives(max_lives_num, start_lives_num):
+	## -- not using max lives, keeping to make stage initialization cleaner
+	#_lives = start_lives_num
+	
+func num_lives_from_stage(num: int):
+	_lives = num
 
 # -- Pillars should blink or something when there are no more lives
 func out_of_lives_visual_cue(b: bool):

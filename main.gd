@@ -8,6 +8,8 @@ func _ready ():
 	menus_container.retry.connect(func():
 		restart_game())
 	menus_container.upgrade_selected.connect(func(data):
+		# -- there should only  ever be one stage, but mapping over children
+		# -- is nicer syntax imo than naming it or indexing it
 		$stage_container.get_children().map( func(x):
 			x.process_upgrade( data )))
 	# --------------------------------------------------------------------------

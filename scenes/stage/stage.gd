@@ -43,21 +43,20 @@ func _ready():
 	# ---------------------------------
 	# --------- SIGNALS ---------------
 	# ---------------------------------
-	
 	# -- background shader
 	$bg.scale = stage_dimensions / Vector2($bg.texture.get_size())
 	# ---------------------------------
 	# -- Clikmi container signals
-		# -- I can make the assumption that only a cliky will ever leave from this node
-		# -- saves filter call, leaving here for future in case I redesign or w/e
-		#$HUD.update_clikmi_multiplier_visual(
-			#$clikmi_container.get_children().filter( func(x): return x is Clikmi).size()))
-		
+	# -- I can make the assumption that only a cliky will ever leave from this node
+	# -- saves filter call, leaving here for future in case I redesign or w/e
+	#$HUD.update_clikmi_multiplier_visual(
+		#$clikmi_container.get_children().filter( func(x): return x is Clikmi).size()))
+
 	$clikmi_container.clikmi_freed.connect(func(a_clikmi):
 		update_lives(false)
 		#$HUD.remove_a_clikmi()
 		
-		# -- hardcoded/ magic 2 needs to go
+		# -- hardcoded/ magic 2 NEEDS to go
 		# -- it's 2, because: crown child is always there, and the freeing clikmi is still a child
 		$HUD.update_clikmi_multiplier_visual( $clikmi_container.get_children().size() - 2) 
 		[$vfx_container/VoidHoleShockwaves, MouseContainer, $SelectionBg].map( func(x):
@@ -126,8 +125,12 @@ func init_level():
 	#$GameTimer.wait_time = level_seconds
 	#$GameTimer.timeout.connect( game_over )
 	#$GameTimer.start()
+	#[$ClikmiMaker, $HUD].map( func(x):
+		#x.initialize_lives(MAX_LIVES_NUM, STARTING_LIVES_NUM))
 	[$ClikmiMaker, $HUD].map( func(x):
-		x.initialize_lives(MAX_LIVES_NUM, STARTING_LIVES_NUM))
+		x.num_lives_from_stage(num_lives))
+	
+	# -- Let clikmi maker & the game ui know 
 	#$ClikmiMaker.my_init()
 	$HUD.init_level_points(STARTING_LEVEL_POINTS)
 	emit_signal("stage_ready")
@@ -144,7 +147,13 @@ func end_game():
 	emit_signal("game_over")
 	
 
+func life_update():
+	[$ClikmiMaker, $HUD].map( func(x):
+		x.num_lives_from_stage(num_lives))
+
+
 func process_upgrade( data ):
 	match data.name:
 		"1UP":
 			print("lvled up")
+			life_update()

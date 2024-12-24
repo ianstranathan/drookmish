@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bhnycjhca2gey" path="res://UI/Menus/start_menu/start_menu_container.tscn" id="5_5whm8"]
 [ext_resource type="PackedScene" uid="uid://ljt33namf1xs" path="res://UI/Menus/settings_menu/settings_container.tscn" id="6_dtr76"]
 [ext_resource type="PackedScene" uid="uid://cqvnf04undfwt" path="res://UI/Menus/stats_menu/stats_container.tscn" id="7_0xwu1"]
-[ext_resource type="Script" path="res://pause_retry_menus.gd" id="9_oj600"]
+[ext_resource type="Script" path="res://menu_container.gd" id="9_oj600"]
 [ext_resource type="PackedScene" uid="uid://bjmtpi8fgaild" path="res://UI/MenusV2/RetryAndGameOver.tscn" id="10_nr5ep"]
 [ext_resource type="Script" path="res://stage_container.gd" id="11_07w8y"]
 [ext_resource type="PackedScene" uid="uid://cip30rpkg6ksa" path="res://UI/upgrade_menu/upgrade_menu.tscn" id="12_6xbje"]
