@@ -31,7 +31,7 @@ script = ExtResource("1_trcsx")
 stage_scale = 1.0
 level_seconds = 500.0
 STARTING_LEVEL_POINTS = 20.0
-STARTING_LIVES_NUM = 5
+STARTING_LIVES_NUM = 2
 metadata/_edit_group_ = true
 
 [node name="bg" type="Sprite2D" parent="."]

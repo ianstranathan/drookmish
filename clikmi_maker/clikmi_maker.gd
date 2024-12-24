@@ -112,22 +112,18 @@ func screw(_in:bool=false):
 	)
 
 func add_a_clikmi():
-	# -- 
-	update_lives( -1 )
-	# -- 
+	if _lives == 1:
+		out_of_lives_visual_cue(1)
+	_lives -= 1
+
 	var a_clikmi = clikmi_scene.instantiate()
-	#a_clikmi.clikmi_freed.connect(func(_a_clickmi: Clikmi):
-		#
-		#)
 	emit_signal("clikmi_instantiated", a_clikmi)
 	$OpenTimer.start()
-	
+
 
 func tween_in_bg_portal(_in: bool = false):
 	var tween = create_tween()
 	var target_scale: Vector2 = Vector2(0.0, 0.0) if _in else Vector2(1.0, 1.0)
-	
-	
 	tween.tween_property($bg_energy, "scale", target_scale, 0.7).set_trans(Tween.TRANS_ELASTIC)
 	if _in:
 		tween.tween_callback( func(): 
@@ -137,29 +133,18 @@ func tween_in_bg_portal(_in: bool = false):
 		tween.tween_callback( func(): 
 			add_a_clikmi())
 
-
-func update_lives(incr: int):
-	_lives += incr
+var _lives: int = 0
+func add_lives(num: int):
 	if _lives == 0:
-		out_of_lives_visual_cue( true )
-	# -- if lives went from 0 to 1
-	elif incr == 1 and _lives == 1:
-		out_of_lives_visual_cue( false )
-
-var _lives: int
-#func initialize_lives(max_lives_num, start_lives_num):
-	## -- not using max lives, keeping to make stage initialization cleaner
-	#_lives = start_lives_num
-	
-func num_lives_from_stage(num: int):
-	_lives = num
+		# -- turn off cue if going from 0 to 1
+		out_of_lives_visual_cue(0.0)
+	_lives += num
 
 # -- Pillars should blink or something when there are no more lives
-func out_of_lives_visual_cue(b: bool):
+func out_of_lives_visual_cue(_uniform: float):
 	# -- they're the same material/ shader, should only need to send once
 	[$sprites_container/top_pillar.material, $sprites_container/bottom_pillar.material].map(
-		func(x): x.set_shader_parameter("out_of_lives", 1.0 if b else 0.0)
-	)
+		func(x): x.set_shader_parameter("out_of_lives", _uniform))
 
 
 func click():

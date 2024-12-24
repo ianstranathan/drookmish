@@ -53,7 +53,7 @@ func _ready():
 		#$clikmi_container.get_children().filter( func(x): return x is Clikmi).size()))
 
 	$clikmi_container.clikmi_freed.connect(func(a_clikmi):
-		update_lives(false)
+		decrement_lives()
 		#$HUD.remove_a_clikmi()
 		
 		# -- hardcoded/ magic 2 NEEDS to go
@@ -128,7 +128,7 @@ func init_level():
 	#[$ClikmiMaker, $HUD].map( func(x):
 		#x.initialize_lives(MAX_LIVES_NUM, STARTING_LIVES_NUM))
 	[$ClikmiMaker, $HUD].map( func(x):
-		x.num_lives_from_stage(num_lives))
+		x.add_lives(num_lives))
 	
 	# -- Let clikmi maker & the game ui know 
 	#$ClikmiMaker.my_init()
@@ -137,23 +137,24 @@ func init_level():
 
 
 # -- This is just counting lives to decide to end the game when out of lives
-func update_lives(b: bool):
-	num_lives += 1 if b else -1
+func decrement_lives() -> void:
+	num_lives -= 1
 	if num_lives <= 0:
 		end_game()
 
 
+func add_lives(num_to_add: int):
+	num_lives += num_to_add
+	[$ClikmiMaker, $HUD].map( func(x):
+		x.add_lives( num_to_add ))
+
+
 func end_game():
 	emit_signal("game_over")
-	
-
-func life_update():
-	[$ClikmiMaker, $HUD].map( func(x):
-		x.num_lives_from_stage(num_lives))
 
 
 func process_upgrade( data ):
 	match data.name:
 		"1UP":
-			print("lvled up")
-			life_update()
+			add_lives( 1 )
+			

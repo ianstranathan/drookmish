@@ -100,18 +100,31 @@ func meter_filled_up_callback_fn(num: int):
 	#print("hit ratio", hit_effect_meter_lvl())
 	#print("meter ratio", meter_lvl())
 
-func num_lives_from_stage(num_lives: int):
-	# -- difference is taken to make initialization and adding life later
-	# -- blind
-	var num_life_icons_now = life_icon_container.get_children().size()
-	var num_icons_to_make = num_lives - num_life_icons_now
-	for i in range(num_icons_to_make):
+func remove_life_icons(n: int) -> void:
+	var life_icons = life_icon_container.get_children()
+	for i in range(n):
+		life_icons.pop_back().queue_free()
+
+
+func add_life_icons(n: int) -> void:
+	for i in range(n):
 		add_life_icon()
-		
-#func initialize_lives(max_lives_from_stage: int, starting_lives_num_from_stage: int):
-	##max_num_lives = max_lives_from_stage
-	#for i in range(starting_lives_num_from_stage):
-		#add_a_life()
+
+
+@onready var life_icon_container = $life_margin_container/PanelContainer/HBoxContainer
+func add_life_icon():
+	var life_icon = life_tex_rect_scene.instantiate()
+	life_icon.expand_mode = 3 #EXPAND_FIT_WIDTH_PROPORTIONAL
+	life_icon.stretch_mode = 4 #KEEP_ASPECT
+	life_icon_container.add_child(life_icon)
+
+
+var num_life_icons: int
+func add_lives(num: int):
+	if !num_life_icons:
+		# initialize num icons
+		num_life_icons = num
+	add_life_icons(num)
 
 
 func get_cam_tex_rects() -> Array:
@@ -149,31 +162,16 @@ func score_effect(clikmi_rel_pos_from_camera: Vector2, void_timer_points: float,
 		score_particle_system.queue_free()
 		panel_meter_mat.set_shader_parameter("total_points_lvl", 
 											 meter_lvl()))
-	
 	# -- update the total score for meter visual
 	_score = stage_score
-	
 	# -- interpolant for fighter game style juice in meter
 	meter_timer.start()  # -- restart timer, don't tween real time mask until timer stops
-
-# -- it probably doesn't make sense to churn data when you could (freeing TextureRect data)
-# -- just make it not visible
-
-#var max_num_lives: int
-@onready var life_icon_container = $life_margin_container/PanelContainer/HBoxContainer
-
-func add_life_icon():
-	var life_icon = life_tex_rect_scene.instantiate()
-	life_icon.expand_mode = 3 #EXPAND_FIT_WIDTH_PROPORTIONAL
-	life_icon.stretch_mode = 4 #KEEP_ASPECT
-	life_icon_container.add_child(life_icon)
 
 
 #func add_a_life():
 	#assert(max_num_lives)
 	#if life_icon_container.get_children().size() < max_num_lives:
 		#add_life_icon()
-
 
 func remove_a_life():
 	var life_icons = life_icon_container.get_children()
