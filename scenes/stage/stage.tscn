@@ -44,6 +44,9 @@ texture = ExtResource("5_dg7at")
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("7_hiols")
 
+[node name="ShakeTimer" type="Timer" parent="Camera2D"]
+one_shot = true
+
 [node name="HUD" parent="." instance=ExtResource("8_vqdr4")]
 
 [node name="vfx_container" type="Node2D" parent="."]

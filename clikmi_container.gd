@@ -5,6 +5,7 @@ signal void_hole_made(  a_clikmi )
 signal started_being_sucked_in(a_clikmi )
 signal crown_changed( a_clikmi )
 signal a_clikmi_scored_points( a_clikmi )
+signal clikmi_crushed
 
 @onready var crown = $Crown
 
@@ -17,12 +18,14 @@ var clikmi_with_highest_time: Clikmi
 
 
 func add_clikmi(a_clikmi):
+	a_clikmi.clikmi_crushed.connect(func():
+		emit_signal("clikmi_crushed"))
 	a_clikmi.clikmi_freed.connect(   func( a_clikmi): 
 		clikmi_died_process_crown(a_clikmi)
 		emit_signal("clikmi_freed",   a_clikmi))
 	a_clikmi.void_hole_made.connect( func( a_clikmi): emit_signal("void_hole_made", a_clikmi))
-	a_clikmi.started_being_sucked_in.connect(func(a_clikmi):
-		emit_signal("started_being_sucked_in", a_clikmi)
+	a_clikmi.started_being_sucked_in.connect(func(a_clikmi, t):
+		emit_signal("started_being_sucked_in", a_clikmi, t)
 		clikmi_died_process_crown(a_clikmi))
 	a_clikmi.timer_collectable_collected.connect(func(a_wait_time, a_clikmi):
 		# -- process just updates crown position

@@ -152,30 +152,45 @@ size_flags_horizontal = 4
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Meter" type="MarginContainer" parent="."]
+[node name="MeterAndLevelNum" type="VBoxContainer" parent="."]
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -20.0
+offset_left = -40.0
 offset_top = -200.0
 offset_bottom = 200.0
 grow_horizontal = 0
 grow_vertical = 2
+
+[node name="Meter" type="MarginContainer" parent="MeterAndLevelNum"]
+layout_mode = 2
 theme_override_constants/margin_right = 10
 
-[node name="Timer" type="Timer" parent="Meter"]
-wait_time = 1.4
+[node name="Timer" type="Timer" parent="MeterAndLevelNum/Meter"]
+wait_time = 0.5
 one_shot = true
 
-[node name="PanelContainer" type="PanelContainer" parent="Meter"]
+[node name="PanelContainer" type="PanelContainer" parent="MeterAndLevelNum/Meter"]
 material = SubResource("ShaderMaterial_ujyid")
 custom_minimum_size = Vector2(20, 400)
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="StarParticles" parent="Meter/PanelContainer" instance=ExtResource("9_wa21m")]
+[node name="StarParticles" parent="MeterAndLevelNum/Meter/PanelContainer" instance=ExtResource("9_wa21m")]
+
+[node name="MarginContainer" type="MarginContainer" parent="MeterAndLevelNum"]
+layout_mode = 2
+theme_override_constants/margin_top = 6
+
+[node name="Label" type="Label" parent="MeterAndLevelNum/MarginContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8_xoob1")
+theme_override_font_sizes/font_size = 30
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ScoreEffectsContainer" type="Node2D" parent="."]
 

@@ -20,13 +20,14 @@ var cam_rect: TextureRect
 
 #-------------------------------------------------------------------------------
 
-signal sucked_in() # -- void hole (REFACTOR THIS PLEASE)
-signal started_being_sucked_in( a_clikmi ) # -- clikmi container for crown logic
+signal sucked_in                           # -- void hole (REFACTOR THIS PLEASE)
+signal started_being_sucked_in( a_clikmi, _void_hole_time_left) # -- clikmi container for crown logic
 signal clikmi_freed
 signal void_hole_made
 signal released_light_pos
 signal timer_collectable_collected(this_voids_wait_time, a_clikmi)
 signal scored_points(a_clikmi)
+signal clikmi_crushed
 
 #-------------------------------------------------------------------------------
 enum MoveDirs{
@@ -236,7 +237,9 @@ func start_sucking_in( void_hole_pos, void_hole_timer_fn ):
 	# tell that this clikmi is unselectable
 	$CollisionShape2D.set_deferred("disabled", true)
 	$PanelContainer.visible = false
-	emit_signal("started_being_sucked_in", self)
+	
+	# -- Crown logic + shake duration from var t = void_hole_timer_fn.call()
+	emit_signal("started_being_sucked_in", self, t)
 	emit_signal("released_light_pos", self)       # -- this won't change the col of the clikmi, but I kinda like it
 	tween.chain().tween_callback( func():
 		emit_signal("sucked_in") 
@@ -300,6 +303,7 @@ var crushed: bool = false
 func crush():
 	if !crushed:
 		crushed = true
+		emit_signal("clikmi_crushed")
 		my_queue_free()
 
 # -- I want the time indication to start blinking at whatever this is for

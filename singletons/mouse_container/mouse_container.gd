@@ -22,16 +22,8 @@ func _ready():
 
 func _process(_delta):
 	global_position = get_global_mouse_position()
-	#
-	#if Input.is_action_just_pressed("select"):
-		#Input.set_custom_mouse_cursor(grabbing_img)
-		#left_mouse_btn_fn()
-		#last_mouse_pos = global_position
-	#if Input.is_action_just_released("select"):
-		#Input.set_custom_mouse_cursor(open_palm_img)
-		
-	#if event.is_action_pressed("right_click") and selected_clikmi and !right_mouse_btn_is_pressed:
-		#right_mouse_btn_fn()
+
+
 var left_mouse_btn_is_pressed = false
 var right_mouse_btn_is_pressed = false
 var last_mouse_pos
@@ -81,29 +73,6 @@ func right_mouse_btn_fn():
 		selected_clikmi.set_target( hovered_clikmi )
 		emit_signal("clikmi_selected", null)
 		selected_clikmi = null
-
-#func _unhandled_input(event):
-	## -- Left mouse btn stuff
-	#if event.is_action_pressed("select"):
-		#if hovered_maker:
-			#hovered_maker.click()
-		#elif selected_clikmi:
-			#selected_clikmi.set_target( global_position )
-			#emit_signal("clikmi_selected", null)
-			#selected_clikmi = null
-		#if hovered_clikmi and !selected_clikmi:
-			#selected_clikmi = hovered_clikmi
-			#emit_signal("clikmi_selected", selected_clikmi)
-			#selected_clikmi.play_clikmi_sound()
-	#if event is InputEventMouseMotion and left_mouse_btn_is_pressed and !hovered_clikmi and cam_reference:
-		#pan_cam(event.position)
-#
-	## -- Right mouse btn stuff
-	#elif event.is_action_pressed("right_click") and selected_clikmi:
-		#if hovered_clikmi and hovered_clikmi != selected_clikmi:
-			#selected_clikmi.set_target( hovered_clikmi )
-			#emit_signal("clikmi_selected", null)
-			#selected_clikmi = null
 
 
 func get_selected_clikmi():

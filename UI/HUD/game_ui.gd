@@ -17,7 +17,8 @@ signal HUD_meter_leveled_up( fn )
 
 @onready var camera_tex_rect_container = $MarginContainer2/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer
 @onready var crown_tex_rect = $MarginContainer2/PanelContainer/HBoxContainer/MarginContainer2/TextureRect
-@onready var meter_timer = $Meter/Timer
+@onready var meter = $MeterAndLevelNum/Meter
+@onready var meter_timer = $MeterAndLevelNum/Meter/Timer
 @onready var life_tex_rect_scene: PackedScene = preload("res://UI/HUD/life_texture_rect/life_tex_rect.tscn")
 
 var last_meter_anim_level = 0.0
@@ -26,12 +27,15 @@ var last_meter_anim_level = 0.0
 var points_to_next_level :float = 0.0
 var _score: float = 0.0
 
-@onready var panel_meter_mat: ShaderMaterial = $Meter/PanelContainer.material
+@onready var panel_meter_mat: ShaderMaterial = $MeterAndLevelNum/Meter/PanelContainer.material
 
-@onready var meter_fill_up_particles: GPUParticles2D = $Meter/PanelContainer/StarParticles
+@onready var meter_fill_up_particles: GPUParticles2D = $MeterAndLevelNum/Meter/PanelContainer/StarParticles
+
 func _ready():
+	
 	# -- When the meter particles are done animating, let stage know (will pause game for upgrade menu or w/e)
 	meter_fill_up_particles.finished.connect( func():
+		increment_level_label()
 		emit_signal("HUD_meter_leveled_up", meter_filled_up_callback_fn))
 
 	
@@ -150,7 +154,7 @@ func score_effect(clikmi_rel_pos_from_camera: Vector2, void_timer_points: float,
 	score_particle_system.position = (get_viewport().get_size() / 2.0) + clikmi_rel_pos_from_camera
 	# -- 
 	# -- target is near the bottom of the meter
-	var to_meter_rel_pos = ($Meter.position + 0.93 * $Meter.get_size()) - score_particle_system.position
+	var to_meter_rel_pos = (meter.global_position + 0.93 * meter.get_size()) - score_particle_system.position
 	var dir = Vector3(to_meter_rel_pos.x, to_meter_rel_pos.y, 0.0)
 	var dist = to_meter_rel_pos.length() # -- d / v = lifetime
 	var vel = score_particle_system.process_material.initial_velocity_max
@@ -167,11 +171,6 @@ func score_effect(clikmi_rel_pos_from_camera: Vector2, void_timer_points: float,
 	# -- interpolant for fighter game style juice in meter
 	meter_timer.start()  # -- restart timer, don't tween real time mask until timer stops
 
-
-#func add_a_life():
-	#assert(max_num_lives)
-	#if life_icon_container.get_children().size() < max_num_lives:
-		#add_life_icon()
 
 func remove_a_life():
 	var life_icons = life_icon_container.get_children()
@@ -193,3 +192,8 @@ func update_total_score_label(score: int):
 
 func current_num_lives() -> int:
 	return $life_margin_container/PanelContainer/HBoxContainer.get_children().size()
+
+var _level_num = 1
+func increment_level_label():
+	_level_num += 1
+	$MeterAndLevelNum/MarginContainer/Label.text = str(_level_num)

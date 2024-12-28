@@ -68,3 +68,10 @@ func safe_erase(key: String) -> void:
 	# -- deferred call to change managed clikmis
 	managed_clikmis.erase(key)
 	material.set_shader_parameter("actual_index", managed_clikmis.size())
+
+
+func shake(duration_time: float, shake_scale: float):
+	# -- uniform float shake_scale =  0.01; is default
+	material.set_shader_parameter("shake_scale", shake_scale)
+	# -- see shader for why 5 is picked (exp(-t) is ~ 0 by like 4-5 x)
+	Utils.material_shader_float_tween(create_tween(), material, "shake_t", duration_time, 0., 5.)

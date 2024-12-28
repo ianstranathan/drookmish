@@ -44,9 +44,14 @@ func shader_float_tween(tween: Tween, s: Sprite2D, uniform_str: String, duration
 func material_uniform_float_fn(v: float, mat: Material, p: String):
 	mat.set_shader_parameter(p, v);
 	
-func material_shader_float_tween(tween: Tween, mat: Material, uniform_str: String, duration: float):
+func material_shader_float_tween(tween: Tween, 
+								 mat: Material, 
+								 uniform_str: String, 
+								 duration: float, 
+								 starting_value=0.0, 
+								 ending_value=1.0):
 	tween.tween_method( material_uniform_float_fn.bind(mat, uniform_str), 
-						0.0, 1.0, duration).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
+						starting_value, ending_value, duration).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
 	
 
 func dir_contents(path, fn):

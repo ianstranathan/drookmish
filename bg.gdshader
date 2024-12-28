@@ -24,7 +24,7 @@ void fragment(){
 	vec3 light_dir = light_pos - (vec3(UV, 0.) + normal);
 	float diffuse = dot( normal, normalize(light_dir));
 
-	vec3 avg_tex_col = vec3(avg(tex_sample.xyz));
+	vec3 avg_tex_col = 1. - vec3(avg(tex_sample.xyz)) + 0.1;
 	vec3 col = vec3(avg_tex_col) * diffuse;
 	COLOR = vec4(col, 1.);
 }

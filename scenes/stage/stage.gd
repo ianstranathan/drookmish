@@ -34,6 +34,7 @@ signal leveled_up
 @export var MAX_LIVES_NUM: int = 10
 # ------------------------------------------------------------------------------
 
+
 func _input(event: InputEvent) -> void:
 	pass
 
@@ -51,7 +52,8 @@ func _ready():
 	# -- saves filter call, leaving here for future in case I redesign or w/e
 	#$HUD.update_clikmi_multiplier_visual(
 		#$clikmi_container.get_children().filter( func(x): return x is Clikmi).size()))
-
+	$clikmi_container.clikmi_crushed.connect(func():
+		$vfx_container/VoidHoleShockwaves.shake(1, 0.02))
 	$clikmi_container.clikmi_freed.connect(func(a_clikmi):
 		decrement_lives()
 		#$HUD.remove_a_clikmi()
@@ -61,10 +63,12 @@ func _ready():
 		$HUD.update_clikmi_multiplier_visual( $clikmi_container.get_children().size() - 2) 
 		[$vfx_container/VoidHoleShockwaves, MouseContainer, $SelectionBg].map( func(x):
 			x.clikmi_freed(a_clikmi)))
-
+	
 	$clikmi_container.void_hole_made.connect(func(a_clikmi): 
 		$vfx_container/VoidHoleShockwaves.void_hole_made(a_clikmi))
-	$clikmi_container.started_being_sucked_in.connect( func(a_clikmi):
+	$clikmi_container.started_being_sucked_in.connect( func(a_clikmi, t):
+		$vfx_container/VoidHoleShockwaves.shake(t, 0.005)
+		# -- 
 		$SelectionBg.remove_clikmi( a_clikmi ))
 	$clikmi_container.crown_changed.connect( func(nullable_clikmi):
 		$HUD.crown_icon_fn( nullable_clikmi ))
