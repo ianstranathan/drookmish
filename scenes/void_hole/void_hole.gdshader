@@ -23,8 +23,12 @@ void fragment()
 	// shadertoy col
     vec3 stc = 0.5 + 0.5*cos(TIME+uv.xyx+vec3(0,2,4));
 
+	// white circle outline
+	float circ_mask = 1. - smoothstep(0.65, 0.65, polar.r + 0.1 * noise_sample.r);
     float mask = 1. - smoothstep(0.5 + 0.1 * noise_sample.r, 0.52 + 0.1 * noise_sample.r, polar.x);
-
+	
+	// cut away the mask from the circle mask
+	circ_mask *= (1. - mask);
 	vec3 col = smoothstep(0.8, 1.5, 2. * noise_sample.r * noise_sample.r) * mix(vec3(0.), stc, length(uv)) + 0.5 * pow(length(uv), 2.);
-    COLOR = vec4( col, mask);
+    COLOR = vec4( col + vec3(circ_mask), circ_mask + mask);
 }

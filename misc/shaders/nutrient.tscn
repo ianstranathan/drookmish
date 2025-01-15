@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://bwd5cq0q12gha"]
+
+[ext_resource type="Shader" path="res://misc/shaders/nutrient.gdshader" id="1_01yko"]
+[ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="2_iapcl"]
+[ext_resource type="Script" path="res://misc/shaders/nutrient.gd" id="3_wjh7x"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5df1h"]
+shader = ExtResource("1_01yko")
+shader_parameter/is_reversed = 0.0
+shader_parameter/first_col = Vector3(0, 1.2, 0.1)
+shader_parameter/gas_interval = 4.0
+shader_parameter/transform_interval = 6.0
+shader_parameter/fade_time = 0.0
+shader_parameter/_time = 0.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6yw4h"]
+radius = 35.0
+
+[node name="Nutrient" type="Sprite2D"]
+material = SubResource("ShaderMaterial_5df1h")
+position = Vector2(436, 305)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_iapcl")
+script = ExtResource("3_wjh7x")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="FadeTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_6yw4h")

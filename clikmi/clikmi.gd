@@ -348,7 +348,16 @@ func time_increase( time_num: int) -> void:
 func play_clikmi_sound() -> void:
 	var clikmi_sound_index = utils_rng.randi_range(0., audio_stream_players.size() - 1)
 	audio_stream_players[clikmi_sound_index].playing = true
-	
+
+
+func boost():
+	print("boosting yo")
+
+
+func grow():
+	print("growing yo")
+
+
 # ------------------------------------------------------------------------------
 # -- Delete Buffer
 # ------------------------------------------------------------------------------

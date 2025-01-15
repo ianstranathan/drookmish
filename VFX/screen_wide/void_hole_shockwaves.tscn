@@ -12,6 +12,7 @@ shader_parameter/times = null
 shader_parameter/actual_index = null
 shader_parameter/shake_t = 5.0
 shader_parameter/shake_scale = 0.01
+shader_parameter/shake_is_from_black_hole = 0.0
 
 [node name="VoidHoleShockwaves" type="Sprite2D"]
 light_mask = 0

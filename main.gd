@@ -13,18 +13,15 @@ func _ready ():
 		$stage_container.get_children().map( func(x):
 			x.process_upgrade( data )))
 	# --------------------------------------------------------------------------
-	# -- center void hole sprite bg
-	init_bg()
-	get_viewport().size_changed.connect(func(): init_bg())
-	# --
-	$start_screen.game_started.connect( on_game_started )
-	# --------------------------------------------------------------------------
 	
-# -- Center screen callback
-func init_bg():
-	if $start_screen:
-		$start_screen/Sprite2D.global_position = get_viewport().get_size() / 2.0
-
+	# -- center start screeen
+	$start_screen/Sprite2D.global_position = get_viewport().get_size() / 2.0
+	
+	#get_viewport().size_changed.connect(func(): pass)
+	#$Vector2(get_viewport().get_size()) / $start_screen/ColorRect.texture.get_size()
+	# -- start game signal
+	$start_screen.game_started.connect( on_game_started )
+	
 
 func on_game_started():
 	$start_screen.visible = false
