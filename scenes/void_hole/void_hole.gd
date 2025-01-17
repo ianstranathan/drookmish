@@ -78,7 +78,7 @@ func suck_in_clikmis():
 
 
 func on_area_entered(area: Area2D):
-	if area is Clikmi and coyote_timer.is_stopped():
+	if area is Clikmi and !area.invincible and coyote_timer.is_stopped():
 		suck_in_clikmis()
 
 

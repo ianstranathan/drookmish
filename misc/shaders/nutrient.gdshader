@@ -34,6 +34,10 @@ float EaseInOutCubic(float x)
   return step(inValue , 0.5) * inValue + step(0.5,outValue) * outValue;
 }
 
+vec3 palette( in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
+{
+    return a + b*cos( 6.28318*(c*t+d) );
+}
 
 void fragment()
 {
@@ -67,7 +71,7 @@ void fragment()
     
 	//
 	// shadertoy col
-	vec3 second_col = 0.5 + 0.5*cos(2. * TIME + 1.5 * _uv.xyx+vec3(0,2,4)); // shadertoy col
+	vec3 second_col = palette(4. * TIME, vec3(.5), vec3(.5), vec3(1.0), vec3(0.0, 0.33, 0.67));
 	
 	float first_mask  = (1. - is_reversed) * nutrient_blob_mask + is_reversed * box_mask;
 	float second_mask = (1. - is_reversed) * box_mask + is_reversed * nutrient_blob_mask;

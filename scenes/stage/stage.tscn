@@ -95,6 +95,13 @@ position = Vector2(-448, 549)
 [node name="SpawnSafeZone3" parent="safe_zone_container" instance=ExtResource("17_5wtc2")]
 position = Vector2(-194, -495)
 
+[node name="SpawnSafeZone4" parent="safe_zone_container" instance=ExtResource("17_5wtc2")]
+position = Vector2(-194, -495)
+
+[node name="SpawnSafeZone11" parent="safe_zone_container" instance=ExtResource("17_5wtc2")]
+position = Vector2(577, 1005)
+scale = Vector2(2.36, 2.36)
+
 [node name="GameTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true

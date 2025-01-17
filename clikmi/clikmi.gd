@@ -44,9 +44,11 @@ enum MoveDirs{
 
 @onready var anim_player = $AnimationPlayer
 
+@onready var original_coll_dim: Vector2 = Vector2($CollisionShape2D.shape.radius, $CollisionShape2D.shape.height)
 #-------------------------------------------------------------------------------
 # Fns
 #-------------------------------------------------------------------------------
+
 func _ready():
 	z_index = Ordering.clikmi_index
 	$PanelContainer.visible = false
@@ -56,6 +58,11 @@ func _ready():
 		make_void_hole())
 	$Sprite2D.material.set_shader_parameter("col_switch", 0.)
 
+	# -- 
+	$GrowTimer.timeout.connect( func():
+		grow( true )) # -- grow callback (shrinks)
+	$InvincibilityTimer.timeout.connect(func():
+		invincibility(true))
 
 func _process(delta: float) -> void:
 	if !void_hole_timer.is_stopped() and !void_hole_timer.is_paused():
@@ -350,13 +357,44 @@ func play_clikmi_sound() -> void:
 	audio_stream_players[clikmi_sound_index].playing = true
 
 
-func boost():
-	print("boosting yo")
+var invincible = false
+func invincibility(turn_off=false):
+	invincible = !turn_off
+	var speed_factor: float = 1.7
+	$PanelContainer.visible = turn_off
+	if !turn_off:
+		$VoidHoleTimer.stop()
+		max_speed *= speed_factor
+		$Sprite2D.material.set_shader_parameter("invincibility", 1.0)
+		$InvincibilityTimer.start()
+	else:
+		$VoidHoleTimer.start()
+		max_speed /= speed_factor
+		$Sprite2D.material.set_shader_parameter("invincibility", 0.0)
 
 
-func grow():
-	print("growing yo")
-
+var grow_scale: float = 10
+@onready var coll_shape_val_arr = [["radius", $CollisionShape2D.shape.radius],
+								   ["height", $CollisionShape2D.shape.height]]
+func grow(shrink=false):
+	# -- scale the sprite by a number and change the collision shape
+	# -- to reflect the same scaling
+	var collshape = $CollisionShape2D.shape
+	var scale_increase = 7.0
+	var tween = create_tween() # .set_parallel(true)
+	if !shrink:
+		tween.tween_property($Sprite2D, "scale", $Sprite2D.scale * scale_increase, 1.2 )
+		#$Sprite2D.scale *= scale_increase 
+		coll_shape_val_arr.map(func(elem):
+			collshape.set_deferred(elem[0], elem[1] * scale_increase))
+		tween.tween_callback( func():
+			$GrowTimer.start())
+	else:
+		#$Sprite2D.scale /= scale_increase
+		tween.tween_property($Sprite2D, "scale", $Sprite2D.scale / scale_increase, 1.2 )
+		coll_shape_val_arr.map(func(elem):
+			collshape.set_deferred(elem[0], elem[1] / scale_increase))
+	
 
 # ------------------------------------------------------------------------------
 # -- Delete Buffer

@@ -32,9 +32,9 @@ func affect_clikmi (clikmi: Clikmi):
 		if !is_reversed:
 			clikmi.grow()
 		else:
-			clikmi.boost()
+			clikmi.invincibility()
 	elif !$FadeTimer.is_stopped():
 		if !is_reversed:
-			clikmi.boost()
+			clikmi.invincibility()
 		else:
 			clikmi.grow()

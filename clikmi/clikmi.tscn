@@ -36,8 +36,9 @@ radius = 7.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wkxkh"]
 resource_local_to_scene = true
 shader = ExtResource("2_ovqai")
-shader_parameter/col_switch = 0.0
 shader_parameter/color = Color(1, 0.4, 0.9, 0)
+shader_parameter/col_switch = 0.0
+shader_parameter/invincibility = null
 
 [sub_resource type="Animation" id="Animation_02h3p"]
 length = 0.001
@@ -489,8 +490,9 @@ void_hole_scene = ExtResource("13_nr0yn")
 spirit_sprite = ExtResource("2_bs8rv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
+position = Vector2(1, -6)
 shape = SubResource("CapsuleShape2D_6hq65")
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_wkxkh")
@@ -591,3 +593,11 @@ stream = ExtResource("28_nuhk4")
 bus = &"SFX"
 
 [node name="pickup_particles" parent="." instance=ExtResource("29_cixi4")]
+
+[node name="GrowTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="InvincibilityTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
