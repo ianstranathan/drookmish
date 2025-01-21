@@ -181,10 +181,13 @@ func remove_a_life():
 func write_label_from_number(_label, num, x=""):
 	_label.text = str(x, num,)
 
-
+var _last_num = 0
 func update_clikmi_multiplier_visual(num):
 	$MarginContainer3/HBoxContainer/Label.material.set_shader_parameter("num_clikmis", num)
 	write_label_from_number($MarginContainer3/HBoxContainer/Label, num, "x")
+	$MarginContainer3.multiplier_change(true if num - _last_num > 0 else false)
+	_last_num = num
+
 
 func update_total_score_label(score: int):
 	write_label_from_number($MainScoreMarginContainer/Label, score)

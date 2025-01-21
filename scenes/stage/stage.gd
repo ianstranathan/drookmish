@@ -27,16 +27,12 @@ signal leveled_up
 # ------------------------------------------------------------------------------
 @export var STARTING_LEVEL_POINTS: float = 200.0
 @onready var curr_lvl_points: float = STARTING_LEVEL_POINTS
-@export var LVL_UP_MULTIPLIER: float = 2.0
+@export var LVL_UP_MULTIPLIER: float = 1.5
 # ------------------------------------------------------------------------------
 @export var STARTING_LIVES_NUM: int = 3
 @onready var num_lives: int = STARTING_LIVES_NUM
 @export var MAX_LIVES_NUM: int = 10
 # ------------------------------------------------------------------------------
-
-
-func _input(event: InputEvent) -> void:
-	pass
 
 func _ready():
 	MouseContainer.cam_reference = $Camera2D
@@ -82,7 +78,14 @@ func _ready():
 						  score))
 	# ---------------------------------
 	# -- CollectableContainer signals
+	$CollectableContainer.collectible_making_started.connect( func(fn: Callable): 
+		fn.call($clikmi_container.get_children().filter(func(child):
+				return (child is Clikmi and child.void_hole_timer_running())).size()))
+
 	$CollectableContainer.collectable_made.connect(func(a_collectable):
+		# -- TODO
+		# -- There shouldn't be magic numbers here
+		# -- Better: map over children and collect of type Clikmi
 		a_collectable.clikmi_num_fn = func(): return $clikmi_container.get_children().size() - 1)
 		
 	# -- Mouse container signals
@@ -161,4 +164,9 @@ func process_upgrade( data ):
 	match data.name:
 		"1UP":
 			add_lives( 1 )
-			
+
+
+@onready var _selection_bg = $SelectionBg
+@onready var _bg_mat = $bg.material
+func _process(delta: float) -> void:
+	_bg_mat.set_shader_parameter("selection_pos", _selection_bg.global_position)# / stage_dimensions)

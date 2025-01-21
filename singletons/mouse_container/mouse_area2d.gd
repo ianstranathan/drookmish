@@ -18,8 +18,8 @@ func signal_area_up(area: Area2D, entered=true):
 		emit_signal( "clikmi_hovered", area if entered else null)
 	if area is ClikmiMakerArea:
 		emit_signal( "maker_hovered", area if entered else null)
-	if area.is_in_group("CameraHotkey"):
-		print("")
+	#if area.is_in_group("CameraHotkey"):
+		#print("")
 		
 func on_area_entered( area: Area2D ):
 	signal_area_up( area)

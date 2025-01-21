@@ -64,7 +64,7 @@ func _ready():
 	$InvincibilityTimer.timeout.connect(func():
 		invincibility(true))
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if !void_hole_timer.is_stopped() and !void_hole_timer.is_paused():
 		set_void_hole_label()
 
@@ -327,11 +327,13 @@ func set_void_hole_label():
 func left_safe_zone():
 	label_panel.material.set_shader_parameter("is_paused", 0.0)
 	# -- for initial case of leaving a safe zone
-	if !label_panel.visible:
+	if !invincible:
 		label_panel.visible = true
-	if void_hole_timer.is_paused():
-		void_hole_timer.set_paused( false )
-
+		if void_hole_timer.is_stopped():
+			void_hole_timer.start()
+		if void_hole_timer.is_paused():
+			void_hole_timer.set_paused( false )
+		
 
 func entered_safe_zone():
 	label_panel.material.set_shader_parameter("is_paused", 1.0)
@@ -353,7 +355,7 @@ func time_increase( time_num: int) -> void:
 
 @onready var audio_stream_players = $clikmi_sounds_container.get_children()
 func play_clikmi_sound() -> void:
-	var clikmi_sound_index = utils_rng.randi_range(0., audio_stream_players.size() - 1)
+	var clikmi_sound_index = utils_rng.randi_range(0, audio_stream_players.size() - 1)
 	audio_stream_players[clikmi_sound_index].playing = true
 
 
@@ -373,43 +375,28 @@ func invincibility(turn_off=false):
 		$Sprite2D.material.set_shader_parameter("invincibility", 0.0)
 
 
-var grow_scale: float = 10
-@onready var coll_shape_val_arr = [["radius", $CollisionShape2D.shape.radius],
-								   ["height", $CollisionShape2D.shape.height]]
 func grow(shrink=false):
 	# -- scale the sprite by a number and change the collision shape
 	# -- to reflect the same scaling
-	var collshape = $CollisionShape2D.shape
 	var scale_increase = 7.0
-	var tween = create_tween() # .set_parallel(true)
+	var tween = create_tween().set_parallel(true)
 	if !shrink:
 		tween.tween_property($Sprite2D, "scale", $Sprite2D.scale * scale_increase, 1.2 )
+		tween.tween_property($CollisionShape2D.shape, "radius", $CollisionShape2D.shape.radius * scale_increase, 1.2 )
+		tween.tween_property($CollisionShape2D.shape, "height", $CollisionShape2D.shape.height * scale_increase, 1.2 )
 		#$Sprite2D.scale *= scale_increase 
-		coll_shape_val_arr.map(func(elem):
-			collshape.set_deferred(elem[0], elem[1] * scale_increase))
-		tween.tween_callback( func():
+		#coll_shape_val_arr.map(func(elem):
+			#collshape.set_deferred(elem[0], elem[1] * scale_increase))
+		tween.chain().tween_callback( func():
 			$GrowTimer.start())
 	else:
 		#$Sprite2D.scale /= scale_increase
 		tween.tween_property($Sprite2D, "scale", $Sprite2D.scale / scale_increase, 1.2 )
-		coll_shape_val_arr.map(func(elem):
-			collshape.set_deferred(elem[0], elem[1] / scale_increase))
-	
+		tween.tween_property($CollisionShape2D.shape, "radius", $CollisionShape2D.shape.radius / scale_increase, 1.2 )
+		tween.tween_property($CollisionShape2D.shape, "height", $CollisionShape2D.shape.height / scale_increase, 1.2 )
+		#coll_shape_val_arr.map(func(elem):
+			#print(elem[1] / scale_increase)
+			#collshape.set_deferred(elem[0], elem[1] / scale_increase))
 
-# ------------------------------------------------------------------------------
-# -- Delete Buffer
-# ------------------------------------------------------------------------------
-
-# -- This is already more or less being done with move toward built in
-#func arrival_steer():
-	#var arrival_radius := 20
-	#var rel_pos = target_loc - global_position
-	#var distance = rel_pos.length()
-	#var steer = Vector2.ZERO
-	#if distance > 0:
-		#rel_pos.normalize()
-		#if distance < arrival_radius:
-			#rel_pos *= max_speed * (distance / arrival_radius)
-		#else:
-			#rel_pos *= max_speed
-		#steer = rel_pos - vel
+func void_hole_timer_running() -> bool:
+	return !($VoidHoleTimer.is_stopped() or $VoidHoleTimer.is_paused())

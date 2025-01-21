@@ -8,6 +8,8 @@ uniform sampler2D normal_map: repeat_enable;
 uniform float rock_uv_coeff;
 uniform float tex_uv_coeff;
 
+uniform vec2 selection_pos;
+
 float avg(vec3 c){
 	return (c.x + c.y + c.z) / 3.0;
 }
@@ -18,11 +20,12 @@ void fragment(){
 	//vec4 rock_tex_sample = texture(rock_tex, rock_uv_coeff * UV) * just_rock;
 	vec4 tex_sample = texture(tex, tex_uv_coeff * UV); //* (1. - just_rock);
 
+	vec2 uv = 2. * UV - 1.;
 	vec4 normal_map_sample = texture(normal_map, UV);
 	vec3 normal = normalize(normal_map_sample.xyz);
-	vec3 light_pos = vec3(0., 0., 10.);
-	vec3 light_dir = light_pos - (vec3(UV, 0.) + normal);
-	float diffuse = dot( normal, normalize(light_dir));
+	vec3 light_pos = vec3(0.1 * vec2(sin(2. * TIME), cos(2. * TIME)), 10.0);//vec3(0., 0., 10.);
+	//vec3 light_dir = light_pos - (vec3(uv, 0.) + normal);
+	float diffuse = max(dot( normal, normalize(light_pos)), 0.);
 
 	vec3 avg_tex_col = 1. - vec3(avg(tex_sample.xyz)) + 0.1;
 	vec3 col = vec3(avg_tex_col) * diffuse;

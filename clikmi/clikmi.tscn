@@ -509,7 +509,6 @@ libraries = {
 
 [node name="VoidHoleTimer" type="Timer" parent="."]
 wait_time = 5.0
-autostart = true
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 material = SubResource("ShaderMaterial_mcv14")

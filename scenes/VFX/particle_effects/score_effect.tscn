@@ -18,6 +18,7 @@ initial_velocity_max = 700.0
 gravity = Vector3(0, 0, 0)
 
 [node name="ScoreEffect" type="GPUParticles2D"]
+process_mode = 3
 material = SubResource("CanvasItemMaterial_5iajv")
 emitting = false
 amount = 20

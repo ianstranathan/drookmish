@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://by2nolvl3kja2"]
+[gd_scene load_steps=20 format=3 uid="uid://by2nolvl3kja2"]
 
 [ext_resource type="Script" path="res://UI/HUD/game_ui.gd" id="1_nuj4q"]
 [ext_resource type="PackedScene" uid="uid://dl0g7keusp60j" path="res://UI/HUD/cam_texture_rect.tscn" id="2_40hs4"]
@@ -10,6 +10,7 @@
 [ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="8_xoob1"]
 [ext_resource type="Shader" path="res://UI/HUD/meter.gdshader" id="9_uurxa"]
 [ext_resource type="PackedScene" uid="uid://diletx3442kwe" path="res://VFX/particles/level_up_reward_visual/star_particles.tscn" id="9_wa21m"]
+[ext_resource type="Script" path="res://UI/HUD/multiplier_label_container.gd" id="11_h4lke"]
 [ext_resource type="Shader" path="res://UI/HUD/clikmi_num_multiplier.gdshader" id="11_knf61"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_31hy8"]
@@ -179,6 +180,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 
 [node name="StarParticles" parent="MeterAndLevelNum/Meter/PanelContainer" instance=ExtResource("9_wa21m")]
+process_mode = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="MeterAndLevelNum"]
 layout_mode = 2
@@ -235,6 +237,7 @@ grow_vertical = 0
 size_flags_horizontal = 4
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_bottom = 20
+script = ExtResource("11_h4lke")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer3"]
 layout_mode = 2
@@ -242,6 +245,8 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer3/HBoxContainer"]
 material = SubResource("ShaderMaterial_jpbww")
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
 theme_override_fonts/font = ExtResource("8_xoob1")
 theme_override_font_sizes/font_size = 30
 text = "x0"

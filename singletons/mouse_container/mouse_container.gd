@@ -20,8 +20,11 @@ func _ready():
 		hovered_clikmi = area)
 
 
+# -- sprite and coll shape aren't quite matching up
+@onready var offset_length = $mouse_area2d/CollisionShape2D.shape.radius
+@onready var offset = 0.7 * Vector2(offset_length, offset_length)
 func _process(_delta):
-	global_position = get_global_mouse_position()
+	global_position = get_global_mouse_position() + offset
 
 
 var left_mouse_btn_is_pressed = false
@@ -59,14 +62,29 @@ func _input(event):
 func left_mouse_btn_fn():
 	if hovered_maker:
 		hovered_maker.click()
+	# --
+	#elif hovered_clikmi and hovered_clikmi != selected_clikmi and !hovering_over_cam_tex_rect:
+		#selected_clikmi.set_target( hovered_clikmi )
+		#emit_signal("clikmi_selected", null)
+		#selected_clikmi = null
+	# -- 
 	elif selected_clikmi and !hovering_over_cam_tex_rect:
-		selected_clikmi.set_target( global_position )
+		
+		if hovered_clikmi and hovered_clikmi != selected_clikmi and !hovering_over_cam_tex_rect:
+			selected_clikmi.set_target( hovered_clikmi )
+			#emit_signal("clikmi_selected", null)
+			#selected_clikmi = null
+		else:
+			selected_clikmi.set_target( global_position )
+			#emit_signal("clikmi_selected", null)
+			#selected_clikmi = null
 		emit_signal("clikmi_selected", null)
 		selected_clikmi = null
 	if hovered_clikmi and !selected_clikmi:
 		selected_clikmi = hovered_clikmi
 		emit_signal("clikmi_selected", selected_clikmi)
 		selected_clikmi.play_clikmi_sound()
+
 
 func right_mouse_btn_fn():
 	if hovered_clikmi and hovered_clikmi != selected_clikmi and !hovering_over_cam_tex_rect:

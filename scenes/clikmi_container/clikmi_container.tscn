@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bkdl5wwbjqf7m"]
 
-[ext_resource type="Script" path="res://clikmi_container.gd" id="1_p6kgb"]
+[ext_resource type="Script" path="res://scenes/clikmi_container/clikmi_container.gd" id="1_p6kgb"]
 [ext_resource type="PackedScene" uid="uid://b82406oes47bd" path="res://scenes/crown/crown.tscn" id="2_4ikaf"]
 
 [node name="clikmi_container" type="Node2D"]

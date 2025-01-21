@@ -9,6 +9,12 @@ var managed_clikmis: Dictionary = {}
 
 func _ready():
 	assert( curr_cam )
+	
+	# -- connect the camera to a signal to see when it moves
+	curr_cam.moved.connect( func():
+		material.set_shader_parameter("positions", 
+		last_arr_of_positions.map( func(_pos): return _pos - global_position)))
+	
 	init_sprite_and_shader_params()
 	get_tree().get_root().size_changed.connect(func():
 		init_sprite_and_shader_params())
@@ -24,17 +30,18 @@ func init_sprite_and_shader_params():
 	# -- for the screen wide shader to normalize the uv space
 	material.set_shader_parameter("resolution", texture.get_size() * scale)
 
-func _process(delta):
+func _process(_delta):
 	global_position = curr_cam.global_position
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if !managed_clikmis.is_empty():
 		material.set_shader_parameter("times", managed_clikmis.keys().map(func(x):
 				var a_timer =  managed_clikmis[x]["Timer"]
 				return a_timer.wait_time - a_timer.time_left
 		))
 
+var last_arr_of_positions: Array
 func void_hole_made(a_clikmi: Clikmi):
 	if !managed_clikmis.has(a_clikmi.name):
 		managed_clikmis[a_clikmi.name]= {"Clikmi": a_clikmi, 
@@ -46,14 +53,37 @@ func void_hole_made(a_clikmi: Clikmi):
 	managed_clikmis[a_clikmi.name]["Timer"].start()
 	# ----------------------------------------------------------------
 	# -- for all managed clikmis give camera relative position
-	var arr_rel_pos = managed_clikmis.keys().map(func(x):
-			return managed_clikmis[x]["Clikmi"].global_position - global_position
-			)
+	#var arr_rel_pos = managed_clikmis.keys().map(func(x):
+			#return managed_clikmis[x]["Clikmi"].global_position - global_position
+			#)
 	#print(arr_rel_pos)
-	material.set_shader_parameter("positions", arr_rel_pos)
+	#var arr_rel_pos = managed_clikmis.keys().map(func(x):
+			#return managed_clikmis[x]["Clikmi"].global_position - global_position
+			#)
+	material.set_shader_parameter("positions", arr_rel_pos_fn())
 	# ----------------------------------------------------------------
 	# -- for loop index in shader
 	material.set_shader_parameter("actual_index", managed_clikmis.size())
+
+
+func arr_rel_pos_fn():
+	last_arr_of_positions.clear()
+	return managed_clikmis.keys().map(func(x):
+		var _clikmi_pos = managed_clikmis[x]["Clikmi"].global_position
+		last_arr_of_positions.append(_clikmi_pos)
+		return _clikmi_pos - global_position)
+#func arr_of_rel_positions() -> Array:
+	#last_arr_of_positions.clear()
+	#var ret = []
+	#for k in managed_clikmis.keys():
+		#var clikmi_pos = managed_clikmis[k]["Clikmi"].global_position
+		#last_arr_of_positions.append( clikmi_pos )
+		#ret.append(clikmi_pos - global_position)
+	#return ret
+	#return managed_clikmis.keys().map(func(x):
+			#
+			#return 
+			#)
 
 
 func clikmi_freed(a_clikmi) -> void:

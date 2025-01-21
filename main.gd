@@ -17,7 +17,8 @@ func _ready ():
 	# -- center start screeen
 	$start_screen/Sprite2D.global_position = get_viewport().get_size() / 2.0
 	
-	#get_viewport().size_changed.connect(func(): pass)
+	get_viewport().size_changed.connect(func(): 
+		$start_screen/Sprite2D.global_position = get_viewport().get_size() / 2.0)
 	#$Vector2(get_viewport().get_size()) / $start_screen/ColorRect.texture.get_size()
 	# -- start game signal
 	$start_screen.game_started.connect( on_game_started )

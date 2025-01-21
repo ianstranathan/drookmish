@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://oi5lmlne7tty"]
+[gd_scene load_steps=14 format=3 uid="uid://oi5lmlne7tty"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_4gdta"]
 [ext_resource type="Script" path="res://UI/Menus/start_screen.gd" id="2_xlrxe"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://cqvnf04undfwt" path="res://UI/Menus/stats_menu/stats_container.tscn" id="7_0xwu1"]
 [ext_resource type="Script" path="res://menu_container.gd" id="9_oj600"]
 [ext_resource type="PackedScene" uid="uid://bjmtpi8fgaild" path="res://UI/MenusV2/RetryAndGameOver.tscn" id="10_nr5ep"]
-[ext_resource type="Script" path="res://stage_container.gd" id="11_07w8y"]
 [ext_resource type="PackedScene" uid="uid://cip30rpkg6ksa" path="res://UI/upgrade_menu/upgrade_menu.tscn" id="12_6xbje"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ao0ah"]
@@ -58,4 +57,3 @@ layout_mode = 1
 layout_mode = 1
 
 [node name="stage_container" type="Node2D" parent="."]
-script = ExtResource("11_07w8y")

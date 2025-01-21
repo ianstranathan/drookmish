@@ -1,5 +1,6 @@
 extends Camera2D
 
+signal moved
 
 var min_pos
 var max_pos
@@ -15,7 +16,7 @@ func move(pos: Vector2):
 	# -- camera must clamp its own movement due to set limits
 	global_position += pos
 	global_position = global_position.clamp(min_pos, max_pos)
-
+	emit_signal("moved")
 
 func set_stage_limits( stage_dims: Vector2):
 	var viewport_size_half_size = get_viewport().size / 2.0

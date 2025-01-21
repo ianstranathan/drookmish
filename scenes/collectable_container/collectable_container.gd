@@ -8,6 +8,7 @@ Hovers arond the selected clikmi and spawns collectables within a radius
 #@onready var rng_fn: Callable = Utils.rng.randi_range
 @onready var rngf: Callable = Utils.rng.randf
 
+signal collectible_making_started( fn: Callable )
 signal collectable_made(a_collectable)
 
 var selected_clikmi: Clikmi
@@ -19,9 +20,13 @@ func selected_clikmi_callback(a_clikmi):
 
 
 # -- the collectibles should follow some fn curve
-func make_collectables( num_to_make: int = 1) -> void:
-	var radius = 300.0;
+func make_collectables() -> void:
 	assert(selected_clikmi)
+	emit_signal("collectible_making_started", make_n_collectibles)
+
+
+func make_n_collectibles(num_to_make: int = 1):
+	var radius = 220.0;
 	for i in range(num_to_make):
 		var random_float = rng_f(0.6)
 		var rng_radius = random_float * radius

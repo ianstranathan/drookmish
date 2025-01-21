@@ -15,14 +15,20 @@ func _ready() -> void:
 		emit_signal("quit"))
 
 
+
+func message_settings_fn(_font_size: int, font_col: Color):
+	$VBoxContainer/PanelContainer/message.set("theme_override_colors/font_color", font_col)
+	$VBoxContainer/PanelContainer/message.set("theme_override_font_sizes/font_size", _font_size)
+
+
 func disp(message: String):
 	assert(message == "Failure" or message == "Paused")
 	
 	match message:
 		"Failure":
-			$VBoxContainer/PanelContainer/message.set("theme_override_colors/font_color", fail_col)
+			message_settings_fn(90, fail_col)
 		"Paused":
-			$VBoxContainer/PanelContainer/message.set("theme_override_colors/font_color", pause_col)
+			message_settings_fn(60, fail_col)
 	#
 	$VBoxContainer/PanelContainer/message.text = message
 	#

@@ -145,10 +145,10 @@ func number_visual():
 	var _time_val = time_value * clikmi_num_fn.call()
 	target.time_increase( _time_val )
 	# -- the number it is
-	var number_visual     = number_label_scene.instantiate()
+	var _num     = number_label_scene.instantiate()
 	# -- 
-	number_visual.text     = str( _time_val )
+	_num.text     = str( _time_val )
 	
-	number_visual.global_position = global_position + Vector2.RIGHT * 20.0
+	_num.global_position = global_position + Vector2.RIGHT * 20.0
 
-	root.add_child(number_visual)
+	root.add_child(_num)

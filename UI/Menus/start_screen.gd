@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-
-
 signal game_started
 
 @onready var menus = get_children().filter( func(x): if x is Control: return x)

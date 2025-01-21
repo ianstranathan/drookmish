@@ -25,5 +25,9 @@ const vec3 col3 = vec3(1.0, 1.0, 1.0   );
 const vec3 col4 = vec3(0.00, 0.33, 0.67);
 
 void fragment() {
-	COLOR = vec4(palette(rand(num_clikmis), col1, col2, col3, col4), COLOR.a);
+	COLOR = vec4(COLOR);
+	vec3 palette_col = palette(rand(num_clikmis), col1, col2, col3, col4);
+	float mask = smoothstep(1.3, 1.735, length(COLOR.xyz));
+	vec3 col = palette_col * mask + vec3(1.) * (1. - mask);
+	COLOR = vec4(col, COLOR.a);
 }

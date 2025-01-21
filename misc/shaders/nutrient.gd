@@ -18,7 +18,7 @@ func _ready() -> void:
 			affect_clikmi( area ))
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if !$Timer.is_stopped():
 		material.set_shader_parameter("_time", $Timer.wait_time - $Timer.time_left)
 	elif !$FadeTimer.is_stopped():
@@ -33,8 +33,10 @@ func affect_clikmi (clikmi: Clikmi):
 			clikmi.grow()
 		else:
 			clikmi.invincibility()
+	
 	elif !$FadeTimer.is_stopped():
 		if !is_reversed:
 			clikmi.invincibility()
 		else:
 			clikmi.grow()
+	queue_free()

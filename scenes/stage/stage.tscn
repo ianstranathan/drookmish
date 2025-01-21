@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=3 uid="uid://mhm8h3bhj6mv"]
 
 [ext_resource type="Script" path="res://scenes/stage/stage.gd" id="1_trcsx"]
-[ext_resource type="Shader" path="res://bg.gdshader" id="2_kf8ny"]
+[ext_resource type="Shader" path="res://bg/bg.gdshader" id="2_kf8ny"]
 [ext_resource type="Texture2D" uid="uid://ejcu0n321fa4" path="res://assets/pbr/rocks/one/Rocks011_1K-PNG_NormalGL.png" id="3_ufj87"]
 [ext_resource type="Texture2D" uid="uid://ptdfq71lo23e" path="res://assets/arabesque_textures/6345300.jpg" id="4_ptemi"]
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="5_dg7at"]
@@ -22,6 +22,7 @@
 shader = ExtResource("2_kf8ny")
 shader_parameter/rock_uv_coeff = 8.0
 shader_parameter/tex_uv_coeff = 3.0
+shader_parameter/selection_pos = null
 shader_parameter/tex = ExtResource("4_ptemi")
 shader_parameter/normal_map = ExtResource("3_ufj87")
 

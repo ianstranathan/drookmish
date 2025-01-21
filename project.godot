@@ -25,6 +25,10 @@ Utils="*res://singletons/utils.gd"
 Ordering="*res://singletons/ordering.gd"
 MouseContainer="*res://singletons/mouse_container/mouse_container.tscn"
 
+[debug]
+
+gdscript/warnings/unused_signal=0
+
 [display]
 
 window/size/viewport_height=778

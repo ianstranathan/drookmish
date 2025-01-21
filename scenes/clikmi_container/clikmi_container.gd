@@ -20,26 +20,26 @@ var clikmi_with_highest_time: Clikmi
 func add_clikmi(a_clikmi):
 	a_clikmi.clikmi_crushed.connect(func():
 		emit_signal("clikmi_crushed"))
-	a_clikmi.clikmi_freed.connect(   func( a_clikmi): 
-		clikmi_died_process_crown(a_clikmi)
-		emit_signal("clikmi_freed",   a_clikmi))
-	a_clikmi.void_hole_made.connect( func( a_clikmi): emit_signal("void_hole_made", a_clikmi))
-	a_clikmi.started_being_sucked_in.connect(func(a_clikmi, t):
-		emit_signal("started_being_sucked_in", a_clikmi, t)
-		clikmi_died_process_crown(a_clikmi))
-	a_clikmi.timer_collectable_collected.connect(func(a_wait_time, a_clikmi):
+	a_clikmi.clikmi_freed.connect(   func( _a_clikmi): 
+		clikmi_died_process_crown(_a_clikmi)
+		emit_signal("clikmi_freed",   _a_clikmi))
+	a_clikmi.void_hole_made.connect( func( _a_clikmi): emit_signal("void_hole_made", _a_clikmi))
+	a_clikmi.started_being_sucked_in.connect(func(_a_clikmi, t):
+		emit_signal("started_being_sucked_in", _a_clikmi, t)
+		clikmi_died_process_crown(_a_clikmi))
+	a_clikmi.timer_collectable_collected.connect(func(a_wait_time, _a_clikmi):
 		# -- process just updates crown position
 		if !clikmi_with_highest_time:
-			clikmi_with_highest_time = a_clikmi
+			clikmi_with_highest_time = _a_clikmi
 			init_crown_vars( true, a_wait_time)
 			emit_signal("crown_changed", clikmi_with_highest_time)
 		elif a_wait_time > highest_time:
 			highest_time = a_wait_time
-			clikmi_with_highest_time = a_clikmi
+			clikmi_with_highest_time = _a_clikmi
 			emit_signal("crown_changed", clikmi_with_highest_time)
 		)
-	a_clikmi.scored_points.connect( func(a_clikmi):
-		emit_signal("a_clikmi_scored_points", a_clikmi))
+	a_clikmi.scored_points.connect( func(_a_clikmi):
+		emit_signal("a_clikmi_scored_points", _a_clikmi))
 	add_child( a_clikmi )
 
 func clikmi_died_process_crown(a_clikmi):

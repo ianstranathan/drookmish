@@ -23,7 +23,7 @@ func remove_clikmi( a_clikmi):
 		set_clikmi()
 
 
-func _process(delta):
+func _process(_delta):
 	global_position = clikmi_ref.global_position
 
 
