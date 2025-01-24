@@ -8,13 +8,21 @@ func _ready():
 	visible = false
 
 
+func toggle_visibility(b):
+	set_process( b )
+	visible = b
+	
 func set_clikmi( a_clikmi=null):
-	if a_clikmi:
-		set_process( true )
-		visible = true
+	if a_clikmi is Clikmi:
+		if clikmi_ref and clikmi_ref != a_clikmi:
+			a_clikmi.selection_bg_ref_fn()
+		else:
+			a_clikmi.selection_bg_ref_fn(self)
+			scale = a_clikmi.get_node("Sprite2D").scale
+		toggle_visibility(true)
 	else:
-		set_process( false )
-		visible = false
+		toggle_visibility(false)
+
 	clikmi_ref = a_clikmi
 
 
@@ -32,3 +40,11 @@ func clikmi_freed(a_clikmi):
 		set_process( false)
 		visible = false
 		clikmi_ref = null
+		
+		
+#if a_clikmi and a_clikmi is Clikmi:
+		#set_process( true )
+		#visible = true
+	#else:
+		#set_process( false )
+		#visible = false

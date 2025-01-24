@@ -4,5 +4,4 @@
 
 [node name="BgMusic" type="AudioStreamPlayer2D"]
 stream = ExtResource("1_4tkku")
-autoplay = true
 bus = &"Music"

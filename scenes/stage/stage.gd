@@ -11,6 +11,7 @@ extends Node2D
 # ------------------------------------------------------------------------------
 #@export  var MUSIC: bool = true
 #@onready var music_fn: Callable = func(): BgMusic.playing = MUSIC
+
 # ------------------------------------------------------------------------------
 
 """
@@ -40,7 +41,7 @@ func _ready():
 	# ---------------------------------
 	# --------- SIGNALS ---------------
 	# ---------------------------------
-	# -- background shader
+	# -- background shader; scale bg to size of level
 	$bg.scale = stage_dimensions / Vector2($bg.texture.get_size())
 	# ---------------------------------
 	# -- Clikmi container signals
@@ -128,7 +129,6 @@ func _ready():
 	
 
 func init_level():
-	#music_fn.call()
 	#$GameTimer.wait_time = level_seconds
 	#$GameTimer.timeout.connect( game_over )
 	#$GameTimer.start()
@@ -165,8 +165,10 @@ func process_upgrade( data ):
 		"1UP":
 			add_lives( 1 )
 
-
-@onready var _selection_bg = $SelectionBg
+# -- want to pass the currently selected clikmi position to shader to create a 
+# -- light that affects the bg
 @onready var _bg_mat = $bg.material
-func _process(delta: float) -> void:
-	_bg_mat.set_shader_parameter("selection_pos", _selection_bg.global_position)# / stage_dimensions)
+#func _process(_delta: float) -> void:
+	#if $SelectionBg.visible:
+		#var n_pos = $SelectionBg.global_position / (0.5 * stage_dimensions)
+		#_bg_mat.set_shader_parameter("selection_pos", n_pos)

@@ -27,7 +27,6 @@ shader_parameter/tex = ExtResource("4_ptemi")
 shader_parameter/normal_map = ExtResource("3_ufj87")
 
 [node name="Stage" type="Node2D" groups=["Stages"]]
-position = Vector2(-5, 0)
 script = ExtResource("1_trcsx")
 stage_scale = 1.0
 level_seconds = 500.0

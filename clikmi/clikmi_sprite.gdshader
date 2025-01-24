@@ -18,7 +18,7 @@ void fragment() {
 	vec4 tex_sample = texture(TEXTURE, _UV +  (col_switch) * vec2(0.02 * sin(5. * UV.y - 10. * TIME), 0.));
 	float energy = (tex_sample.r + tex_sample.g + tex_sample.b) / 3.0;
 	vec3 col = tex_sample.xyz * (1. - color.w) + (energy * color.xyz * color.w);
-	col = col*(1. - invincibility) + 
+	col = col*(1. - invincibility) +
 	palette(4. * TIME, vec3(.5), vec3(.5), vec3(1.0), vec3(0.0, 0.33, 0.67)) * invincibility;
 	COLOR = vec4(col, tex_sample.a);
 }

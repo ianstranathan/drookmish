@@ -2,9 +2,10 @@
 
 [ext_resource type="Shader" path="res://misc/shaders/nutrient.gdshader" id="1_01yko"]
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="2_iapcl"]
-[ext_resource type="Script" path="res://misc/shaders/nutrient.gd" id="3_wjh7x"]
+[ext_resource type="Script" path="res://grow_boost_collectible/nutrient.gd" id="3_wjh7x"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5df1h"]
+resource_local_to_scene = true
 shader = ExtResource("1_01yko")
 shader_parameter/is_reversed = 0.0
 shader_parameter/first_col = Vector3(0, 1.2, 0.1)
@@ -18,7 +19,6 @@ radius = 35.0
 
 [node name="Nutrient" type="Sprite2D"]
 material = SubResource("ShaderMaterial_5df1h")
-position = Vector2(436, 305)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_iapcl")
 script = ExtResource("3_wjh7x")

@@ -374,29 +374,37 @@ func invincibility(turn_off=false):
 		max_speed /= speed_factor
 		$Sprite2D.material.set_shader_parameter("invincibility", 0.0)
 
+var selection_bg_ref: Sprite2D 
+func selection_bg_ref_fn(the_selection_bg=null) -> void:
+	selection_bg_ref = the_selection_bg
 
+var can_grow := true # -- don't want to stack growing
+@onready var original_coll_radius : float = $CollisionShape2D.shape.radius
+@onready var original_coll_height : float = $CollisionShape2D.shape.height
 func grow(shrink=false):
 	# -- scale the sprite by a number and change the collision shape
 	# -- to reflect the same scaling
 	var scale_increase = 7.0
 	var tween = create_tween().set_parallel(true)
-	if !shrink:
+	if !shrink and can_grow:
+		can_grow = false
 		tween.tween_property($Sprite2D, "scale", $Sprite2D.scale * scale_increase, 1.2 )
 		tween.tween_property($CollisionShape2D.shape, "radius", $CollisionShape2D.shape.radius * scale_increase, 1.2 )
 		tween.tween_property($CollisionShape2D.shape, "height", $CollisionShape2D.shape.height * scale_increase, 1.2 )
-		#$Sprite2D.scale *= scale_increase 
-		#coll_shape_val_arr.map(func(elem):
-			#collshape.set_deferred(elem[0], elem[1] * scale_increase))
+		if selection_bg_ref:
+			tween.tween_property(selection_bg_ref, "scale",  selection_bg_ref.scale * scale_increase, 1.2 )
 		tween.chain().tween_callback( func():
 			$GrowTimer.start())
 	else:
 		#$Sprite2D.scale /= scale_increase
 		tween.tween_property($Sprite2D, "scale", $Sprite2D.scale / scale_increase, 1.2 )
-		tween.tween_property($CollisionShape2D.shape, "radius", $CollisionShape2D.shape.radius / scale_increase, 1.2 )
-		tween.tween_property($CollisionShape2D.shape, "height", $CollisionShape2D.shape.height / scale_increase, 1.2 )
-		#coll_shape_val_arr.map(func(elem):
-			#print(elem[1] / scale_increase)
-			#collshape.set_deferred(elem[0], elem[1] / scale_increase))
+		tween.tween_property($CollisionShape2D.shape, "radius", original_coll_radius, 1.2 )
+		tween.tween_property($CollisionShape2D.shape, "height", original_coll_height, 1.2 )
+		tween.chain().tween_callback( func(): 
+			can_grow = true)
+		if selection_bg_ref:
+			tween.tween_property(selection_bg_ref, "scale",  selection_bg_ref.scale / scale_increase, 1.2 )
+
 
 func void_hole_timer_running() -> bool:
 	return !($VoidHoleTimer.is_stopped() or $VoidHoleTimer.is_paused())

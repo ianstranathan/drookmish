@@ -14,7 +14,7 @@ float sdCircle( vec2 p, float r )
 uniform float clikmi_is_inside = 0.0;
 void fragment() {
 	vec2 uv = 2. * UV - 1.;
-	
+
 	float dist = 1.0/abs(sdCircle(uv, 0.5)) - 0.5;
 	// Dampen the glow to control the radius
 	float dampen_coeff = 0.1  * clikmi_is_inside + 0.05 * (1. - clikmi_is_inside);

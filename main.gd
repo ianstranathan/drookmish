@@ -4,6 +4,7 @@ extends Node2D
 @onready var menus_container = $MenusCanvasLayer/MenuContainer
 
 func _ready ():
+	#BgMusic.playing = true
 	# --------------------------------------------------------------------------
 	menus_container.retry.connect(func():
 		restart_game())
@@ -25,6 +26,7 @@ func _ready ():
 	
 
 func on_game_started():
+	BgMusic.volume_db += 2.0
 	$start_screen.visible = false
 	make_and_add_stage()
 

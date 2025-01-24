@@ -31,6 +31,7 @@
 [ext_resource type="PackedScene" uid="uid://bjnirnosqilnk" path="res://scenes/VFX/particle_effects/pickup_effect.tscn" id="29_cixi4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6hq65"]
+resource_local_to_scene = true
 radius = 7.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wkxkh"]
@@ -488,6 +489,7 @@ collision_mask = 13
 script = ExtResource("1_6wiuj")
 void_hole_scene = ExtResource("13_nr0yn")
 spirit_sprite = ExtResource("2_bs8rv")
+metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, -6)
