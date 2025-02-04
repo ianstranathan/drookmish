@@ -5,6 +5,10 @@ var is_reversed: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if randf() > 0.5:
+		is_reversed = true
+		material.set_shader_parameter("is_reversed", 1.0)
+
 	$Timer.start()
 	$Timer.timeout.connect( func():
 		# -- set the shader to be whatever the end time is

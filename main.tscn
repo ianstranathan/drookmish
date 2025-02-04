@@ -1,14 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://oi5lmlne7tty"]
+[gd_scene load_steps=12 format=3 uid="uid://oi5lmlne7tty"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_4gdta"]
-[ext_resource type="Script" path="res://UI/Menus/start_screen.gd" id="2_xlrxe"]
+[ext_resource type="Script" path="res://UI/delete_buffer/start_screen.gd" id="2_xlrxe"]
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="4_q5756"]
 [ext_resource type="Shader" path="res://scenes/void_hole/void_hole.gdshader" id="4_wm08t"]
-[ext_resource type="PackedScene" uid="uid://bhnycjhca2gey" path="res://UI/Menus/start_menu/start_menu_container.tscn" id="5_5whm8"]
-[ext_resource type="PackedScene" uid="uid://ljt33namf1xs" path="res://UI/Menus/settings_menu/settings_container.tscn" id="6_dtr76"]
-[ext_resource type="PackedScene" uid="uid://cqvnf04undfwt" path="res://UI/Menus/stats_menu/stats_container.tscn" id="7_0xwu1"]
+[ext_resource type="PackedScene" uid="uid://dk8d7ss3d0bpt" path="res://UI/main_menu/main_menu.tscn" id="5_3depe"]
 [ext_resource type="Script" path="res://menu_container.gd" id="9_oj600"]
-[ext_resource type="PackedScene" uid="uid://bjmtpi8fgaild" path="res://UI/MenusV2/RetryAndGameOver.tscn" id="10_nr5ep"]
+[ext_resource type="PackedScene" uid="uid://bjmtpi8fgaild" path="res://UI/RetryAndGameOver.tscn" id="10_nr5ep"]
 [ext_resource type="PackedScene" uid="uid://cip30rpkg6ksa" path="res://UI/upgrade_menu/upgrade_menu.tscn" id="12_6xbje"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ao0ah"]
@@ -32,12 +30,7 @@ material = SubResource("ShaderMaterial_lls7c")
 scale = Vector2(7, 7)
 texture = ExtResource("4_q5756")
 
-[node name="start_menu_container" parent="start_screen" instance=ExtResource("5_5whm8")]
-
-[node name="settings_container" parent="start_screen" instance=ExtResource("6_dtr76")]
-
-[node name="stats_container" parent="start_screen" instance=ExtResource("7_0xwu1")]
-visible = false
+[node name="MainMenu" parent="start_screen" instance=ExtResource("5_3depe")]
 
 [node name="MenusCanvasLayer" type="CanvasLayer" parent="."]
 

@@ -5,25 +5,25 @@
 [ext_resource type="PackedScene" uid="uid://dvaaw4swukxka" path="res://UI/upgrade_menu/upgrade_tex_rect.tscn" id="2_sh0iy"]
 [ext_resource type="Shader" path="res://UI/upgrade_menu/upgrade_tex_rect.gdshader" id="4_q6u0o"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_23342"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kcge5"]
 resource_local_to_scene = true
 shader = ExtResource("4_q6u0o")
 shader_parameter/hovered_over = 1.0
 shader_parameter/offset_time = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jor4a"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0vx1n"]
 resource_local_to_scene = true
 shader = ExtResource("4_q6u0o")
 shader_parameter/hovered_over = 1.0
 shader_parameter/offset_time = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jxbpf"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3x3lu"]
 resource_local_to_scene = true
 shader = ExtResource("4_q6u0o")
 shader_parameter/hovered_over = 1.0
 shader_parameter/offset_time = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_okdh4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e2lvt"]
 resource_local_to_scene = true
 shader = ExtResource("4_q6u0o")
 shader_parameter/hovered_over = 1.0
@@ -79,19 +79,19 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 10
 
 [node name="UpgradeTextureButton" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_sh0iy")]
-material = SubResource("ShaderMaterial_23342")
+material = SubResource("ShaderMaterial_kcge5")
 layout_mode = 2
 
 [node name="UpgradeTextureButton2" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_sh0iy")]
-material = SubResource("ShaderMaterial_jor4a")
+material = SubResource("ShaderMaterial_0vx1n")
 layout_mode = 2
 
 [node name="UpgradeTextureButton3" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_sh0iy")]
-material = SubResource("ShaderMaterial_jxbpf")
+material = SubResource("ShaderMaterial_3x3lu")
 layout_mode = 2
 
 [node name="UpgradeTextureButton4" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_sh0iy")]
-material = SubResource("ShaderMaterial_okdh4")
+material = SubResource("ShaderMaterial_e2lvt")
 layout_mode = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]

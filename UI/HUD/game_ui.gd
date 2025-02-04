@@ -32,6 +32,9 @@ var _score: float = 0.0
 @onready var meter_fill_up_particles: GPUParticles2D = $MeterAndLevelNum/Meter/PanelContainer/StarParticles
 
 func _ready():
+	# -- juice for visual indication that more lives cannot be bought
+	$life_margin_container/PanelContainer/Timer.timeout.connect( func():
+		$life_margin_container/PanelContainer.material.set_shader_parameter("flash_switch", 0.0))
 	
 	# -- When the meter particles are done animating, let stage know (will pause game for upgrade menu or w/e)
 	meter_fill_up_particles.finished.connect( func():
@@ -200,3 +203,8 @@ var _level_num = 1
 func increment_level_label():
 	_level_num += 1
 	$MeterAndLevelNum/MarginContainer/Label.text = str(_level_num)
+
+
+func cant_make_more_lives_juice():
+	$life_margin_container/PanelContainer.material.set_shader_parameter("flash_switch", 1.0)
+	$life_margin_container/PanelContainer/Timer.start()

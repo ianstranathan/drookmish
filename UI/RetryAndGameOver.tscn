@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://bjmtpi8fgaild"]
 
 [ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="1_sohb2"]
-[ext_resource type="Script" path="res://UI/MenusV2/retry_and_game_over.gd" id="1_uyqm6"]
-[ext_resource type="Shader" path="res://UI/MenusV2/message.gdshader" id="2_wt5ut"]
+[ext_resource type="Script" path="res://UI/retry_and_game_over.gd" id="1_uyqm6"]
+[ext_resource type="Shader" path="res://UI/message.gdshader" id="2_wt5ut"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2sspj"]
 shader = ExtResource("2_wt5ut")
@@ -43,7 +43,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.36122, 0.408498, 0.968032, 1)
 theme_override_fonts/font = ExtResource("1_sohb2")
 theme_override_font_sizes/font_size = 60
-text = "FAILURE"
+text = "Paused"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2

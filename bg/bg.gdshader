@@ -24,14 +24,14 @@ void fragment(){
 	uv.y *= -1.0;
 	vec4 tex_sample = texture(tex, tex_uv_coeff * UV); //* (1. - just_rock);
 	vec4 normal_map_sample = texture(normal_map, uv);
-	
+
 	vec3 light_dir = vec3(selection_pos, height_offset) - vec3(uv, 0.); // light pos - uv pos
-	
+
 	// light model, simple lambertian
-	// 
-	float diffuse = max(dot( normalize(normal_map_sample.xyz), 
+	//
+	float diffuse = max(dot( normalize(normal_map_sample.xyz),
 	                         normalize(light_dir)), 0.);
-	
+
 	vec3 avg_tex_col = 1. - vec3(avg(tex_sample.xyz)) + 0.1;
 	vec3 col = vec3(avg_tex_col) * diffuse;
 	COLOR = vec4(col, 1.);

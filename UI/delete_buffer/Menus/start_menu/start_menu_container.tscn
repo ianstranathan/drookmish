@@ -1,28 +1,32 @@
 [gd_scene load_steps=8 format=3 uid="uid://bhnycjhca2gey"]
 
-[ext_resource type="Script" path="res://UI/Menus/start_menu/start_menu_container.gd" id="1_3updl"]
-[ext_resource type="PackedScene" uid="uid://c2045ae6tbw3n" path="res://UI/Menus/button/menu_buttontscn.tscn" id="1_rh173"]
-[ext_resource type="Shader" path="res://UI/Menus/button/button_outline.gdshader" id="2_ut6h6"]
+[ext_resource type="Script" path="res://UI/delete_buffer/Menus/start_menu/start_menu_container.gd" id="1_3updl"]
+[ext_resource type="PackedScene" uid="uid://c2045ae6tbw3n" path="res://UI/button/menu_buttontscn.tscn" id="1_rh173"]
+[ext_resource type="Shader" path="res://UI/button/button_outline.gdshader" id="2_ut6h6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i2wm1"]
 resource_local_to_scene = true
 shader = ExtResource("2_ut6h6")
 shader_parameter/t = 0.0
+shader_parameter/disabled = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e8du6"]
 resource_local_to_scene = true
 shader = ExtResource("2_ut6h6")
 shader_parameter/t = 0.0
+shader_parameter/disabled = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x6cgs"]
 resource_local_to_scene = true
 shader = ExtResource("2_ut6h6")
 shader_parameter/t = 0.0
+shader_parameter/disabled = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h1tdo"]
 resource_local_to_scene = true
 shader = ExtResource("2_ut6h6")
 shader_parameter/t = 0.0
+shader_parameter/disabled = null
 
 [node name="start_menu_container" type="Control"]
 layout_mode = 3
@@ -55,14 +59,11 @@ layout_mode = 2
 [node name="Settings" parent="VBoxContainer" instance=ExtResource("1_rh173")]
 material = SubResource("ShaderMaterial_e8du6")
 layout_mode = 2
-text = "Settings"
 
 [node name="Stats" parent="VBoxContainer" instance=ExtResource("1_rh173")]
 material = SubResource("ShaderMaterial_x6cgs")
 layout_mode = 2
-text = "Stats"
 
 [node name="Quit" parent="VBoxContainer" instance=ExtResource("1_rh173")]
 material = SubResource("ShaderMaterial_h1tdo")
 layout_mode = 2
-text = "Quit"

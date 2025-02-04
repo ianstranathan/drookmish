@@ -21,6 +21,7 @@ func _ready() -> void:
 
 
 func set_data(data: Dictionary):
+	my_upgrade_data = {}
 	my_upgrade_data = data
 	# -- offset to visually make upgrades distinct
 	material.set_shader_parameter("offset_time", my_upgrade_data["offset"])

@@ -3,11 +3,21 @@ extends Node2D
 @onready var stage_scene: PackedScene = preload("res://scenes/stage/stage.tscn")
 @onready var menus_container = $MenusCanvasLayer/MenuContainer
 
+@export var _music: bool = true
 func _ready ():
-	#BgMusic.playing = true
+	if _music:
+		BgMusic.playing = _music
+		reset_music()
 	# --------------------------------------------------------------------------
 	menus_container.retry.connect(func():
+		reset_music(2.0)
 		restart_game())
+	menus_container.quit_to_main.connect( func( fn):
+		$start_screen.visible = true
+		reset_music()
+		#$stage_container.visible = false
+		fn.call())
+		
 	menus_container.upgrade_selected.connect(func(data):
 		# -- there should only  ever be one stage, but mapping over children
 		# -- is nicer syntax imo than naming it or indexing it
@@ -23,12 +33,20 @@ func _ready ():
 	#$Vector2(get_viewport().get_size()) / $start_screen/ColorRect.texture.get_size()
 	# -- start game signal
 	$start_screen.game_started.connect( on_game_started )
-	
+
+func reset_music(db_diff=0.0):
+	BgMusic.play()
+	BgMusic.volume_db = -6
+	BgMusic.volume_db += db_diff
+
 
 func on_game_started():
 	BgMusic.volume_db += 2.0
 	$start_screen.visible = false
-	make_and_add_stage()
+	if $stage_container.get_children().size() > 0:
+		restart_game()
+	else:
+		make_and_add_stage()
 
 
 func restart_game():
@@ -50,8 +68,8 @@ func make_and_add_stage():
 	# -- it will either end or be replaced and the pointer will 
 	# -- just be changed in this same make_and_add_stage func
 	
-	_stage.stage_ready.connect(func(): 
-		pass)
+	_stage.stage_ready.connect(func(lives_fn: Callable):
+		$MenusCanvasLayer/MenuContainer/UpgradeMenu.can_select_lives_upgrade = lives_fn)
 	_stage.leveled_up.connect( func():
 		menus_container.level_up())
 	_stage.game_over.connect(func():

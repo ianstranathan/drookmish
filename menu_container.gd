@@ -1,6 +1,7 @@
 extends Control
 
 signal retry
+signal quit_to_main( fn )
 signal upgrade_selected( data )
 
 var stage_ref: Node2D
@@ -8,7 +9,11 @@ var stage_ref: Node2D
 func _ready() -> void:
 	reset() # turn everyone off to not get weird visibility feedback switches
 	$RetryAndGameOver.retry.connect(func(): emit_signal("retry"))
-	$RetryAndGameOver.quit.connect(func(): get_tree().quit())
+	$RetryAndGameOver.quit.connect(func(): emit_signal("quit_to_main", func():
+		visible = false
+		stage_ref.visible = false
+		stage_ref.get_node("HUD").visible = false
+		Utils.pause_node(stage_ref, true)))
 	$UpgradeMenu.upgrade_selected.connect(func(data):
 		pause(level_up_fn(false), false)
 		emit_signal("upgrade_selected", data))
@@ -42,7 +47,6 @@ func pause_game_fn(b: bool) -> Callable:
 		$RetryAndGameOver.visible = b
 		$RetryAndGameOver.disp("Paused")
 
-# ------------------------------------------------------------------------------
 
 func game_over_fn() -> void:
 	$RetryAndGameOver.visible = true
@@ -52,15 +56,12 @@ func game_over_fn() -> void:
 func game_over() -> void:
 	pause(game_over_fn, true)
 
-# ------------------------------------------------------------------------------
 
 func level_up() -> void:
 	pause(level_up_fn(true), true)
 
 
-func level_up_fn(b: bool) -> Callable:
+func level_up_fn(_b: bool) -> Callable:
 	return func():
-		$UpgradeMenu.visible = b
-
-
-# ------------------------------------------------------------------------------
+		$UpgradeMenu.select_upgrade()
+		#$UpgradeMenu.visible = b

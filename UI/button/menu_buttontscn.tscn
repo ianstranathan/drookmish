@@ -1,27 +1,28 @@
 [gd_scene load_steps=12 format=3 uid="uid://c2045ae6tbw3n"]
 
 [ext_resource type="Texture2D" uid="uid://baa7g6cd4u7e8" path="res://assets/icon.svg" id="1_hil07"]
-[ext_resource type="Shader" path="res://UI/Menus/button/button_outline.gdshader" id="1_ok51a"]
+[ext_resource type="Shader" path="res://UI/button/button_outline.gdshader" id="1_ok51a"]
 [ext_resource type="FontFile" uid="uid://dkb5pled1clyc" path="res://assets/fonts/lithob.ttf" id="2_jcd2i"]
-[ext_resource type="Script" path="res://UI/Menus/button/menu_button.gd" id="4_45utc"]
+[ext_resource type="Script" path="res://UI/button/menu_button.gd" id="4_45utc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y570s"]
 resource_local_to_scene = true
 shader = ExtResource("1_ok51a")
 shader_parameter/t = 0.0
+shader_parameter/disabled = null
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p2h73"]
 texture = ExtResource("1_hil07")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c8irc"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ow5eb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgihe"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jlked"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1305g"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hgihe"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ow5eb"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c8irc"]
 
 [node name="PanelContainer" type="PanelContainer"]
 material = SubResource("ShaderMaterial_y570s")
@@ -41,13 +42,14 @@ script = ExtResource("4_45utc")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_jcd2i")
 theme_override_font_sizes/font_size = 50
-theme_override_styles/normal = SubResource("StyleBoxEmpty_c8irc")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ow5eb")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_hgihe")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_jlked")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_1305g")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_hgihe")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_ow5eb")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_c8irc")
 text = "PLAY"
 
 [connection signal="mouse_entered" from="Button" to="." method="_on_button_mouse_entered"]

@@ -31,18 +31,24 @@ func rnd_pos() -> Vector2:
 	var rng_radius = random_float * radius
 	return selected_clikmi.global_position + rng_radius * Vector2(cos(TAU * rng_f()), sin(TAU * rng_f()))
 
-var num_times_collectibles_made = 0
+
+func rnd_threshhold_fn():
+	# -- brute force returning something between 0 and 0.5
+	var rnd = randf()
+	while rnd > 0.5:
+		rnd = randf()
+	return rnd
+
+@onready var rnd_threshold = rnd_threshhold_fn()
 func make_n_collectibles(num_to_make: int = 1):
 	for i in range(num_to_make):
 		add_collectable()
 	
-	num_times_collectibles_made += 1
-	
-	# -- initial case
-	if num_to_make != 0:
-		if num_times_collectibles_made % 5 + int(randf() * 3.0) == 0:
-			add_grow_boost()
-			
+	var _rnd = randf()
+	if _rnd < rnd_threshold:
+		rnd_threshold = rnd_threshhold_fn()
+		add_grow_boost()
+
 
 func add_grow_boost():
 	var child = grow_boost_collectible_scene.instantiate()

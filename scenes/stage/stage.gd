@@ -32,7 +32,7 @@ signal leveled_up
 # ------------------------------------------------------------------------------
 @export var STARTING_LIVES_NUM: int = 3
 @onready var num_lives: int = STARTING_LIVES_NUM
-@export var MAX_LIVES_NUM: int = 10
+@export var MAX_LIVES_NUM: int = 8
 # ------------------------------------------------------------------------------
 
 func _ready():
@@ -105,6 +105,8 @@ func _ready():
 		fn.call($GameTimer))
 	$HUD.HUD_meter_leveled_up.connect(func(fn: Callable):
 		emit_signal("leveled_up")
+		
+		# -- ratchet up the level points threshold
 		curr_lvl_points = LVL_UP_MULTIPLIER * curr_lvl_points
 		fn.call(curr_lvl_points))
 
@@ -140,8 +142,15 @@ func init_level():
 	# -- Let clikmi maker & the game ui know 
 	#$ClikmiMaker.my_init()
 	$HUD.init_level_points(STARTING_LEVEL_POINTS)
-	emit_signal("stage_ready")
+	emit_signal("stage_ready", max_lives_check)
 
+
+func max_lives_check() -> bool:
+	if num_lives < MAX_LIVES_NUM:
+		return true
+	else:
+		$HUD.cant_make_more_lives_juice()
+		return false
 
 # -- This is just counting lives to decide to end the game when out of lives
 func decrement_lives() -> void:
@@ -163,11 +172,13 @@ func end_game():
 func process_upgrade( data ):
 	match data.name:
 		"1UP":
-			add_lives( 1 )
+			if num_lives < MAX_LIVES_NUM:
+				add_lives( 1 )
+
 
 # -- want to pass the currently selected clikmi position to shader to create a 
 # -- light that affects the bg
-@onready var _bg_mat = $bg.material
+#@onready var _bg_mat = $bg.material
 #func _process(_delta: float) -> void:
 	#if $SelectionBg.visible:
 		#var n_pos = $SelectionBg.global_position / (0.5 * stage_dimensions)
