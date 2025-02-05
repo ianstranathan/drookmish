@@ -8,7 +8,9 @@ signal quit
 @export var fail_col: Color = Color(1, 0., 0., 1.)
 @export var pause_col: Color = Color(1, .9, 0.4, 1.)
 
+
 func _ready() -> void:
+	visible = false
 	$VBoxContainer/HBoxContainer/PanelContainer/Retry.connect("pressed", func(): 
 		emit_signal("retry"))
 	$VBoxContainer/HBoxContainer/PanelContainer2/Quit.connect("pressed", func(): 

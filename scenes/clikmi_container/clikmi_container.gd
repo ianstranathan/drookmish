@@ -23,7 +23,8 @@ func add_clikmi(a_clikmi):
 	a_clikmi.clikmi_freed.connect(   func( _a_clikmi): 
 		clikmi_died_process_crown(_a_clikmi)
 		emit_signal("clikmi_freed",   _a_clikmi))
-	a_clikmi.void_hole_made.connect( func( _a_clikmi): emit_signal("void_hole_made", _a_clikmi))
+	a_clikmi.void_hole_made.connect( func( _a_clikmi, _a_void_hole):
+		emit_signal("void_hole_made", _a_clikmi, _a_void_hole))
 	a_clikmi.started_being_sucked_in.connect(func(_a_clikmi, t):
 		emit_signal("started_being_sucked_in", _a_clikmi, t)
 		clikmi_died_process_crown(_a_clikmi))

@@ -84,4 +84,7 @@ func pause_node(a_node, b: bool):
 		a_node.set_deferred("process_mode", PROCESS_MODE_DISABLED)
 	else:
 		a_node.set_deferred("process_mode", PROCESS_MODE_INHERIT)
-	
+
+
+func node_is_paused( n: Node):
+	return n.process_mode == Node.PROCESS_MODE_DISABLED

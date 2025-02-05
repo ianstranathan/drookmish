@@ -23,12 +23,12 @@ var cam_rect: TextureRect
 signal sucked_in                           # -- void hole (REFACTOR THIS PLEASE)
 signal started_being_sucked_in( a_clikmi, _void_hole_time_left) # -- clikmi container for crown logic
 signal clikmi_freed
-signal void_hole_made
+signal void_hole_made( a_clikmi, a_void_hole)
 signal released_light_pos
 signal timer_collectable_collected(this_voids_wait_time, a_clikmi)
 signal scored_points(a_clikmi)
 signal clikmi_crushed
-
+#signal void_hole_made( a_void_hole )
 #-------------------------------------------------------------------------------
 enum MoveDirs{
 	IDLE,
@@ -78,11 +78,11 @@ func make_void_hole():
 	label_panel.material.set_shader_parameter("t", 0.0)
 	var void_hole = void_hole_scene.instantiate();
 	# -- signal for score effect in game UI
-	emit_signal("void_hole_made", self)
+	emit_signal("void_hole_made", self, void_hole)
 	#void_hole.tween_anim_in_finished.connect( func(): emit_signal("scored_points", self))
 	#$emit_signal("scored_points", self)
 	score_points()
-	get_tree().root.call_deferred("add_child", void_hole);
+	#get_tree().root.call_deferred("add_child", void_hole);
 	void_hole.global_position = global_position;
 	void_hole.z_index = Ordering.black_hole
 
@@ -360,18 +360,19 @@ func play_clikmi_sound() -> void:
 
 
 var invincible = false
+@onready var initial_max_speed = max_speed # -- maybe some accumulating floating point errors or something
 func invincibility(turn_off=false):
 	invincible = !turn_off
 	var speed_factor: float = 1.7
 	$PanelContainer.visible = turn_off
 	if !turn_off:
 		$VoidHoleTimer.stop()
-		max_speed *= speed_factor
+		max_speed = round(initial_max_speed * speed_factor)
 		$Sprite2D.material.set_shader_parameter("invincibility", 1.0)
 		$InvincibilityTimer.start()
 	else:
 		$VoidHoleTimer.start()
-		max_speed /= speed_factor
+		max_speed = round(initial_max_speed / speed_factor)
 		$Sprite2D.material.set_shader_parameter("invincibility", 0.0)
 
 var selection_bg_ref: Sprite2D 

@@ -7,14 +7,15 @@ extends Node2D
 func _ready ():
 	if _music:
 		BgMusic.playing = _music
-		reset_music()
 	# --------------------------------------------------------------------------
 	menus_container.retry.connect(func():
-		reset_music(2.0)
+		BgMusic.play()
+		BgMusic.set_db("Full")
 		restart_game())
 	menus_container.quit_to_main.connect( func( fn):
 		$start_screen.visible = true
-		reset_music()
+		BgMusic.play()
+		BgMusic.set_db("Initial")
 		#$stage_container.visible = false
 		fn.call())
 		
@@ -33,11 +34,6 @@ func _ready ():
 	#$Vector2(get_viewport().get_size()) / $start_screen/ColorRect.texture.get_size()
 	# -- start game signal
 	$start_screen.game_started.connect( on_game_started )
-
-func reset_music(db_diff=0.0):
-	BgMusic.play()
-	BgMusic.volume_db = -6
-	BgMusic.volume_db += db_diff
 
 
 func on_game_started():

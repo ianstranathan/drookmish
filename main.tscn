@@ -22,16 +22,6 @@ shader_parameter/noise_tex = SubResource("NoiseTexture2D_rpq65")
 [node name="Main" type="Node2D"]
 script = ExtResource("1_4gdta")
 
-[node name="start_screen" type="CanvasLayer" parent="."]
-script = ExtResource("2_xlrxe")
-
-[node name="Sprite2D" type="Sprite2D" parent="start_screen"]
-material = SubResource("ShaderMaterial_lls7c")
-scale = Vector2(7, 7)
-texture = ExtResource("4_q5756")
-
-[node name="MainMenu" parent="start_screen" instance=ExtResource("5_3depe")]
-
 [node name="MenusCanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="MenuContainer" type="Control" parent="MenusCanvasLayer"]
@@ -48,5 +38,15 @@ layout_mode = 1
 
 [node name="RetryAndGameOver" parent="MenusCanvasLayer/MenuContainer" instance=ExtResource("10_nr5ep")]
 layout_mode = 1
+
+[node name="start_screen" type="CanvasLayer" parent="."]
+script = ExtResource("2_xlrxe")
+
+[node name="Sprite2D" type="Sprite2D" parent="start_screen"]
+material = SubResource("ShaderMaterial_lls7c")
+scale = Vector2(7, 7)
+texture = ExtResource("4_q5756")
+
+[node name="MainMenu" parent="start_screen" instance=ExtResource("5_3depe")]
 
 [node name="stage_container" type="Node2D" parent="."]

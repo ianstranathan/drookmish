@@ -36,6 +36,7 @@ var upgrade_arr: Array = [
 
 
 func _ready() -> void:
+	visible = false
 	upgrade_container.get_children().map( func(_upgrade_tex_btn): 
 		_upgrade_tex_btn.clicked.connect(  signal_out_upgrade_selection)
 		_upgrade_tex_btn.hovering.connect( update_upgrade_description ))
@@ -53,6 +54,7 @@ func update_upgrade_description(upgrade_description):
 
 var can_select_lives_upgrade: Callable # -- set by main, function ptr to get  num lives
 func signal_out_upgrade_selection( data ):
+	visible = false
 	if data.name == "1UP":
 		if can_select_lives_upgrade.call():
 			emit_signal("upgrade_selected", data)

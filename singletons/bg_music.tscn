@@ -1,7 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bqso47imvqj61"]
+[gd_scene load_steps=3 format=3 uid="uid://bqso47imvqj61"]
 
 [ext_resource type="AudioStream" uid="uid://bc32uxeirh4wc" path="res://assets/Music/free-stock-music/fata-morgana/fsm-team-fata-morgana.mp3" id="1_4tkku"]
+[ext_resource type="Script" path="res://singletons/bg_music.gd" id="2_b65jy"]
 
 [node name="BgMusic" type="AudioStreamPlayer2D"]
 stream = ExtResource("1_4tkku")
 bus = &"Music"
+script = ExtResource("2_b65jy")

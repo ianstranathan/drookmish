@@ -61,7 +61,8 @@ func _ready():
 		[$vfx_container/VoidHoleShockwaves, MouseContainer, $SelectionBg].map( func(x):
 			x.clikmi_freed(a_clikmi)))
 	
-	$clikmi_container.void_hole_made.connect(func(a_clikmi): 
+	$clikmi_container.void_hole_made.connect(func(a_clikmi, a_void_hole):
+		$void_hole_container.add_child(a_void_hole)
 		$vfx_container/VoidHoleShockwaves.void_hole_made(a_clikmi))
 	$clikmi_container.started_being_sucked_in.connect( func(a_clikmi, t):
 		$vfx_container/VoidHoleShockwaves.shake(t, 0.005)

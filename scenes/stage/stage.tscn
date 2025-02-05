@@ -52,7 +52,9 @@ one_shot = true
 [node name="vfx_container" type="Node2D" parent="."]
 
 [node name="VoidHoleShockwaves" parent="vfx_container" node_paths=PackedStringArray("curr_cam") instance=ExtResource("10_ebeaj")]
+process_mode = 3
 curr_cam = NodePath("../../Camera2D")
+metadata/_edit_group_ = true
 
 [node name="camera_lights_container" type="Node2D" parent="."]
 script = ExtResource("11_x4chg")
@@ -105,3 +107,5 @@ scale = Vector2(2.36, 2.36)
 [node name="GameTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="void_hole_container" type="Node2D" parent="."]

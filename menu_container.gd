@@ -3,18 +3,23 @@ extends Control
 signal retry
 signal quit_to_main( fn )
 signal upgrade_selected( data )
+signal paused_game( b )
 
 var stage_ref: Node2D
 
+var _can_pause: bool = true
+
 func _ready() -> void:
+	visible = true
 	reset() # turn everyone off to not get weird visibility feedback switches
 	$RetryAndGameOver.retry.connect(func(): emit_signal("retry"))
 	$RetryAndGameOver.quit.connect(func(): emit_signal("quit_to_main", func():
-		visible = false
+		#visible = false
 		stage_ref.visible = false
 		stage_ref.get_node("HUD").visible = false
 		Utils.pause_node(stage_ref, true)))
 	$UpgradeMenu.upgrade_selected.connect(func(data):
+		_can_pause = true
 		pause(level_up_fn(false), false)
 		emit_signal("upgrade_selected", data))
 
@@ -28,20 +33,15 @@ func _process(_delta):
 
 func reset():
 	# -- initialize visibility (Control node won't interact if not visible)
-	visible = false
 	get_children().map( func(x): x.visible = false)
 
 
 func pause(fn: Callable, b: bool):
-	if stage_ref:
-		# -- turn off the stage branch of scene tree
+	if _can_pause and stage_ref:
 		Utils.pause_node(stage_ref, b)
-	
-	# -- need to turn on parent node's visibility
-	visible = b
-	fn.call() #if !args else fn.call(args) # -- do relevant UI
-
-
+		fn.call()
+		BgMusic.set_db("Paused") if b else BgMusic.set_db("Full")
+		
 func pause_game_fn(b: bool) -> Callable:
 	return func():
 		$RetryAndGameOver.visible = b
@@ -63,5 +63,6 @@ func level_up() -> void:
 
 func level_up_fn(_b: bool) -> Callable:
 	return func():
-		$UpgradeMenu.select_upgrade()
-		#$UpgradeMenu.visible = b
+		if _b:
+			$UpgradeMenu.select_upgrade()
+			_can_pause = _b

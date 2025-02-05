@@ -39,14 +39,13 @@ func rnd_threshhold_fn():
 		rnd = randf()
 	return rnd
 
-@onready var rnd_threshold = rnd_threshhold_fn()
+
 func make_n_collectibles(num_to_make: int = 1):
 	for i in range(num_to_make):
 		add_collectable()
 	
 	var _rnd = randf()
-	if _rnd < rnd_threshold:
-		rnd_threshold = rnd_threshhold_fn()
+	if num_to_make >= 3 and _rnd < 0.5:
 		add_grow_boost()
 
 
